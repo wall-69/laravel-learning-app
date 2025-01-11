@@ -15,6 +15,11 @@ const router = createRouter({
 			name: "learning",
 			component: LearningView,
 		},
+		{
+			path: "/register",
+			name: "register",
+			component: null,
+		},
 	],
 });
 
