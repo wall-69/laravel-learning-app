@@ -7,10 +7,12 @@
 		-->
 
 		<section
-			class="bg-hero h-screen-wo-nav flex flex-col items-center justify-center bg-center bg-cover">
-			<h2 class="text-primary-300 text-7xl leading-normal">DailyVocab</h2>
+			class="bg-hero h-screen-wo-nav flex flex-col items-center justify-center px-6 bg-center bg-cover">
+			<h2 class="text-primary-300 md:text-7xl text-5xl leading-normal">
+				DailyVocab
+			</h2>
 			<p
-				class="max-w-[800px] max-h-[200px] text-3xl text-center text-white break-words">
+				class="max-w-[800px] max-h-[200px] text-2xl md:text-3xl text-center text-white break-words">
 				effective vocabulary learning, focused on
 				<span class="font-medium">daily habit</span>,
 				<span class="font-medium">long&#x2011;term</span> memory storage,
@@ -36,7 +38,7 @@
 			<ul class="gap-x-6 gap-y-8 justify-evenly flex flex-wrap items-start">
 				<!-- Grouping -->
 				<li>
-					<h3 class="text-3xl font-bold">Grouping</h3>
+					<h3 class="md:text-3xl text-2xl font-bold">Grouping</h3>
 					<div class="flex items-center gap-4">
 						<i
 							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
@@ -54,7 +56,7 @@
 				</li>
 				<!-- Daily Review -->
 				<li>
-					<h3 class="text-3xl font-bold">Daily Review</h3>
+					<h3 class="md:text-3xl text-2xl font-bold">Daily Review</h3>
 					<div class="flex items-center gap-4">
 						<i
 							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
@@ -72,7 +74,7 @@
 				</li>
 				<!-- Instant Feedback -->
 				<li>
-					<h3 class="text-3xl font-bold">Instant Feedback</h3>
+					<h3 class="md:text-3xl text-2xl font-bold">Instant Feedback</h3>
 					<div class="flex items-center gap-4">
 						<i
 							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
@@ -90,7 +92,7 @@
 				</li>
 				<!-- Provided Context -->
 				<li>
-					<h3 class="text-3xl font-bold">Provided Context</h3>
+					<h3 class="md:text-3xl text-2xl font-bold">Provided Context</h3>
 					<div class="flex items-center gap-4">
 						<i
 							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
@@ -108,7 +110,9 @@
 				</li>
 				<!-- Long-term Memory Storage -->
 				<li>
-					<h3 class="text-3xl font-bold">Long-term Memory Storage</h3>
+					<h3 class="md:text-3xl text-2xl font-bold">
+						Long-term Memory Storage
+					</h3>
 					<div class="flex items-center gap-4">
 						<i
 							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
@@ -132,9 +136,10 @@
 			Section: How does this work?
 		 -->
 
-		<section class="bg-primary-100 flex items-center justify-between p-32">
-			<div class="flex flex-col max-w-lg">
-				<h2 class="text-secondary-100 text-4xl font-bold">
+		<section
+			class="bg-primary-100 md:px-16 xl:px-32 xl:justify-between xl:flex-row flex flex-col items-center gap-8 px-6 py-32">
+			<div class="md:max-w-lg flex flex-col">
+				<h2 class="text-secondary-100 xl:text-4xl text-3xl font-bold">
 					How does this work?
 				</h2>
 
@@ -168,34 +173,33 @@
 			Section: Five-group system
 		 -->
 
-		<section class="flex items-center justify-between p-32">
+		<section
+			class="xl:justify-between xl:flex-row md:px-16 xl:px-32 flex flex-col items-center gap-8 px-6 py-32">
 			<img
 				src="@/assets/img/leitner-boxes.png"
 				alt="5 boxes where correctly answered card is moved to next box. Incorrectly answered card is moved to box 1."
-				class="border-primary-500 max-w-xl border-4" />
+				class="border-primary-500 md:max-w-xl border-4" />
 
-			<div class="flex flex-col max-w-lg">
-				<h2 class="text-secondary-100 text-4xl font-bold">
-					How does this work?
+			<div class="md:max-w-lg flex flex-col">
+				<h2 class="text-secondary-100 xl:text-4xl text-3xl font-bold">
+					Five-group system
 				</h2>
 
 				<p class="mb-4">
-					Our app is based on a modified learning system of (virtual)
-					flashcards, created by German science journalist Sebastian Leitner,
-					called the Leitner System.
+					Each word you add to your vocabulary will start in Group 1. In Group
+					1, a word is reviewed daily. Answering correctly moves it up a group,
+					while answering incorrectly moves it back to Group 1.
 				</p>
-				<p class="mb-2">
-					Spaced repetition and retrieval practice increases the chance of
-					retention in the long&#x2011;term memory, based on research<!-- 
-					--><span class="text-secondary-100">*</span>. In contrast, cramming often causes
-					students to store information in short-term memory.
+				<p class="bg-primary-300 p-4 mb-10 border rounded-md">
+					Group 1 - review every day. <br />
+					Group 2 - review every 2 days. <br />
+					Group 3 - review every 4 days. <br />
+					Group 4 - review every 8 days. <br />
+					Group 5 - review every 16 days. <br />
 				</p>
 
-				<span class="text-secondary-100 text-sm">
-					*
-					<a href="#" class="hover:text-secondary-200 underline">
-						www.researchlink.com
-					</a>
+				<span class="text-sm">
+					* In a real scenario, the review interval may vary.
 				</span>
 			</div>
 		</section>
@@ -204,7 +208,8 @@
 			Section: Features and CTA
 		-->
 
-		<section class="bg-primary-100 flex items-center justify-between p-32">
+		<section
+			class="bg-primary-100 md:px-16 xl:px-32 xl:flex-row xl:justify-between flex flex-col items-center gap-8 px-6 py-32">
 			<ul class="flex flex-col gap-12">
 				<!-- Build a Habit -->
 				<li class="flex max-w-lg gap-4">
@@ -217,7 +222,7 @@
 							size="lg"></box-icon>
 					</i>
 					<div class="flex flex-col">
-						<h2 class="text-3xl font-bold">Build a Habit</h2>
+						<h2 class="md:text-3xl text-2xl font-bold">Build a Habit</h2>
 						<p class="mb-4">
 							Check in daily for your daily words. Building a habit is no easy
 							task, but we hope our habit tracker can help. Remember, missing
@@ -237,7 +242,7 @@
 							size="lg"></box-icon>
 					</i>
 					<div class="flex flex-col">
-						<h2 class="text-3xl font-bold">Custom Word Packs</h2>
+						<h2 class="md:text-3xl text-2xl font-bold">Custom Word Packs</h2>
 						<p>
 							Are you a teacher? Maybe an enthusiastic vocabulary learner?
 							Doesnt matter! Create your own Word Packs and choose who can use
@@ -287,7 +292,7 @@
 							size="lg"></box-icon>
 					</i>
 					<div class="flex flex-col">
-						<h2 class="text-3xl font-bold">Build a Habit</h2>
+						<h2 class="md:text-3xl text-2xl font-bold">Build a Habit</h2>
 						<p>
 							Select the field of vocabulary you want learn. Choose a Path to
 							gradually unlock Word Packs, or add Word Packs on their own to
