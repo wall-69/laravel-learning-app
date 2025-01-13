@@ -302,7 +302,7 @@
 				</li>
 			</ul>
 
-			<form action="">form maybe</form>
+			<RegisterForm></RegisterForm>
 		</section>
 	</main>
 
@@ -312,5 +312,6 @@
 <script setup>
 import CustomHeader from "@/components/Header.vue";
 import CustomFooter from "@/components/Footer.vue";
+import RegisterForm from "@/components/RegisterForm.vue";
 import { RouterLink } from "vue-router";
 </script>
