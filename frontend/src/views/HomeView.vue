@@ -253,7 +253,7 @@
 							<li class="flex gap-2">
 								<i>
 									<box-icon
-										name="school"
+										name="group"
 										type="solid"
 										color="#082191"
 										size="lg"></box-icon>
