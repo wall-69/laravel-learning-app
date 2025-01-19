@@ -1,7 +1,7 @@
 <template>
-	<main class="flex flex-col flex-1">
-		<CustomHeader></CustomHeader>
+	<CustomHeader></CustomHeader>
 
+	<main class="flex flex-col flex-1">
 		<!-- 
 			Section: Hero
 		-->
@@ -19,9 +19,7 @@
 				<span class="font-medium">retrieval practice</span> and
 				<span class="font-medium">spaced repetition</span>.
 			</p>
-			<RouterLink
-				:to="{ name: 'register' }"
-				class="btn-register-secondary mt-8">
+			<RouterLink :to="{ name: 'register' }" class="btn-secondary mt-8">
 				REGISTER
 			</RouterLink>
 		</section>

@@ -1,7 +1,12 @@
 import "./assets/main.css";
 import "boxicons";
 import axios from "axios";
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import useAuth from "./composables/useAuth";
 
+// Axios
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -23,18 +28,13 @@ axios.interceptors.request.use(
 	(error) => Promise.reject(error)
 );
 
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import useAuth from "./composables/useAuth";
-
+// First try to fetch the user
 const { attempt } = useAuth();
+await attempt();
 
+// Create the Vue app
 const app = createApp(App);
 
 app.use(router);
 
-// First try to fetch the user
-attempt().then(() => {
-	app.mount("#app");
-});
+app.mount("#app");

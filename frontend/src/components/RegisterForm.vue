@@ -134,9 +134,7 @@
 		</div>
 
 		<!-- REGISTER BUTTON -->
-		<button type="submit" class="btn-register-primary self-center">
-			REGISTER
-		</button>
+		<button type="submit" class="btn-primary self-center">REGISTER</button>
 
 		<hr class="self-center w-2/3 h-0.5 bg-gray-200 rounded-md" />
 
@@ -152,10 +150,12 @@
 </template>
 
 <script setup>
+import useAuth from "@/composables/useAuth";
 import axios from "axios";
 import { reactive, ref, toRaw, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
 
+const { register } = useAuth();
 const form = reactive({
 	name: "",
 	surname: "",
@@ -179,13 +179,15 @@ async function handleSubmit(e) {
 	}
 
 	try {
-		let response = await axios.post("/api/users", form);
+		await register(form);
 	} catch (e) {
-		if (e.response) {
-			Object.keys(e.response.data.errors).forEach((field) => {
-				errors[field] = e.response.data.errors[field][0];
-			});
+		if (!e.response) {
+			return;
 		}
+
+		Object.keys(e.response.data.errors).forEach((field) => {
+			errors[field] = e.response.data.errors[field][0];
+		});
 	}
 }
 </script>

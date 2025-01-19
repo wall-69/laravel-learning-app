@@ -1,5 +1,6 @@
 import { computed, reactive, ref } from "vue";
 import axios from "axios";
+import router from "@/router";
 
 const state = reactive({
 	authenticated: false,
@@ -23,26 +24,54 @@ export default function useAuth() {
 			let response = await axios.get("/api/user");
 
 			setAuthenticated(true);
-			setUser(response.data);
+			setUser(response.data.user);
+
+			return response;
 		} catch (e) {
 			setAuthenticated(false);
 			setUser({});
 		}
 	};
 
-	// TODO
 	const login = async (data) => {
 		try {
-			await axios.post("/login", credentials);
+			let response = await axios.post("/api/login", data);
+
+			setAuthenticated(true);
+			setUser(response.data.user);
+
+			router.replace({ name: "learning" });
+
+			return response;
 		} catch (e) {
-			return Promise.reject(e.response.data.errors);
+			return Promise.reject(e);
+		}
+	};
+
+	const logout = async () => {
+		try {
+			let response = await axios.post("/api/logout");
+
+			setAuthenticated(false);
+			setUser({});
+
+			router.replace({ name: "home" });
+
+			return response;
+		} catch (e) {
+			return Promise.reject(e);
 		}
 	};
 
 	const register = async (data) => {
 		try {
+			let response = await axios.post("/api/users", data);
+
+			router.replace({ name: "login" });
+
+			return response;
 		} catch (e) {
-			return Promise.reject(e.response.data.errors);
+			return Promise.reject(e);
 		}
 	};
 
@@ -52,6 +81,7 @@ export default function useAuth() {
 
 		attempt,
 		login,
+		logout,
 		register,
 	};
 }
