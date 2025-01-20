@@ -27,7 +27,7 @@ export default function useAuth() {
 			setUser(response.data.user);
 
 			return response;
-		} catch (e) {
+		} catch (ex) {
 			setAuthenticated(false);
 			setUser({});
 		}
@@ -43,8 +43,8 @@ export default function useAuth() {
 			router.replace({ name: "learning" });
 
 			return response;
-		} catch (e) {
-			return Promise.reject(e);
+		} catch (ex) {
+			throw ex;
 		}
 	};
 
@@ -58,8 +58,8 @@ export default function useAuth() {
 			router.replace({ name: "home" });
 
 			return response;
-		} catch (e) {
-			return Promise.reject(e);
+		} catch (ex) {
+			throw ex;
 		}
 	};
 
@@ -70,8 +70,8 @@ export default function useAuth() {
 			router.replace({ name: "login" });
 
 			return response;
-		} catch (e) {
-			return Promise.reject(e);
+		} catch (ex) {
+			throw ex;
 		}
 	};
 

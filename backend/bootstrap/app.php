@@ -12,7 +12,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Stateful API
         $middleware->statefulApi();
+
+        // Return 403, if guests try to access routes that are not for guests
+        $middleware->redirectGuestsTo(function () {
+            return abort(403);
+        });
+        // Do the same for logged in users
+        $middleware->redirectUsersTo(function () {
+            return abort(403);
+        });
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

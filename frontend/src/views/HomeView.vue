@@ -290,11 +290,13 @@
 							size="lg"></box-icon>
 					</i>
 					<div class="flex flex-col">
-						<h2 class="md:text-3xl text-2xl font-bold">Build a Habit</h2>
+						<h2 class="md:text-3xl text-2xl font-bold">
+							Choose your vocabulary
+						</h2>
+						<p>Select the field of vocabulary you want learn.</p>
 						<p>
-							Select the field of vocabulary you want learn. Choose a Path to
-							gradually unlock Word Packs, or add Word Packs on their own to
-							your vocabulary.
+							Choose a Path to gradually unlock Word Packs, or add Word Packs on
+							their own to your vocabulary.
 						</p>
 					</div>
 				</li>

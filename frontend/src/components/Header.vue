@@ -41,6 +41,6 @@ const { authenticated, logout } = useAuth();
 async function handleLogout() {
 	try {
 		await logout();
-	} catch (e) {}
+	} catch (ex) {}
 }
 </script>

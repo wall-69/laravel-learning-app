@@ -180,13 +180,13 @@ async function handleSubmit(e) {
 
 	try {
 		await register(form);
-	} catch (e) {
-		if (!e.response) {
+	} catch (ex) {
+		if (!ex.response) {
 			return;
 		}
 
-		Object.keys(e.response.data.errors).forEach((field) => {
-			errors[field] = e.response.data.errors[field][0];
+		Object.keys(ex.response.data.errors).forEach((field) => {
+			errors[field] = ex.response.data.errors[field][0];
 		});
 	}
 }
