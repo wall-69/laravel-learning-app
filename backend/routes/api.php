@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(UserController::class)->name("users.")->group(function () {
     Route::middleware("guest")->group(function () {
-        Route::post("/login", "authenticate")->name("authenticate");
+        Route::post("/login", "authenticate")->name("authenticate")->middleware("web");
 
         Route::post("/users", "store")->name("store");
     });

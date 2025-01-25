@@ -58,7 +58,6 @@ class UserController extends Controller
         ]);
 
         $user = User::create($data);
-        auth()->login($user);
 
         return response()->json([
             "message" => "User successfully registered!"
