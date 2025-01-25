@@ -1,6 +1,8 @@
 import "./assets/main.css";
 import "boxicons";
 import axios from "axios";
+import VCalendar from "v-calendar";
+import "v-calendar/style.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -36,5 +38,6 @@ await attempt();
 const app = createApp(App);
 
 app.use(router);
+app.use(VCalendar);
 
 app.mount("#app");
