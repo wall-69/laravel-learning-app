@@ -15,6 +15,7 @@
 }
 
 @layer components {
+	/* TODO: rework this */
 	/* Buttons */
 	.btn-primary {
 		@apply md:text-xl font-bold;
@@ -40,7 +41,11 @@
 }
 
 @layer utilities {
+	.no-scroll {
+		overflow: hidden;
+	}
+
 	.h-screen-wo-nav {
-		height: calc(100vh - 91.2px);
+		height: calc(100vh - 92px);
 	}
 }

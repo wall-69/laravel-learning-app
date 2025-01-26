@@ -19,7 +19,7 @@
 					<template v-else>
 						<ul class="flex items-center gap-6 text-white">
 							<!-- Dashboard -->
-							<li>
+							<li class="lg:block hidden">
 								<RouterLink
 									class="hover:underline text-xl transition-all"
 									:class="{
@@ -30,7 +30,7 @@
 							</li>
 
 							<!-- Blog -->
-							<li>
+							<li class="lg:block hidden">
 								<RouterLink
 									class="hover:underline text-xl transition-all"
 									:class="{
@@ -41,7 +41,7 @@
 							</li>
 
 							<!-- Learning paths -->
-							<li>
+							<li class="lg:block hidden">
 								<RouterLink
 									class="hover:underline text-xl transition-all"
 									:class="{
@@ -52,7 +52,7 @@
 							</li>
 
 							<!-- Word packs -->
-							<li>
+							<li class="lg:block hidden">
 								<RouterLink
 									class="hover:underline text-xl transition-all"
 									:class="{
@@ -64,7 +64,7 @@
 
 							<!-- User dropdown button -->
 							<li
-								@click="userDropdownVisible = !userDropdownVisible"
+								@click.prevent="userDropdownVisible = !userDropdownVisible"
 								class="relative">
 								<i
 									class="hover:cursor-pointer flex items-center p-1.5 rounded-full transition-colors duration-300"
@@ -126,10 +126,25 @@
 							</li>
 
 							<!-- Mobile dropdown button -->
-							<li @click="mobileDropdownVisible = true">
+							<li
+								@click.prevent="mobileDropdownVisible = !mobileDropdownVisible"
+								class="lg:hidden block">
 								<i
-									class="bg-primary-300 lg:hidden hover:cursor-pointer flex items-center p-1.5 rounded-full">
-									<box-icon name="menu" color="#08144D" size="md"></box-icon>
+									class="hover:cursor-pointer flex items-center p-1.5 rounded-full transition-colors duration-300"
+									:class="{
+										'bg-primary-300': !mobileDropdownVisible,
+										'bg-secondary-500': mobileDropdownVisible,
+									}">
+									<box-icon
+										v-if="mobileDropdownVisible"
+										name="x"
+										color="#38DFF5"
+										size="md"></box-icon>
+									<box-icon
+										v-else
+										name="menu"
+										color="#08144D"
+										size="md"></box-icon>
 								</i>
 							</li>
 						</ul>
@@ -148,11 +163,44 @@
 			</div>
 		</nav>
 	</header>
+
+	<Transition name="mobile-dropdown">
+		<div
+			v-show="mobileDropdownVisible"
+			class="bg-secondary-400 fixed w-screen top-[92px] left-0 h-screen-wo-nav">
+			<ul class="flex flex-col items-center gap-4 py-4">
+				<!-- My profile -->
+				<li class="flex items-center gap-1">
+					<i class="flex items-center">
+						<box-icon name="user-pin" type="solid" color="#38DFF5"></box-icon>
+					</i>
+					<RouterLink
+						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
+						My profile
+					</RouterLink>
+				</li>
+
+				<hr class="bg-secondary-100 w-full h-px" />
+
+				<!-- Log out -->
+				<li class="flex items-center gap-1">
+					<i class="flex items-center">
+						<box-icon name="log-out" type="solid" color="#38DFF5"></box-icon>
+					</i>
+					<button
+						@click="handleLogout"
+						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
+						Log out
+					</button>
+				</li>
+			</ul>
+		</div>
+	</Transition>
 </template>
 <script setup>
 import { RouterLink } from "vue-router";
 import useAuth from "@/composables/useAuth";
-import { ref, Transition } from "vue";
+import { ref, Transition, watch } from "vue";
 
 const { authenticated, logout } = useAuth();
 
@@ -164,13 +212,26 @@ async function handleLogout() {
 
 const userDropdownVisible = ref(false);
 const mobileDropdownVisible = ref(false);
+
+// Make document not scrollable when mobile dropdown is visible
+watch(
+	() => mobileDropdownVisible.value,
+	(newVisible, oldVisible) => {
+		if (newVisible) {
+			document.body.classList.add("no-scroll");
+		} else {
+			document.body.classList.remove("no-scroll");
+		}
+	}
+);
 </script>
 <style>
+/* User dropdown */
 .user-dropdown-enter-active {
 	animation: bounce-in 0.3s;
 }
 .user-dropdown-leave-active {
-	animation: bounce-in 0.15s reverse;
+	animation: bounce-in 0.05s reverse;
 }
 @keyframes bounce-in {
 	0% {
@@ -178,6 +239,20 @@ const mobileDropdownVisible = ref(false);
 	}
 	100% {
 		transform: scale(1);
+	}
+}
+
+/* Mobile dropdown */
+.mobile-dropdown-enter-active {
+	animation: slide-down 0.3s;
+}
+
+@keyframes slide-down {
+	0% {
+		transform: translateY(-100%);
+	}
+	100% {
+		transform: translateY(0);
 	}
 }
 </style>
