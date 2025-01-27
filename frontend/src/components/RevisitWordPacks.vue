@@ -1,5 +1,6 @@
 <template>
-	<div class="bg-secondary-400 w-fit flex flex-col gap-3 p-4 pb-5 rounded-md">
+	<div
+		class="bg-secondary-300 flex flex-col flex-1 max-w-2xl gap-3 p-4 pb-5 rounded-md">
 		<div class="flex gap-1">
 			<i>
 				<box-icon
