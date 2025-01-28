@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class WordPack extends Model
 {
     protected $fillable = [
-        "name", "type", "visibility", "image"
+        "path_id", "name", "description", "type", "visibility", "image"
     ];
 }

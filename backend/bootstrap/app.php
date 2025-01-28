@@ -15,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Stateful API
         $middleware->statefulApi();
 
-        // TODO: fix pls
         // Return 403, if guests try to access routes that are not for guests
         $middleware->redirectGuestsTo(function () {
             return abort(403);

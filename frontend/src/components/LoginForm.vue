@@ -3,7 +3,8 @@
 		class="bg-secondary-300 flex flex-col gap-6 p-6 rounded-md"
 		@submit.prevent="handleSubmit">
 		<div class="flex flex-col">
-			<h2 class="text-primary-300 md:text-7xl text-5xl leading-normal">
+			<h2
+				class="text-primary-300 md:text-7xl text-5xl leading-normal text-center">
 				DailyVocab
 			</h2>
 		</div>
