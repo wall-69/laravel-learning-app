@@ -134,7 +134,7 @@
 		</div>
 
 		<!-- REGISTER BUTTON -->
-		<button type="submit" class="btn-primary self-center">REGISTER</button>
+		<button type="submit" class="btn-primary-cta self-center">REGISTER</button>
 
 		<hr class="self-center w-2/3 h-0.5 bg-gray-200 rounded-md" />
 

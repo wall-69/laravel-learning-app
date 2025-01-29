@@ -48,7 +48,7 @@
 		</div>
 
 		<!-- LOGIN BUTTON -->
-		<button type="submit" class="btn-primary self-center">LOGIN</button>
+		<button type="submit" class="btn-primary-cta self-center">LOGIN</button>
 
 		<hr class="self-center w-2/3 h-0.5 bg-gray-200 rounded-md" />
 

@@ -11,7 +11,7 @@
 					<RouterLink
 						v-if="$route.name == 'home'"
 						:to="{ name: 'learning' }"
-						class="btn-primary">
+						class="btn-primary-cta">
 						DASHBOARD
 					</RouterLink>
 
@@ -63,10 +63,11 @@
 							</li>
 
 							<!-- User dropdown button -->
-							<li
-								@click.prevent="userDropdownVisible = !userDropdownVisible"
-								class="relative">
+							<li class="relative">
 								<i
+									@click.prevent.stop="
+										userDropdownVisible = !userDropdownVisible
+									"
 									class="hover:cursor-pointer flex items-center p-1.5 rounded-full transition-colors duration-300"
 									:class="{
 										'bg-primary-300': !userDropdownVisible,
@@ -89,6 +90,7 @@
 								<!-- User dropdown -->
 								<Transition name="user-dropdown">
 									<div
+										ref="userDropdown"
 										v-show="userDropdownVisible"
 										class="border-primary-300 bg-secondary-500 absolute mt-1.5 rounded-md z-50 right-0 border-2">
 										<ul class="w-max flex flex-col gap-4 m-2">
@@ -153,10 +155,10 @@
 
 				<!-- Else - user is not logged in -->
 				<template v-else>
-					<RouterLink :to="{ name: 'login' }" class="btn-primary">
+					<RouterLink :to="{ name: 'login' }" class="btn-primary-cta">
 						LOGIN
 					</RouterLink>
-					<RouterLink :to="{ name: 'register' }" class="btn-primary">
+					<RouterLink :to="{ name: 'register' }" class="btn-primary-cta">
 						REGISTER
 					</RouterLink>
 				</template>
@@ -200,8 +202,17 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import useAuth from "@/composables/useAuth";
-import { ref, Transition, watch } from "vue";
+import { onBeforeMount, onMounted, ref, Transition, watch } from "vue";
 
+// Lifecycle hooks
+onMounted(() => {
+	document.body.addEventListener("click", clickOutsideUserDropdown);
+});
+onBeforeMount(() => {
+	document.body.removeEventListener("click", clickOutsideUserDropdown);
+});
+
+// Authentication
 const { authenticated, logout } = useAuth();
 
 async function handleLogout() {
@@ -210,8 +221,23 @@ async function handleLogout() {
 	} catch (ex) {}
 }
 
+// Dropdowns
+const userDropdown = ref(null);
 const userDropdownVisible = ref(false);
 const mobileDropdownVisible = ref(false);
+
+// TODO: remake into a directive
+const clickOutsideUserDropdown = () => {
+	document.body.addEventListener("click", (e) => {
+		if (
+			userDropdownVisible.value &&
+			e.target != userDropdown.value &&
+			!userDropdown.value.contains(e.target)
+		) {
+			userDropdownVisible.value = false;
+		}
+	});
+};
 
 // Make document not scrollable when mobile dropdown is visible
 watch(
