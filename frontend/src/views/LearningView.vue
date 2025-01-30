@@ -3,12 +3,15 @@
 
 	<main
 		class="md:p-16 md:justify-between md:flex-row flex flex-col items-start flex-1 gap-8 p-8">
+		<!-- Main section -->
 		<section class="flex flex-col justify-center gap-8">
 			<Welcome></Welcome>
 			<RevisitWordPacks></RevisitWordPacks>
 			<ContinuePaths></ContinuePaths>
 		</section>
-		<section class="lg:block hidden">
+
+		<!-- Sidebar -->
+		<section class="lg:table top-24 sticky hidden">
 			<DailyReview></DailyReview>
 		</section>
 	</main>
