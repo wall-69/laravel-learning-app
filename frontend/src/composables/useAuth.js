@@ -45,18 +45,6 @@ export default function useAuth() {
 		return axios.post("/api/users", data);
 	};
 
-	// const register = async (data) => {
-	// 	try {
-	// 		let response = await axios.post("/api/users", data);
-
-	// 		router.replace({ name: "login" });
-
-	// 		return response;
-	// 	} catch (ex) {
-	// 		throw ex;
-	// 	}
-	// };
-
 	return {
 		authenticated,
 		user,

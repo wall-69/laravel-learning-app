@@ -6,6 +6,7 @@ import LoginView from "@/views/LoginView.vue";
 import authGuard from "./authGuard";
 import guestGuard from "./guestGuard";
 import AdminView from "@/views/admin/AdminView.vue";
+import adminGuard from "./adminGuard";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,7 +66,7 @@ const router = createRouter({
 			path: "/admin",
 			name: "admin",
 			component: AdminView,
-			beforeEnter: [authGuard], // TODO: replace with adminGuard
+			beforeEnter: [adminGuard],
 		},
 	],
 });
