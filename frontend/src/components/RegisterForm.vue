@@ -20,11 +20,11 @@
 					type="text"
 					name="name"
 					placeholder="John"
-					class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+					class="input"
 					v-model="form.name" />
 
 				<!-- Error -->
-				<p v-show="errors.name" class="text-sm font-bold text-yellow-300">
+				<p v-show="errors.name" class="error-form">
 					{{ errors.name }}
 				</p>
 			</div>
@@ -38,11 +38,11 @@
 					type="text"
 					name="surname"
 					placeholder="Doe"
-					class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+					class="input"
 					v-model="form.surname" />
 
 				<!-- Error -->
-				<p v-show="errors.surname" class="text-sm font-bold text-yellow-300">
+				<p v-show="errors.surname" class="error-form">
 					{{ errors.surname }}
 				</p>
 			</div>
@@ -57,11 +57,11 @@
 				type="email"
 				name="email"
 				placeholder="john@doe.com"
-				class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+				class="input"
 				v-model="form.email" />
 
 			<!-- Error -->
-			<p v-show="errors.email" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.email" class="error-form">
 				{{ errors.email }}
 			</p>
 		</div>
@@ -77,7 +77,7 @@
 					<input
 						type="password"
 						name="password"
-						class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+						class="input"
 						v-model="form.password" />
 				</div>
 
@@ -91,7 +91,7 @@
 					<input
 						type="password"
 						name="password_confirmation"
-						class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+						class="input"
 						v-model="form.password_confirmation" />
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 			<!-- Error -->
 			<p
 				v-show="errors.password || errors.password_confirmation"
-				class="text-sm font-bold text-yellow-300">
+				class="error-form">
 				{{ errors.password ?? errors.password_confirmation }}
 			</p>
 		</div>
@@ -107,10 +107,7 @@
 		<!-- TOS AGREE -->
 		<div class="flex flex-col">
 			<div class="flex gap-2">
-				<input
-					type="checkbox"
-					class="accent-primary-100 w-6"
-					v-model="form.tos" />
+				<input type="checkbox" class="input-checkbox" v-model="form.tos" />
 				<label for="tos" class="text-primary-100 text-sm">
 					I have read and agree to the
 					<RouterLink
@@ -128,7 +125,7 @@
 			</div>
 
 			<!-- Error -->
-			<p v-show="errors.tos" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.tos" class="error-form">
 				{{ errors.tos }}
 			</p>
 		</div>
@@ -151,6 +148,8 @@
 
 <script setup>
 import useAuth from "@/composables/useAuth";
+import router from "@/router";
+import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { reactive, ref, toRaw, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
@@ -174,20 +173,14 @@ const errors = reactive({
 });
 
 async function handleSubmit(e) {
-	for (let k in errors) {
-		errors[k] = "";
-	}
-
-	try {
-		await register(form);
-	} catch (ex) {
-		if (!ex.response) {
-			return;
-		}
-
-		Object.keys(ex.response.data.errors).forEach((field) => {
-			errors[field] = ex.response.data.errors[field][0];
-		});
-	}
+	// Make request to the register API endpoint
+	await handleRequest({
+		request: register,
+		requestData: form,
+		successCallback: async (response) => {
+			router.replace({ name: "login" });
+		},
+		errors: errors,
+	});
 }
 </script>

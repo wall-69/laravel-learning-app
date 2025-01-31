@@ -33,51 +33,36 @@ export default function useAuth() {
 		}
 	};
 
-	const login = async (data) => {
-		try {
-			let response = await axios.post("/api/login", data);
-
-			setAuthenticated(true);
-			setUser(response.data.user);
-
-			router.replace({ name: "learning" });
-
-			return response;
-		} catch (ex) {
-			throw ex;
-		}
+	const login = (data) => {
+		return axios.post("/api/login", data);
 	};
 
-	const logout = async () => {
-		try {
-			let response = await axios.post("/api/logout");
-
-			setAuthenticated(false);
-			setUser({});
-
-			router.replace({ name: "home" });
-
-			return response;
-		} catch (ex) {
-			throw ex;
-		}
+	const logout = () => {
+		return axios.post("/api/logout");
 	};
 
-	const register = async (data) => {
-		try {
-			let response = await axios.post("/api/users", data);
-
-			router.replace({ name: "login" });
-
-			return response;
-		} catch (ex) {
-			throw ex;
-		}
+	const register = (data) => {
+		return axios.post("/api/users", data);
 	};
+
+	// const register = async (data) => {
+	// 	try {
+	// 		let response = await axios.post("/api/users", data);
+
+	// 		router.replace({ name: "login" });
+
+	// 		return response;
+	// 	} catch (ex) {
+	// 		throw ex;
+	// 	}
+	// };
 
 	return {
 		authenticated,
 		user,
+
+		setAuthenticated,
+		setUser,
 
 		attempt,
 		login,

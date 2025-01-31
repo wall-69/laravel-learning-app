@@ -201,16 +201,24 @@
 </template>
 <script setup>
 import { RouterLink } from "vue-router";
+import router from "@/router";
 import useAuth from "@/composables/useAuth";
+import { handleRequest } from "@/utils/requestWrapper";
 import { ref, Transition, watch } from "vue";
 
 // Authentication
-const { authenticated, logout } = useAuth();
+const { authenticated, setAuthenticated, setUser, logout } = useAuth();
 
 async function handleLogout() {
-	try {
-		await logout();
-	} catch (ex) {}
+	// Make request to logout API endpoint
+	await handleRequest({
+		request: logout,
+		successCallback: async (response) => {
+			setAuthenticated(false);
+			setUser({});
+			router.replace({ name: "home" });
+		},
+	});
 }
 
 // Dropdowns

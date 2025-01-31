@@ -14,12 +14,12 @@
 			<input
 				type="text"
 				name="name"
-				class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+				class="input"
 				autocomplete="off"
 				v-model="form.name" />
 
 			<!-- Error -->
-			<p v-show="errors.name" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.name" class="error-form">
 				{{ errors.name }}
 			</p>
 		</div>
@@ -32,12 +32,12 @@
 			<input
 				type="text"
 				name="description"
-				class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+				class="input"
 				autocomplete="off"
 				v-model="form.description" />
 
 			<!-- Error -->
-			<p v-show="errors.description" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.description" class="error-form">
 				{{ errors.description }}
 			</p>
 		</div>
@@ -47,16 +47,13 @@
 			<label for="description" class="text-primary-100 font-bold">
 				Visibility:
 			</label>
-			<select
-				name="visibility"
-				class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
-				v-model="form.visibility">
+			<select name="visibility" class="input" v-model="form.visibility">
 				<option value="public">Public</option>
 				<option value="private">Private</option>
 			</select>
 
 			<!-- Error -->
-			<p v-show="errors.visibility" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.visibility" class="error-form">
 				{{ errors.visibility }}
 			</p>
 		</div>
@@ -71,7 +68,7 @@
 				type="file"
 				accept="image/*"
 				name="images"
-				class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+				class="input"
 				@change="(e) => (form.image = e.target.files[0])"
 				@click="clearUploadedImage" />
 			<!-- Delete uploaded image button -->
@@ -83,7 +80,7 @@
 			</button>
 
 			<!-- Error -->
-			<p v-show="errors.image" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.image" class="error-form">
 				{{ errors.image }}
 			</p>
 		</div>
@@ -98,6 +95,7 @@
 </template>
 
 <script setup>
+import { handleRequest } from "@/utils/requestWrapper";
 import { reactive, ref } from "vue";
 import axios from "axios";
 import router from "@/router";
@@ -127,31 +125,23 @@ const errors = reactive({
 });
 
 async function handleSubmit(e) {
-	for (let k in errors) {
-		errors[k] = "";
-	}
+	let formData = new FormData();
+	formData.append("path_id", form.path_id ?? "");
+	formData.append("name", form.name);
+	formData.append("description", form.description);
+	formData.append("type", form.type);
+	formData.append("visibility", form.visibility);
+	formData.append("image", form.image ?? "");
 
-	try {
-		// TODO: move to separate file
-		let formData = new FormData();
-		formData.append("path_id", form.path_id ?? "");
-		formData.append("name", form.name);
-		formData.append("description", form.description);
-		formData.append("type", form.type);
-		formData.append("visibility", form.visibility);
-		formData.append("image", form.image ?? "");
-
-		let response = await axios.post("/api/word-packs", formData);
-
-		router.replace({ name: "word-packs" });
-	} catch (ex) {
-		if (!ex.response) {
-			return;
-		}
-
-		Object.keys(ex.response.data.errors).forEach((field) => {
-			errors[field] = ex.response.data.errors[field][0];
-		});
-	}
+	await handleRequest({
+		request: (data) => {
+			return axios.post("/api/word-packs", data);
+		},
+		requestData: formData,
+		successCallback: async (response) => {
+			router.replace({ name: "word-packs" });
+		},
+		errors: errors,
+	});
 }
 </script>

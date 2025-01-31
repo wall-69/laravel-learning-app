@@ -18,11 +18,11 @@
 				type="email"
 				name="email"
 				placeholder="john@doe.com"
-				class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+				class="input"
 				v-model="form.email" />
 
 			<!-- Error -->
-			<p v-show="errors.email" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.email" class="error-form">
 				{{ errors.email }}
 			</p>
 		</div>
@@ -37,12 +37,12 @@
 				<input
 					type="password"
 					name="password"
-					class="md:min-w-40 bg-primary-100 border-primary-300 px-3 text-gray-700 border py-1.5 focus:outline-none rounded-md"
+					class="input"
 					v-model="form.password" />
 			</div>
 
 			<!-- Error -->
-			<p v-show="errors.password" class="text-sm font-bold text-yellow-300">
+			<p v-show="errors.password" class="error-form">
 				{{ errors.password }}
 			</p>
 		</div>
@@ -63,12 +63,14 @@
 </template>
 
 <script setup>
+import router from "@/router";
 import useAuth from "@/composables/useAuth";
+import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { reactive, ref, toRaw, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
 
-const { login } = useAuth();
+const { login, setAuthenticated, setUser } = useAuth();
 
 const form = reactive({
 	email: "",
@@ -80,20 +82,17 @@ const errors = reactive({
 });
 
 async function handleSubmit(e) {
-	for (let k in errors) {
-		errors[k] = "";
-	}
+	// Make request to the login API endpoint
+	await handleRequest({
+		request: login,
+		requestData: form,
+		successCallback: async (response) => {
+			setAuthenticated(true);
+			setUser(response.data.user);
 
-	try {
-		await login(form);
-	} catch (ex) {
-		if (!ex.response) {
-			return;
-		}
-
-		Object.keys(ex.response.data.errors).forEach((field) => {
-			errors[field] = ex.response.data.errors[field][0];
-		});
-	}
+			router.replace({ name: "learning" });
+		},
+		errors: errors,
+	});
 }
 </script>
