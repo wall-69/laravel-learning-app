@@ -90,8 +90,8 @@
 								<!-- User dropdown -->
 								<Transition name="user-dropdown">
 									<div
-										ref="userDropdown"
 										v-show="userDropdownVisible"
+										v-click-outside="handleUserDropdownClickOutside"
 										class="border-primary-300 bg-secondary-500 absolute mt-1.5 rounded-md z-50 right-0 border-2">
 										<ul class="w-max flex flex-col gap-4 m-2">
 											<!-- My profile -->
@@ -202,15 +202,7 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import useAuth from "@/composables/useAuth";
-import { onBeforeMount, onMounted, ref, Transition, watch } from "vue";
-
-// Lifecycle hooks
-onMounted(() => {
-	document.body.addEventListener("click", clickOutsideUserDropdown);
-});
-onBeforeMount(() => {
-	document.body.removeEventListener("click", clickOutsideUserDropdown);
-});
+import { ref, Transition, watch } from "vue";
 
 // Authentication
 const { authenticated, logout } = useAuth();
@@ -222,22 +214,14 @@ async function handleLogout() {
 }
 
 // Dropdowns
-const userDropdown = ref(null);
 const userDropdownVisible = ref(false);
 const mobileDropdownVisible = ref(false);
 
-// TODO: remake into a directive
-const clickOutsideUserDropdown = () => {
-	document.body.addEventListener("click", (e) => {
-		if (
-			userDropdownVisible.value &&
-			e.target != userDropdown.value &&
-			!userDropdown.value.contains(e.target)
-		) {
-			userDropdownVisible.value = false;
-		}
-	});
-};
+function handleUserDropdownClickOutside() {
+	if (userDropdownVisible.value) {
+		userDropdownVisible.value = false;
+	}
+}
 
 // Make document not scrollable when mobile dropdown is visible
 watch(

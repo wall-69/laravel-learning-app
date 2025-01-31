@@ -37,6 +37,23 @@ await attempt();
 // Create the Vue app
 const app = createApp(App);
 
+// Custom click-outside directive
+app.directive("click-outside", {
+	beforeMount(el, binding) {
+		el.clickOutsideElement = (e) => {
+			if (e.target != el && !el.contains(e.target)) {
+				binding.value();
+			}
+		};
+
+		document.body.addEventListener("click", el.clickOutsideElement);
+	},
+
+	beforeUnmount(el, binding) {
+		document.body.removeEventListener("click", el.clickOutsideElement);
+	},
+});
+
 app.use(router);
 app.use(VCalendar);
 
