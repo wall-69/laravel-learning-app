@@ -1,6 +1,5 @@
 import { computed, reactive, ref } from "vue";
 import axios from "axios";
-import router from "@/router";
 
 const state = reactive({
 	authenticated: false,

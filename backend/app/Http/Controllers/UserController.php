@@ -27,7 +27,8 @@ class UserController extends Controller
         $user = User::create($data);
 
         return response()->json([
-            "message" => "User successfully registered!"
+            "message" => "User successfully registered!",
+            "notifications" => ["success" => ["Your account was successfully created!"]]
         ]);
     }
 }

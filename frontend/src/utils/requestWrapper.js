@@ -1,4 +1,5 @@
 import { handleFormErrors } from "./errorHandler";
+import { handleNotifications } from "./notificationHandler";
 
 // TODO: document this
 export async function handleRequest({
@@ -16,6 +17,10 @@ export async function handleRequest({
 	// Make the request with args as parameters
 	try {
 		const response = await request(requestData);
+
+		// Handle notifications
+		const responseNotifications = response.data.notifications;
+		handleNotifications(responseNotifications);
 
 		// Call the success callback
 		await successCallback(response);
