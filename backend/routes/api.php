@@ -37,7 +37,7 @@ Route::controller(UserController::class)->name("users.")->group(function () {
 });
 
 Route::controller(WordPackController::class)->name("word-packs.")->group(function () {
-    Route::middleware("auth:sanctum")->group(function () {
+    Route::middleware(["auth:sanctum", "admin"])->group(function () {
         Route::post("/word-packs", "store")->name("store");
     });
 });

@@ -68,7 +68,7 @@ const router = createRouter({
 			path: "/admin",
 			name: "admin",
 			component: AdminView,
-			beforeEnter: [adminGuard],
+			beforeEnter: [],
 		},
 	],
 });
