@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import HomeView from "../views/HomeView.vue";
 import LearningView from "../views/LearningView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import LoginView from "@/views/LoginView.vue";
-import authGuard from "./authGuard";
-import guestGuard from "./guestGuard";
 import AdminView from "@/views/admin/AdminView.vue";
-import adminGuard from "./adminGuard";
+
+import authGuard from "./guards/authGuard";
+import guestGuard from "./guards/guestGuard";
+import adminGuard from "./guards/adminGuard";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
