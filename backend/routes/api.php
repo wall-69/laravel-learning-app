@@ -14,10 +14,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->name("auth.")->group(function () {
     // SPA
-    Route::middleware("web")->group(function () {
-        Route::post("/login", "login")->name("login")->middleware("guest");
-        Route::post("/logout", "logout")->name("logout")->middleware("auth:sanctum");
-    });
+    Route::post("/login", "login")->name("login")->middleware("guest");
+    Route::post("/logout", "logout")->name("logout")->middleware("auth:sanctum");
 });
 
 Route::controller(UserController::class)->name("users.")->group(function () {

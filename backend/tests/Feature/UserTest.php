@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Session\Middleware\StartSession;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -19,7 +21,7 @@ class UserTest extends TestCase
         $data = [
             "name" => "Paul",
             "surname" => "Doe",
-            "email" => "paul@doe.com",
+            "email" => fake()->email(),
             "password" => "password",
             "password_confirmation" => "password",
             "tos" => true
@@ -41,7 +43,7 @@ class UserTest extends TestCase
         $data = [
             "name" => "Paul",
             "surname" => "Doe",
-            "email" => "paul@doe.com",
+            "email" => fake()->email(),
             "password" => "password",
             "password_confirmation" => "password",
             "tos" => false
@@ -70,7 +72,7 @@ class UserTest extends TestCase
         $data = [
             "name" => "Paul",
             "surname" => "Doe",
-            "email" => "paul@doe.com",
+            "email" => fake()->email(),
             "password" => "password",
             "password_confirmation" => "password",
             "tos" => true
