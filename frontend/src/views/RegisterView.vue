@@ -1,5 +1,6 @@
 <template>
-	<main class="bg-primary-100 flex flex-col items-center justify-center flex-1">
+	<main
+		class="bg-primary-100 flex flex-col items-center justify-center flex-1 py-6">
 		<RegisterForm></RegisterForm>
 	</main>
 </template>

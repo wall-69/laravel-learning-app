@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="bg-secondary-300 flex flex-col gap-6 p-6 rounded-md"
+		class="bg-secondary-300 sm:rounded-md sm:w-auto flex flex-col w-full gap-6 p-6"
 		@submit.prevent="handleSubmit">
 		<div class="flex flex-col">
 			<h2
@@ -66,7 +66,6 @@
 import router from "@/router";
 import useAuth from "@/composables/useAuth";
 import { handleRequest } from "@/utils/requestWrapper";
-import axios from "axios";
 import { reactive, ref, toRaw, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
 

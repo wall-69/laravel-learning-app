@@ -1,6 +1,6 @@
 <template>
 	<form
-		class="bg-secondary-300 flex flex-col gap-6 p-6 rounded-md"
+		class="bg-secondary-300 sm:w-auto sm:rounded-md flex flex-col w-full gap-6 p-6"
 		@submit.prevent="handleSubmit">
 		<div class="flex flex-col">
 			<h2 class="text-primary-300 md:text-7xl text-5xl leading-normal">
