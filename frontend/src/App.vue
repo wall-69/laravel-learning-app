@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 import Toast from "@/components/notifications/Toast.vue";
 import useNotifications from "@/composables/useNotifications";
 

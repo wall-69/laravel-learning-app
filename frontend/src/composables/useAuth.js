@@ -19,17 +19,7 @@ export default function useAuth() {
 	};
 
 	const attempt = async () => {
-		try {
-			let response = await axios.get("/api/user");
-
-			setAuthenticated(true);
-			setUser(response.data.user);
-
-			return response;
-		} catch (ex) {
-			setAuthenticated(false);
-			setUser({});
-		}
+		return axios.get("/api/user");
 	};
 
 	const login = (data) => {

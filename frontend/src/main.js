@@ -7,6 +7,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import useAuth from "./composables/useAuth";
+import { handleRequest } from "@/utils/requestWrapper";
 
 // Axios
 axios.defaults.baseURL = "http://localhost:8000";
@@ -31,8 +32,18 @@ axios.interceptors.request.use(
 );
 
 // First try to fetch the user
-const { attempt } = useAuth();
-await attempt();
+const { attempt, setAuthenticated, setUser } = useAuth();
+await handleRequest({
+	request: attempt,
+	successCallback: async (response) => {
+		setAuthenticated(true);
+		setUser(response.data.user);
+	},
+	failCallback: async (response) => {
+		setAuthenticated(false);
+		setUser({});
+	},
+});
 
 // Create the Vue app
 const app = createApp(App);
