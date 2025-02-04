@@ -9,6 +9,11 @@ import AdminView from "@/views/admin/AdminView.vue";
 import authGuard from "./guards/authGuard";
 import guestGuard from "./guards/guestGuard";
 import adminGuard from "./guards/adminGuard";
+import AdminHomeView from "@/views/admin/AdminHomeView.vue";
+import AdminUsersView from "@/views/admin/AdminUsersView.vue";
+import AdminAdminsView from "@/views/admin/AdminAdminsView.vue";
+import AdminWordPacksView from "@/views/admin/AdminWordPacksView.vue";
+import AdminPathsView from "@/views/admin/AdminPathsView.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,9 +71,35 @@ const router = createRouter({
 		// Admin
 		{
 			path: "/admin",
-			name: "admin",
 			component: AdminView,
-			beforeEnter: [],
+			beforeEnter: [adminGuard],
+			children: [
+				{
+					path: "",
+					name: "admin",
+					component: AdminHomeView,
+				},
+				{
+					path: "users",
+					name: "admin-users",
+					component: AdminUsersView,
+				},
+				{
+					path: "admins",
+					name: "admin-admins",
+					component: AdminAdminsView,
+				},
+				{
+					path: "word-packs",
+					name: "admin-word-packs",
+					component: AdminWordPacksView,
+				},
+				{
+					path: "learning-paths",
+					name: "admin-learning-paths",
+					component: AdminPathsView,
+				},
+			],
 		},
 	],
 });

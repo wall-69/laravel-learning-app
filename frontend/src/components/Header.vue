@@ -62,6 +62,15 @@
 								</RouterLink>
 							</li>
 
+							<!-- Admin -->
+							<li v-if="user.is_admin" class="lg:block hidden">
+								<RouterLink
+									:to="{ name: 'admin' }"
+									class="hover:underline text-xl transition-all">
+									Admin
+								</RouterLink>
+							</li>
+
 							<!-- User dropdown button -->
 							<li class="relative">
 								<i
@@ -207,7 +216,7 @@ import { handleRequest } from "@/utils/requestWrapper";
 import { ref, Transition, watch } from "vue";
 
 // Authentication
-const { authenticated, setAuthenticated, setUser, logout } = useAuth();
+const { user, authenticated, setAuthenticated, setUser, logout } = useAuth();
 
 async function handleLogout() {
 	// Make request to logout API endpoint

@@ -1,9 +1,15 @@
 <template>
-	<main class="bg-primary-100 flex flex-col items-center justify-center flex-1">
-		<CreateWordPackForm></CreateWordPackForm>
+	<main class="flex flex-1">
+		<!-- Sidebar -->
+		<section></section>
+
+		<!-- Main section -->
+		<section>
+			<RouterView></RouterView>
+		</section>
 	</main>
 </template>
 
 <script setup>
-import CreateWordPackForm from "@/components/word-packs/CreateWordPackForm.vue";
+import { RouterView } from "vue-router";
 </script>
