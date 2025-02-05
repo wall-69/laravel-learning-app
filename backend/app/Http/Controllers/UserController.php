@@ -14,6 +14,13 @@ class UserController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        return response()->json([
+            "users" => User::latest()->get()
+        ]);
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

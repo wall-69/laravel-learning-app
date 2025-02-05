@@ -29,6 +29,7 @@ Route::controller(UserController::class)->name("users.")->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
         // General
         Route::get("/user", "user")->name("user");
+        Route::get("/users", "index")->name("index");
 
         // SPA
     });

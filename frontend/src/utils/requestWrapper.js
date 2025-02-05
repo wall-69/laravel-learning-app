@@ -31,7 +31,7 @@ export async function handleRequest({
 		};
 	} catch (ex) {
 		// Call the fail callback
-		await failCallback();
+		await failCallback(ex);
 
 		if (!ex.response) {
 			return {
