@@ -4,11 +4,12 @@ import HomeView from "../views/HomeView.vue";
 import LearningView from "../views/LearningView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import LoginView from "@/views/LoginView.vue";
-import AdminView from "@/views/admin/AdminView.vue";
 
 import authGuard from "./guards/authGuard";
 import guestGuard from "./guards/guestGuard";
 import adminGuard from "./guards/adminGuard";
+
+import AdminView from "@/views/admin/AdminView.vue";
 import AdminHomeView from "@/views/admin/AdminHomeView.vue";
 import AdminUsersView from "@/views/admin/AdminUsersView.vue";
 import AdminAdminsView from "@/views/admin/AdminAdminsView.vue";
@@ -83,6 +84,12 @@ const router = createRouter({
 					path: "users",
 					name: "admin-users",
 					component: AdminUsersView,
+					children: [
+						{
+							path: "create",
+							name: "admin-users-create",
+						},
+					],
 				},
 				{
 					path: "admins",
