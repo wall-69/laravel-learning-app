@@ -14,13 +14,13 @@
 				class="text-primary-100 font-bold">
 				{{
 					slotNameToInputName(slotName).charAt(0).toUpperCase() +
-					slotNameToInputName(slotName).slice(1)
+					slotNameToInputName(slotName).slice(1).replace("_", " ")
 				}}:
 			</label>
 			<slot :name="slotName" :form="form"></slot>
 			<!-- Error -->
-			<p v-show="errors[slotName]" class="error-form">
-				{{ errors[slotName] }}
+			<p v-show="errors[slotNameToInputName(slotName)]" class="error-form">
+				{{ errors[slotNameToInputName(slotName)] }}
 			</p>
 		</div>
 
@@ -40,33 +40,28 @@ import axios from "axios";
 import router from "@/router";
 import { useSlots } from "vue";
 
+// Composables
+const slots = useSlots();
+
+// Define
 const props = defineProps({
 	apiRoute: String,
 	redirectRouteName: String,
 });
 
-const slots = useSlots();
+// Variables
+const form = reactive({});
+const errors = reactive({});
+
+// Computed
 const inputSlots = computed(() => {
 	return Object.keys(slots).filter((slot) => slot.startsWith("input-"));
 });
 
+// Functions
 function slotNameToInputName(slotName) {
 	return slotName.replace("input-", "");
 }
-
-const form = reactive({});
-const errors = reactive({});
-watchEffect(() => {
-	inputSlots.value.forEach((slotName) => {
-		const inputName = slotNameToInputName(slotName);
-		if (!(inputName in form)) {
-			form[inputName] = "";
-		}
-		if (!(inputName in errors)) {
-			errors[inputName] = "";
-		}
-	});
-});
 
 async function handleSubmit(e) {
 	let formData = new FormData();
@@ -82,9 +77,22 @@ async function handleSubmit(e) {
 		},
 		requestData: formData,
 		successCallback: async (response) => {
-			router.replace({ name: props.redirectRouteName });
+			await router.replace({ name: props.redirectRouteName });
 		},
 		errors: errors,
 	});
 }
+
+// Watchers
+watchEffect(() => {
+	inputSlots.value.forEach((slotName) => {
+		const inputName = slotNameToInputName(slotName);
+		if (!(inputName in form)) {
+			form[inputName] = "";
+		}
+		if (!(inputName in errors)) {
+			errors[inputName] = "";
+		}
+	});
+});
 </script>

@@ -142,7 +142,7 @@
 		</section>
 
 		<!-- Main section -->
-		<RouterView></RouterView>
+		<RouterView :key="$route.fullPath"></RouterView>
 	</main>
 </template>
 
@@ -153,11 +153,13 @@ import { handleRequest } from "@/utils/requestWrapper";
 import { ref } from "vue";
 import { RouterView } from "vue-router";
 
-const sideBarExtended = ref(true);
-
-// Authentication
+// Composables
 const { setAuthenticated, setUser, logout } = useAuth();
 
+// Variables
+const sideBarExtended = ref(true);
+
+// Functions
 async function handleLogout() {
 	// Make request to logout API endpoint
 	await handleRequest({

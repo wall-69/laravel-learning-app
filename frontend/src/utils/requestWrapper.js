@@ -1,7 +1,11 @@
 import { handleFormErrors } from "./errorHandler";
 import { handleNotifications } from "./notificationHandler";
 
-// TODO: document this
+/**
+ *
+ * @param {} request The request object, containing the request URI, requestData object, successCallback & failCallback function and the errors object for displaying input errors.
+ * @returns Object containing success status and the response.
+ */
 export async function handleRequest({
 	request,
 	requestData = {},

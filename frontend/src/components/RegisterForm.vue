@@ -154,7 +154,10 @@ import axios from "axios";
 import { reactive, ref, toRaw, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
 
+// Composables
 const { register } = useAuth();
+
+// Variables
 const form = reactive({
 	name: "",
 	surname: "",
@@ -172,6 +175,7 @@ const errors = reactive({
 	tos: "",
 });
 
+// Functions
 async function handleSubmit(e) {
 	// Make request to the register API endpoint
 	await handleRequest({

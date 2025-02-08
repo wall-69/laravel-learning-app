@@ -41,6 +41,7 @@
 </template>
 
 <script setup>
+// Define
 const props = defineProps({
 	paths: Array,
 });

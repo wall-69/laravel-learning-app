@@ -69,8 +69,10 @@ import { handleRequest } from "@/utils/requestWrapper";
 import { reactive, ref, toRaw, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
 
+// Composables
 const { login, setAuthenticated, setUser } = useAuth();
 
+// Variables
 const form = reactive({
 	email: "",
 	password: "",
@@ -80,6 +82,7 @@ const errors = reactive({
 	password: "",
 });
 
+// Functions
 async function handleSubmit(e) {
 	// Make request to the login API endpoint
 	await handleRequest({

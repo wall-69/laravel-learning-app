@@ -31,12 +31,11 @@ Route::controller(UserController::class)->name("users.")->group(function () {
         Route::get("/user", "user")->name("user");
         Route::get("/users", "index")->name("index");
 
-        // SPA
-    });
-});
+        Route::middleware("admin")->group(function () {
+            Route::post("/users", "store")->name("admin-store");
+        });
+        Route::post("/users", "store")->name("store");
 
-Route::controller(WordPackController::class)->name("word-packs.")->group(function () {
-    Route::middleware(["auth:sanctum", "admin"])->group(function () {
-        Route::post("/word-packs", "store")->name("store");
+        // SPA
     });
 });

@@ -28,14 +28,14 @@ class UserController extends Controller
             "surname" => "required|string",
             "email" => "required|email",
             "password" => "required|confirmed|min:6",
-            "tos" => "accepted"
+            "tos" => "sometimes|accepted"
         ]);
 
         $user = User::create($data);
 
         return response()->json([
             "message" => "User successfully registered!",
-            "notifications" => ["success" => ["Your account was successfully created!"]]
+            "notifications" => ["success" => [$request->user()->is_admin ? "The user was successfully created!" : "Your account was successfully created!"]]
         ]);
     }
 }

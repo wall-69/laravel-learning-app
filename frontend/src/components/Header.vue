@@ -215,9 +215,14 @@ import useAuth from "@/composables/useAuth";
 import { handleRequest } from "@/utils/requestWrapper";
 import { ref, Transition, watch } from "vue";
 
-// Authentication
+// Composables
 const { user, authenticated, setAuthenticated, setUser, logout } = useAuth();
 
+// Variables
+const userDropdownVisible = ref(false);
+const mobileDropdownVisible = ref(false);
+
+// Functions
 async function handleLogout() {
 	// Make request to logout API endpoint
 	await handleRequest({
@@ -229,17 +234,13 @@ async function handleLogout() {
 		},
 	});
 }
-
-// Dropdowns
-const userDropdownVisible = ref(false);
-const mobileDropdownVisible = ref(false);
-
 function handleUserDropdownClickOutside() {
 	if (userDropdownVisible.value) {
 		userDropdownVisible.value = false;
 	}
 }
 
+// Watchers
 // Make document not scrollable when mobile dropdown is visible
 watch(
 	() => mobileDropdownVisible.value,

@@ -40,36 +40,37 @@
 					autocomplete="off"
 					v-model="form.name" />
 			</template>
-			<template #input-description="{ form }">
+			<template #input-surname="{ form }">
 				<input
 					type="text"
-					name="description"
+					name="surname"
 					class="input"
 					autocomplete="off"
-					v-model="form.description" />
+					v-model="form.surname" />
 			</template>
-			<template #input-visibility="{ form }">
-				<select name="visibility" class="input" v-model="form.visibility">
-					<option value="public">Public</option>
-					<option value="private">Private</option>
-				</select>
-			</template>
-			<template #input-image="{ form }">
+			<template #input-email="{ form }">
 				<input
-					ref="imageUploadInput"
-					type="file"
-					accept="image/*"
-					name="images"
+					type="email"
+					name="email"
 					class="input"
-					@change="(e) => (form.image = e.target.files[0])"
-					@click="clearUploadedImage(form)" />
-				<!-- Delete uploaded image button -->
-				<button
-					v-show="form.image"
-					class="text-primary-100 self-start text-sm"
-					@click.prevent="clearUploadedImage(form)">
-					(Delete thumbnail)
-				</button>
+					autocomplete="off"
+					v-model="form.email" />
+			</template>
+			<template #input-password="{ form }">
+				<input
+					type="password"
+					name="password"
+					class="input"
+					autocomplete="off"
+					v-model="form.password" />
+			</template>
+			<template #input-password_confirmation="{ form }">
+				<input
+					type="password"
+					name="password_confirmation"
+					class="input"
+					autocomplete="off"
+					v-model="form.password_confirmation" />
 			</template>
 		</DataCreateForm>
 	</section>
@@ -81,8 +82,7 @@ import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 
-const users = ref({});
-
+// Lifecycle hooks
 onMounted(async () => {
 	await handleRequest({
 		request: () => axios.get("/api/users"),
@@ -95,11 +95,6 @@ onMounted(async () => {
 	});
 });
 
-// Create form
-const imageUploadInput = ref(null);
-
-function clearUploadedImage(form) {
-	imageUploadInput.value.value = "";
-	form.image = "";
-}
+// Variables
+const users = ref({});
 </script>

@@ -17,5 +17,6 @@ import { RouterView } from "vue-router";
 import Toast from "@/components/notifications/Toast.vue";
 import useNotifications from "@/composables/useNotifications";
 
+// Composables
 const { notifications } = useNotifications();
 </script>

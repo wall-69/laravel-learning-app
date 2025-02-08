@@ -28,9 +28,11 @@
 <script setup>
 import useNotifications from "@/composables/useNotifications";
 
+// Composables
+const { removeNotification } = useNotifications();
+
+// Define
 const props = defineProps({
 	notification: Object,
 });
-
-const { removeNotification } = useNotifications();
 </script>

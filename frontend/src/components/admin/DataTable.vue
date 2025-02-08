@@ -43,6 +43,7 @@
 	</div>
 </template>
 <script setup>
+// Define
 const props = defineProps({
 	data: Array,
 });

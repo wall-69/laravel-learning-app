@@ -29,6 +29,7 @@ import { eachDayOfInterval } from "date-fns";
 // TODO: custom popover which will handle all messages and if it is todays date, then handle clicking on it
 //       maybe get rid of Review button?
 
+// Variables
 const userRegistrationDate = new Date();
 userRegistrationDate.setDate(userRegistrationDate.getDate() - 10);
 const yesterdayDate = new Date();

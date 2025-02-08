@@ -48,6 +48,7 @@
 </template>
 
 <script setup>
+// Define
 const props = defineProps({
 	wordPacks: Array,
 });
