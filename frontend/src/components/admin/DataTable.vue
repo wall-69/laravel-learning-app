@@ -15,12 +15,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(user, i) in data">
+				<tr v-for="(d, i) in data">
 					<td
-						v-for="userData in user"
+						v-for="dData in d"
 						:key="i"
 						class="px-4 py-2 text-center text-gray-100 align-middle">
-						{{ userData }}
+						{{ dData }}
 					</td>
 					<!-- Actions -->
 					<td class="px-4 py-2 text-center align-middle">
@@ -31,7 +31,7 @@
 							</i>
 						</button>
 						<!-- Delete -->
-						<button @click="console.log('delete')">
+						<button @click="handleDeletion(d.id)">
 							<i>
 								<box-icon name="trash" type="solid" color="#F1F1F1"></box-icon>
 							</i>
@@ -43,8 +43,27 @@
 	</div>
 </template>
 <script setup>
+import { handleRequest } from "@/utils/requestWrapper";
+import axios from "axios";
+
 // Define
 const props = defineProps({
 	data: Array,
+	modelName: String,
 });
+const emit = defineEmits(["data-deleted"]);
+
+// Functions
+async function handleDeletion(id) {
+	confirm("Are you sure you want to delete this user?");
+
+	await handleRequest({
+		request: (data) => {
+			return axios.post("/api/users/" + id);
+		},
+		succesCallback: (response) => {},
+	});
+
+	emit("data-deleted");
+}
 </script>

@@ -33,6 +33,7 @@ Route::controller(UserController::class)->name("users.")->group(function () {
 
         Route::middleware("admin")->group(function () {
             Route::post("/users", "store")->name("admin-store");
+            Route::post("/users/{user}", "destroy")->name("admin-destroy");
         });
         Route::post("/users", "store")->name("store");
 

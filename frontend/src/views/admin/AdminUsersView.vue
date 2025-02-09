@@ -25,7 +25,11 @@
 			</template>
 		</div>
 
-		<DataTable v-if="$route.name == 'admin-users'" :data="users"></DataTable>
+		<DataTable
+			v-if="$route.name == 'admin-users'"
+			:data="users"
+			model-name="users"
+			@data-deleted="loadUsers"></DataTable>
 		<DataCreateForm
 			v-if="$route.name == 'admin-users-create'"
 			:api-route="'/api/users'"
@@ -84,6 +88,14 @@ import { onMounted, ref } from "vue";
 
 // Lifecycle hooks
 onMounted(async () => {
+	await loadUsers();
+});
+
+// Variables
+const users = ref({});
+
+// Functions
+async function loadUsers() {
 	await handleRequest({
 		request: () => axios.get("/api/users"),
 		successCallback: async (response) => {
@@ -93,8 +105,5 @@ onMounted(async () => {
 			console.error("Could not load users from the database.", response);
 		},
 	});
-});
-
-// Variables
-const users = ref({});
+}
 </script>
