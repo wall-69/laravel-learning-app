@@ -28,7 +28,7 @@
 		<DataTable
 			v-if="$route.name == 'admin-users'"
 			:data="users"
-			model-name="users"
+			model-name="user"
 			@data-deleted="loadUsers"></DataTable>
 		<DataCreateForm
 			v-if="$route.name == 'admin-users-create'"

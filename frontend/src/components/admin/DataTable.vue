@@ -55,11 +55,16 @@ const emit = defineEmits(["data-deleted"]);
 
 // Functions
 async function handleDeletion(id) {
-	confirm("Are you sure you want to delete this user?");
+	confirm(
+		"Are you sure you want to delete this " +
+			props.modelName.charAt(0).toUpperCase() +
+			props.modelName.slice(1).replace("-", " ") +
+			"?"
+	);
 
 	await handleRequest({
 		request: (data) => {
-			return axios.post("/api/users/" + id);
+			return axios.post("/api/" + props.modelName + "s" + "/" + id);
 		},
 		succesCallback: (response) => {},
 	});
