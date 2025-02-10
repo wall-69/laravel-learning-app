@@ -24,29 +24,47 @@
 			</p>
 		</div>
 
-		<!-- CREATE BUTTON -->
+		<!-- EDIT BUTTON -->
 		<button
 			type="submit"
 			class="bg-primary-200 hover:bg-primary-300 flex items-center self-center gap-2 px-4 py-2 text-xl font-bold transition-colors rounded-md">
-			Create
+			Edit
 		</button>
 	</form>
 </template>
 
 <script setup>
 import { handleRequest } from "@/utils/requestWrapper";
-import { computed, reactive, watchEffect } from "vue";
+import { computed, onMounted, reactive, ref, watchEffect } from "vue";
 import axios from "axios";
 import router from "@/router";
 import { useSlots } from "vue";
+import { useRoute } from "vue-router";
 
 // Composables
 const slots = useSlots();
+const route = useRoute();
 
 // Define
 const props = defineProps({
 	apiRoute: String,
 	redirectRouteName: String,
+	modelName: String,
+});
+
+// Lifecycle hooks
+onMounted(async () => {
+	await handleRequest({
+		request: () => axios.get("/api/" + props.modelName + "/" + route.params.id),
+		successCallback: async (response) => {
+			Object.keys(response.data).forEach((field) => {
+				form[field] = response.data[field];
+			});
+		},
+		failCallback: async (response) => {
+			console.error("Could not load user from the database.", response);
+		},
+	});
 });
 
 // Variables
@@ -74,6 +92,9 @@ async function handleSubmit(e) {
 
 		formData.append(inputName, form[inputName]);
 	});
+
+	// So Laravel can understand this is PATCH request
+	formData.append("_method", "PATCH");
 
 	await handleRequest({
 		request: (data) => {

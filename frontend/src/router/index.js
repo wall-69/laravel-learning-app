@@ -89,6 +89,10 @@ const router = createRouter({
 							path: "create",
 							name: "admin-users-create",
 						},
+						{
+							path: "edit/:id",
+							name: "admin-users-edit",
+						},
 					],
 				},
 				{

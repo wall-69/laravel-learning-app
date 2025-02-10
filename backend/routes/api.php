@@ -29,13 +29,17 @@ Route::controller(UserController::class)->name("users.")->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
         // General
         Route::get("/user", "user")->name("user");
+        Route::get("/user/{user}", "userById");
         Route::get("/users", "index")->name("index");
+        Route::post("/users", "store")->name("store");
+        Route::patch("/users/{user}", "update")->name("update");
+        Route::delete("/users/{user}", "destroy")->name("destroy");
 
         Route::middleware("admin")->group(function () {
             Route::post("/users", "store")->name("admin-store");
-            Route::post("/users/{user}", "destroy")->name("admin-destroy");
+            Route::put("/users/{user}", "update")->name("admin-update");
+            Route::delete("/users/{user}", "destroy")->name("admin-destroy");
         });
-        Route::post("/users", "store")->name("store");
 
         // SPA
     });

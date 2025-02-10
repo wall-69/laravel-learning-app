@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Hash;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -14,11 +15,14 @@ class UserController extends Controller
         ]);
     }
 
+    public function userById(User $user)
+    {
+        return response()->json($user);
+    }
+
     public function index()
     {
-        return response()->json([
-            "users" => User::latest()->get()
-        ]);
+        return response()->json(User::latest()->get());
     }
 
     public function store(Request $request)
@@ -38,6 +42,33 @@ class UserController extends Controller
             "notifications" => [
                 "success" => [
                     $request->user()->is_admin ? "The user was successfully created!" : "Your account was successfully created!"
+                ]
+            ]
+        ]);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $data = $request->validate([
+            "name" => "sometimes|required|string",
+            "surname" => "sometimes|required|string",
+            "email" => "sometimes|required|email",
+            "new_password" => "sometimes|required|min:6",
+        ]);
+
+
+        // Encrypt the new password
+        if ($request->has("new_password")) {
+            $data["password"] = Hash::make($request->new_password);
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            "message" => "User was successfully updated!",
+            "notifications" => [
+                "success" => [
+                    $request->user()->is_admin ? "The user was successfully updated!" : "Your details were updated!"
                 ]
             ]
         ]);

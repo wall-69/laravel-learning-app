@@ -25,13 +25,13 @@
 					<!-- Actions -->
 					<td class="px-4 py-2 text-center align-middle">
 						<!-- Edit -->
-						<button @click="console.log('edit')" class="mr-2">
+						<button @click="handleEdit(d.id)" class="mr-2">
 							<i>
 								<box-icon name="edit" type="solid" color="#F1F1F1"></box-icon>
 							</i>
 						</button>
 						<!-- Delete -->
-						<button @click="handleDeletion(d.id)">
+						<button @click="handleDelete(d.id)">
 							<i>
 								<box-icon name="trash" type="solid" color="#F1F1F1"></box-icon>
 							</i>
@@ -43,32 +43,65 @@
 	</div>
 </template>
 <script setup>
+import router from "@/router";
 import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
+import { onMounted } from "vue";
 
 // Define
 const props = defineProps({
 	data: Array,
 	modelName: String,
 });
-const emit = defineEmits(["data-deleted"]);
+
+const emit = defineEmits(["update:data"]);
+
+// Lifecycle hooks
+onMounted(async () => {
+	await loadData();
+});
 
 // Functions
-async function handleDeletion(id) {
-	confirm(
-		"Are you sure you want to delete this " +
-			props.modelName.charAt(0).toUpperCase() +
-			props.modelName.slice(1).replace("-", " ") +
-			"?"
-	);
+async function loadData() {
+	await handleRequest({
+		request: () => axios.get("/api/" + props.modelName + "s"),
+		successCallback: async (response) => {
+			emit("update:data", response.data);
+		},
+		failCallback: async (response) => {
+			console.error("Could not load users from the database.", response);
+		},
+	});
+}
+
+function getDataById(id) {
+	if (Object.keys(props.data).length == 0) {
+		return null;
+	}
+
+	return props.data.find((x) => x.id == id);
+}
+
+function handleEdit(id) {
+	router.replace({
+		name: "admin-" + props.modelName + "s" + "-edit",
+		params: { id: id },
+	});
+}
+
+async function handleDelete(id) {
+	const modelNameFormatted =
+		props.modelName.charAt(0).toUpperCase() +
+		props.modelName.slice(1).replace("-", " ");
+	confirm("Are you sure you want to delete this " + modelNameFormatted + "?");
 
 	await handleRequest({
 		request: (data) => {
-			return axios.post("/api/" + props.modelName + "s" + "/" + id);
+			return axios.delete("/api/" + props.modelName + "s" + "/" + id);
 		},
-		succesCallback: (response) => {},
+		successCallback: async (response) => {
+			loadData();
+		},
 	});
-
-	emit("data-deleted");
 }
 </script>
