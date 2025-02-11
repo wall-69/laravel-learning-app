@@ -74,14 +74,6 @@ async function loadData() {
 	});
 }
 
-function getDataById(id) {
-	if (Object.keys(props.data).length == 0) {
-		return null;
-	}
-
-	return props.data.find((x) => x.id == id);
-}
-
 function handleEdit(id) {
 	router.replace({
 		name: "admin-" + props.modelName + "s" + "-edit",

@@ -2,6 +2,7 @@
 	<section
 		class="lg:p-8 flex flex-col w-full max-w-full gap-4 p-4 overflow-x-auto">
 		<h1 class="text-3xl font-bold">Users</h1>
+
 		<div class="lg:flex-row lg:justify-between flex flex-col items-start gap-2">
 			<template v-if="$route.name == 'admin-users'">
 				<RouterLink
@@ -32,7 +33,7 @@
 		<DataTable
 			v-if="$route.name == 'admin-users'"
 			:data="users"
-			@update:data="users = $event ?? users"
+			@update:data="users = $event"
 			model-name="user"></DataTable>
 		<DataCreateForm
 			v-if="$route.name == 'admin-users-create'"

@@ -174,7 +174,7 @@ async function handleLogout() {
 }
 </script>
 <style>
-/* Side bar */
+/* Sidebar */
 .sidebar2-enter-active {
 	animation: slide-down 0.3s;
 }
