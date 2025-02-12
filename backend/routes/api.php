@@ -19,9 +19,13 @@ Route::controller(AuthController::class)->name("auth.")->group(function () {
 });
 
 Route::controller(UserController::class)->name("users.")->group(function () {
+    // General
+    Route::post("/users", "store")->name("store"); // Because you want guests and also admins to create users
+
+    // SPA
+
     Route::middleware("guest")->group(function () {
         // General
-        Route::post("/users", "store")->name("store");
 
         // SPA
     });
@@ -31,15 +35,8 @@ Route::controller(UserController::class)->name("users.")->group(function () {
         Route::get("/user", "user")->name("user");
         Route::get("/user/{user}", "userById");
         Route::get("/users", "index")->name("index");
-        Route::post("/users", "store")->name("store");
         Route::patch("/users/{user}", "update")->name("update");
         Route::delete("/users/{user}", "destroy")->name("destroy");
-
-        Route::middleware("admin")->group(function () {
-            Route::post("/users", "store")->name("admin-store");
-            Route::put("/users/{user}", "update")->name("admin-update");
-            Route::delete("/users/{user}", "destroy")->name("admin-destroy");
-        });
 
         // SPA
     });

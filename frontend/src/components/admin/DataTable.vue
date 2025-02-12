@@ -2,28 +2,32 @@
 	<div
 		v-if="data && Object.keys(data).length > 0"
 		class="bg-secondary-400 flex-1 max-w-full overflow-x-auto">
-		<table>
+		<table class="w-full border-separate">
 			<thead>
 				<tr>
 					<th
 						v-for="(field, i) in Object.keys(data[0])"
 						:key="i"
-						class="px-4 pt-4 text-lg text-gray-100">
+						class="px-4 pt-4 text-lg text-center text-gray-100">
 						{{ field }}
 					</th>
-					<th class="px-4 pt-4 text-lg text-gray-100">Actions</th>
+					<th
+						class="bg-secondary-400 border-secondary-200 sticky right-0 px-4 pt-4 text-lg text-gray-100 border-l-2">
+						Actions
+					</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="relative">
 				<tr v-for="(d, i) in data">
 					<td
 						v-for="dData in d"
 						:key="i"
-						class="px-4 py-2 text-center text-gray-100 align-middle">
+						class="px-4 py-2 text-left text-gray-100 align-middle">
 						{{ dData }}
 					</td>
 					<!-- Actions -->
-					<td class="px-4 py-2 text-center align-middle">
+					<td
+						class="bg-secondary-400 border-secondary-200 sticky right-0 px-4 py-2 text-center align-middle border-l-2">
 						<!-- Edit -->
 						<button @click="handleEdit(d.id)" class="mr-2">
 							<i>

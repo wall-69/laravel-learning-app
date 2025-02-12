@@ -148,13 +148,11 @@
 
 <script setup>
 import useAuth from "@/composables/useAuth";
-import router from "@/router";
-import { handleRequest } from "@/utils/requestWrapper";
 import { ref } from "vue";
 import { RouterView } from "vue-router";
 
 // Composables
-const { setAuthenticated, setUser, logout } = useAuth();
+const { logout } = useAuth();
 
 // Variables
 const sideBarExtended = ref(true);
@@ -162,15 +160,7 @@ const sideBarExtended = ref(true);
 // Functions
 async function handleLogout() {
 	// Make request to logout API endpoint
-	await handleRequest({
-		request: logout,
-		successCallback: async (response) => {
-			setAuthenticated(false);
-			setUser({});
-
-			router.replace({ name: "home" });
-		},
-	});
+	await logout();
 }
 </script>
 <style>

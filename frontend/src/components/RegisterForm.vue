@@ -178,13 +178,6 @@ const errors = reactive({
 // Functions
 async function handleSubmit(e) {
 	// Make request to the register API endpoint
-	await handleRequest({
-		request: register,
-		requestData: form,
-		successCallback: async (response) => {
-			router.replace({ name: "login" });
-		},
-		errors: errors,
-	});
+	await register(form, errors);
 }
 </script>

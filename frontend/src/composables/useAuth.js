@@ -1,5 +1,7 @@
 import { computed, reactive, ref } from "vue";
 import axios from "axios";
+import { handleRequest } from "@/utils/requestWrapper";
+import router from "@/router";
 
 const state = reactive({
 	authenticated: false,
@@ -18,21 +20,55 @@ export default function useAuth() {
 		state.user = user;
 	};
 
-	const attempt = async () => {
-		return axios.get("/api/user");
-	};
+	async function attempt() {
+		await handleRequest({
+			request: () => axios.get("/api/user"),
+			successCallback: async (response) => {
+				setAuthenticated(true);
+				setUser(response.data.user);
+			},
+			failCallback: async (response) => {
+				setAuthenticated(false);
+				setUser({});
+			},
+		});
+	}
 
-	const login = (data) => {
-		return axios.post("/api/login", data);
-	};
+	async function login(data, errors) {
+		await handleRequest({
+			request: (data) => axios.post("/api/login", data),
+			requestData: data,
+			successCallback: async (response) => {
+				setAuthenticated(true);
+				setUser(response.data.user);
 
-	const logout = () => {
-		return axios.post("/api/logout");
-	};
+				router.replace({ name: "learning" });
+			},
+			errors: errors,
+		});
+	}
 
-	const register = (data) => {
-		return axios.post("/api/users", data);
-	};
+	async function logout() {
+		await handleRequest({
+			request: () => axios.post("/api/logout"),
+			successCallback: async (response) => {
+				setAuthenticated(false);
+				setUser({});
+				router.replace({ name: "home" });
+			},
+		});
+	}
+
+	async function register(data, errors) {
+		await handleRequest({
+			request: (data) => axios.post("/api/users", data),
+			requestData: data,
+			successCallback: async (response) => {
+				router.replace({ name: "login" });
+			},
+			errors: errors,
+		});
+	}
 
 	return {
 		authenticated,

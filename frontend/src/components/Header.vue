@@ -210,13 +210,11 @@
 </template>
 <script setup>
 import { RouterLink } from "vue-router";
-import router from "@/router";
 import useAuth from "@/composables/useAuth";
-import { handleRequest } from "@/utils/requestWrapper";
-import { ref, Transition, watch } from "vue";
+import { ref, watch } from "vue";
 
 // Composables
-const { user, authenticated, setAuthenticated, setUser, logout } = useAuth();
+const { user, authenticated, logout } = useAuth();
 
 // Variables
 const userDropdownVisible = ref(false);
@@ -225,14 +223,7 @@ const mobileDropdownVisible = ref(false);
 // Functions
 async function handleLogout() {
 	// Make request to logout API endpoint
-	await handleRequest({
-		request: logout,
-		successCallback: async (response) => {
-			setAuthenticated(false);
-			setUser({});
-			router.replace({ name: "home" });
-		},
-	});
+	await logout();
 }
 function handleUserDropdownClickOutside() {
 	if (userDropdownVisible.value) {

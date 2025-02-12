@@ -1,7 +1,7 @@
 <template>
 	<!-- Toast notifications -->
 	<div
-		class="left-1/2 md:w-96 w-72 absolute top-0 z-10 flex flex-col gap-2 mt-6 -translate-x-1/2">
+		class="left-1/2 md:w-96 w-72 fixed top-0 z-30 flex flex-col gap-2 mt-6 -translate-x-1/2">
 		<Toast
 			v-for="notification in notifications"
 			:key="notification.id"

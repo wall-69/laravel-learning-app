@@ -70,7 +70,7 @@ import { reactive, ref, toRaw, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
 
 // Composables
-const { login, setAuthenticated, setUser } = useAuth();
+const { login } = useAuth();
 
 // Variables
 const form = reactive({
@@ -85,16 +85,6 @@ const errors = reactive({
 // Functions
 async function handleSubmit(e) {
 	// Make request to the login API endpoint
-	await handleRequest({
-		request: login,
-		requestData: form,
-		successCallback: async (response) => {
-			setAuthenticated(true);
-			setUser(response.data.user);
-
-			router.replace({ name: "learning" });
-		},
-		errors: errors,
-	});
+	await login(form, errors);
 }
 </script>

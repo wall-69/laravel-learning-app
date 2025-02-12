@@ -32,18 +32,8 @@ axios.interceptors.request.use(
 );
 
 // First try to fetch the user
-const { attempt, setAuthenticated, setUser } = useAuth();
-await handleRequest({
-	request: attempt,
-	successCallback: async (response) => {
-		setAuthenticated(true);
-		setUser(response.data.user);
-	},
-	failCallback: async (response) => {
-		setAuthenticated(false);
-		setUser({});
-	},
-});
+const { attempt } = useAuth();
+await attempt();
 
 // Create the Vue app
 const app = createApp(App);

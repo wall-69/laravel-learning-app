@@ -22,11 +22,17 @@ class UserController extends Controller
 
     public function index()
     {
-        return response()->json(User::latest()->get());
+
+        return response()->json(User::latest()->get()->makeHidden("is_admin"));
     }
 
     public function store(Request $request)
     {
+        // Only let guests and admins create new users
+        if ($request->user() && !$request->user()->is_admin) {
+            abort(403, "You can't do this.");
+        }
+
         $data = $request->validate([
             "name" => "required|string",
             "surname" => "required|string",
@@ -41,7 +47,7 @@ class UserController extends Controller
             "message" => "User was successfully registered!",
             "notifications" => [
                 "success" => [
-                    $request->user()->is_admin ? "The user was successfully created!" : "Your account was successfully created!"
+                    $request->user() && $request->user()->is_admin ? "The user was successfully created!" : "Your account was successfully created!"
                 ]
             ]
         ]);
@@ -49,6 +55,11 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        // If it is not the user or an admin, cancel the request
+        if ($request->user()->id != $user->id && !$request->user()->is_admin) {
+            abort(403, "You can't do this.");
+        }
+
         $data = $request->validate([
             "name" => "sometimes|required|string",
             "surname" => "sometimes|required|string",
@@ -76,6 +87,11 @@ class UserController extends Controller
 
     public function destroy(Request $request, User $user)
     {
+        // If it is not the user or an admin, cancel the request
+        if ($request->user()->id != $user->id && !$request->user()->is_admin) {
+            abort(403, "You can't do this.");
+        }
+
         // Logout the user, if it is not an admin deleting the user
         if (!$request->user()->is_admin) {
             auth("web")->logout();
