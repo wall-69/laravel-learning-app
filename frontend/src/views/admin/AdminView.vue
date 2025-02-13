@@ -2,7 +2,11 @@
 	<main class="flex flex-1">
 		<!-- Sidebar -->
 		<section
-			class="border-primary-300 bg-secondary-500 min-w-max sticky top-0 h-screen border-r-2">
+			class="border-primary-300 bg-secondary-500 sticky top-0 h-screen transition-all border-r-2"
+			:class="{
+				'w-[196px]': sideBarExtended,
+				'w-[68px]': !sideBarExtended,
+			}">
 			<button
 				@click="sideBarExtended = !sideBarExtended"
 				class="bg-primary-300 top-8 hover:bg-primary-400 absolute right-0 transition-all translate-x-1/2 rounded-md">
@@ -40,7 +44,7 @@
 								color="#38DFF5"
 								size="md"></box-icon>
 						</i>
-						<span v-if="sideBarExtended">Home</span>
+						<span v-if="sideBarExtended" class="text-nowrap">Home</span>
 					</RouterLink>
 				</li>
 				<!-- Users -->
@@ -60,7 +64,7 @@
 								color="#38DFF5"
 								size="md"></box-icon>
 						</i>
-						<span v-if="sideBarExtended">Users</span>
+						<span v-if="sideBarExtended" class="text-nowrap">Users</span>
 					</RouterLink>
 				</li>
 				<!-- Admins -->
@@ -80,7 +84,7 @@
 								color="#38DFF5"
 								size="md"></box-icon>
 						</i>
-						<span v-if="sideBarExtended">Admins</span>
+						<span v-if="sideBarExtended" class="text-nowrap">Admins</span>
 					</RouterLink>
 				</li>
 				<!-- Word packs -->
@@ -100,7 +104,7 @@
 								color="#38DFF5"
 								size="md"></box-icon>
 						</i>
-						<span v-if="sideBarExtended">Word packs</span>
+						<span v-if="sideBarExtended" class="text-nowrap">Word packs</span>
 					</RouterLink>
 				</li>
 				<!-- Paths -->
@@ -120,7 +124,9 @@
 								color="#38DFF5"
 								size="md"></box-icon>
 						</i>
-						<span v-if="sideBarExtended">Learning paths</span>
+						<span v-if="sideBarExtended" class="text-nowrap">
+							Learning paths
+						</span>
 					</RouterLink>
 				</li>
 				<!-- Log out -->
@@ -135,7 +141,7 @@
 								color="#38DFF5"
 								size="md"></box-icon>
 						</i>
-						<span v-if="sideBarExtended">Log out</span>
+						<span v-if="sideBarExtended" class="text-nowrap">Log out</span>
 					</button>
 				</li>
 			</ul>
@@ -163,18 +169,3 @@ async function handleLogout() {
 	await logout();
 }
 </script>
-<style>
-/* Sidebar */
-.sidebar2-enter-active {
-	animation: slide-down 0.3s;
-}
-
-@keyframes slide-down {
-	0% {
-		transform: translateX(-100%);
-	}
-	100% {
-		transform: translateX(0);
-	}
-}
-</style>
