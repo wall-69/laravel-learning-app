@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordPackController;
@@ -34,10 +35,20 @@ Route::controller(UserController::class)->name("users.")->group(function () {
         // General
         Route::get("/user", "user")->name("user");
         Route::get("/user/{user}", "userById");
+
         Route::get("/users", "index")->name("index");
         Route::patch("/users/{user}", "update")->name("update");
         Route::delete("/users/{user}", "destroy")->name("destroy");
 
         // SPA
     });
+});
+
+Route::controller(AdminController::class)->name("admins.")->middleware(["auth:sanctum", "admin"])->group(function () {
+    // General
+    Route::get("/admin/{admin}", "adminById");
+
+    Route::get("/admins", "index")->name("index");
+    Route::post("/admins", "store")->name("store");
+    Route::delete("/admins/{admin}", "destroy")->name("destroy");
 });

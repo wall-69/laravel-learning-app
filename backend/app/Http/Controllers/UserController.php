@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
@@ -23,13 +24,13 @@ class UserController extends Controller
     public function index()
     {
 
-        return response()->json(User::latest()->get()->makeHidden("is_admin"));
+        return response()->json(User::latest()->get()->makeHidden("admin"));
     }
 
     public function store(Request $request)
     {
         // Only let guests and admins create new users
-        if ($request->user() && !$request->user()->is_admin) {
+        if ($request->user() && !$request->user()->admin) {
             abort(403, "You can't do this.");
         }
 
@@ -44,10 +45,10 @@ class UserController extends Controller
         $user = User::create($data);
 
         return response()->json([
-            "message" => "User was successfully registered!",
+            "message" => "User was successfully created.",
             "notifications" => [
                 "success" => [
-                    $request->user() && $request->user()->is_admin ? "The user was successfully created!" : "Your account was successfully created!"
+                    $request->user() && $request->user()->admin ? "The user was successfully created!" : "Your account was successfully created!"
                 ]
             ]
         ]);
@@ -56,7 +57,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         // If it is not the user or an admin, cancel the request
-        if ($request->user()->id != $user->id && !$request->user()->is_admin) {
+        if ($request->user()->id != $user->id && !$request->user()->admin) {
             abort(403, "You can't do this.");
         }
 
@@ -76,10 +77,10 @@ class UserController extends Controller
         $user->update($data);
 
         return response()->json([
-            "message" => "User was successfully updated!",
+            "message" => "User was successfully updated.",
             "notifications" => [
                 "success" => [
-                    $request->user()->is_admin ? "The user was successfully updated!" : "Your details were updated!"
+                    $request->user()->admin ? "The user was successfully updated!" : "Your details were updated!"
                 ]
             ]
         ]);
@@ -88,12 +89,12 @@ class UserController extends Controller
     public function destroy(Request $request, User $user)
     {
         // If it is not the user or an admin, cancel the request
-        if ($request->user()->id != $user->id && !$request->user()->is_admin) {
+        if ($request->user()->id != $user->id && !$request->user()->admin) {
             abort(403, "You can't do this.");
         }
 
         // Logout the user, if it is not an admin deleting the user
-        if (!$request->user()->is_admin) {
+        if (!$request->user()->admin) {
             auth("web")->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
@@ -102,10 +103,10 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json([
-            "message" => "User was successfully deleted!",
+            "message" => "User was successfully deleted.",
             "notifications" => [
                 "success" => [
-                    $request->user()->is_admin ? "The user was successfully deleted!" : "Your account was successfully deleted!"
+                    $request->user()->admin ? "The user was successfully deleted!" : "Your account was successfully deleted!"
                 ]
             ]
         ]);

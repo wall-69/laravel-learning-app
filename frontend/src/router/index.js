@@ -99,6 +99,16 @@ const router = createRouter({
 					path: "admins",
 					name: "admin-admins",
 					component: AdminAdminsView,
+					children: [
+						{
+							path: "create",
+							name: "admin-admins-create",
+						},
+						{
+							path: "edit/:id",
+							name: "admin-admins-edit",
+						},
+					],
 				},
 				{
 					path: "word-packs",

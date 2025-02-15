@@ -12,6 +12,7 @@
 						{{ field }}
 					</th>
 					<th
+						v-if="edittable || deletable"
 						class="bg-secondary-400 border-secondary-200 sticky right-0 px-4 pt-4 text-lg text-gray-100 border-l-2">
 						Actions
 					</th>
@@ -22,20 +23,21 @@
 					<td
 						v-for="dData in d"
 						:key="i"
-						class="px-4 py-2 text-left text-gray-100 align-middle">
+						class="px-4 py-2 text-center text-gray-100 align-middle">
 						{{ dData }}
 					</td>
 					<!-- Actions -->
 					<td
+						v-if="edittable || deletable"
 						class="bg-secondary-400 border-secondary-200 sticky right-0 px-4 py-2 text-center align-middle border-l-2">
 						<!-- Edit -->
-						<button @click="handleEdit(d.id)" class="mr-2">
+						<button @click="handleEdit(d.id)" class="mr-2" v-if="edittable">
 							<i>
 								<box-icon name="edit" type="solid" color="#F1F1F1"></box-icon>
 							</i>
 						</button>
 						<!-- Delete -->
-						<button @click="handleDelete(d.id)">
+						<button @click="handleDelete(d.id)" v-if="deletable">
 							<i>
 								<box-icon name="trash" type="solid" color="#F1F1F1"></box-icon>
 							</i>
@@ -56,6 +58,14 @@ import { onMounted } from "vue";
 const props = defineProps({
 	data: Array,
 	modelName: String,
+	edittable: {
+		default: true,
+		type: Boolean,
+	},
+	deletable: {
+		default: true,
+		type: Boolean,
+	},
 });
 
 const emit = defineEmits(["update:data"]);

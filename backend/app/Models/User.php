@@ -18,12 +18,15 @@ class User extends Authenticatable
         "surname",
         "email",
         "password",
-        "is_admin"
     ];
 
     protected $hidden = [
         "password",
         "remember_token",
+    ];
+
+    protected $with = [
+        "admin"
     ];
 
     protected function casts(): array
@@ -34,5 +37,10 @@ class User extends Authenticatable
             "updated_at" => "datetime:d.m.Y H:i",
             "password" => "hashed",
         ];
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
     }
 }

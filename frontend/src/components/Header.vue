@@ -63,7 +63,7 @@
 							</li>
 
 							<!-- Admin -->
-							<li v-if="user.is_admin" class="lg:block hidden">
+							<li v-if="user.admin" class="lg:block hidden">
 								<RouterLink
 									:to="{ name: 'admin' }"
 									class="hover:underline text-xl transition-all">

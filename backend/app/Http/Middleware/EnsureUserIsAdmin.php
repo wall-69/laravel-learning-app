@@ -16,7 +16,7 @@ class EnsureUserIsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         // If the user is not admin, abort with 403
-        if (!$request->user()->is_admin) {
+        if (!$request->user()->admin) {
             abort(response()->json([
                 "message" => "You don't have apropriate permission to do this."
             ], 403));

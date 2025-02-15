@@ -35,7 +35,7 @@ class WordPackController extends Controller
         WordPack::create($data);
 
         return response()->json([
-            "message" => "Word pack successfully created!"
+            "message" => "Word pack successfully created."
         ]);
     }
 }
