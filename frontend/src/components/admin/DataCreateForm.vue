@@ -1,8 +1,8 @@
 <template>
 	<form
-		class="bg-secondary-300 flex flex-col items-stretch max-w-sm gap-6 p-6 rounded-md"
+		class="bg-secondary-300 flex flex-col items-stretch gap-6 p-6 rounded-md"
 		@submit.prevent="handleSubmit">
-		<div class="flex flex-col items-center w-full">
+		<div class="flex flex-col items-center">
 			<h2 class="text-primary-300 md:text-6xl text-5xl leading-normal">
 				<slot name="header"></slot>
 			</h2>

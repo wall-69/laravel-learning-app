@@ -1,13 +1,14 @@
 <template>
 	<section
 		class="lg:p-8 flex flex-col w-full max-w-full gap-4 p-4 overflow-x-auto">
-		<h1 class="text-3xl font-bold">Users</h1>
+		<h1 class="text-3xl font-bold">Word packs</h1>
+
 		<div class="lg:flex-row lg:justify-between flex flex-col items-start gap-2">
-			<template v-if="$route.name == 'admin-users'">
+			<template v-if="$route.name == 'admin-word-packs'">
 				<RouterLink
-					:to="{ name: 'admin-users-create' }"
+					:to="{ name: 'admin-word-packs-create' }"
 					class="bg-secondary-300 hover:bg-secondary-200 px-4 py-2 font-bold text-gray-100 transition-colors rounded-md">
-					New User
+					New Word pack
 				</RouterLink>
 
 				<input
@@ -16,22 +17,30 @@
 					placeholder="Search"
 					class="input bg-secondary-300 placeholder:text-gray-100 focus:placeholder:text-opacity-0 sm:block hidden text-gray-100 border-0" />
 			</template>
-			<template v-if="$route.name == 'admin-users-create'">
+			<template
+				v-if="
+					$route.name == 'admin-word-packs-create' ||
+					$route.name == 'admin-word-packs-edit'
+				">
 				<RouterLink
-					:to="{ name: 'admin-users' }"
+					:to="{ name: 'admin-word-packs' }"
 					class="hover:underline font-bold text-gray-900 transition-colors rounded-md">
 					Go back
 				</RouterLink>
 			</template>
 		</div>
 
-		<DataTable v-if="$route.name == 'admin-users'" :data="users"></DataTable>
+		<DataTable
+			v-if="$route.name == 'admin-word-packs'"
+			:data="wordPacks"
+			@update:data="wordPacks = $event"
+			model-name="word-pack"></DataTable>
 		<DataCreateForm
-			v-if="$route.name == 'admin-users-create'"
-			:api-route="'/api/users'"
-			:redirect-route-name="'admin-users'"
+			v-if="$route.name == 'admin-word-packs-create'"
+			:api-route="'/api/word-packs'"
+			:redirect-route-name="'admin-word-packs'"
 			class="self-center">
-			<template #header>New User</template>
+			<template #header>New Word pack</template>
 			<template #input-name="{ form }">
 				<input
 					type="text"
@@ -41,12 +50,11 @@
 					v-model="form.name" />
 			</template>
 			<template #input-description="{ form }">
-				<input
-					type="text"
+				<textarea
 					name="description"
 					class="input"
 					autocomplete="off"
-					v-model="form.description" />
+					v-model="form.description"></textarea>
 			</template>
 			<template #input-visibility="{ form }">
 				<select name="visibility" class="input" v-model="form.visibility">
@@ -62,12 +70,12 @@
 					name="images"
 					class="input"
 					@change="(e) => (form.image = e.target.files[0])"
-					@click="clearUploadedImage(form)" />
+					@click="clearImageInput(form)" />
 				<!-- Delete uploaded image button -->
 				<button
 					v-show="form.image"
 					class="text-primary-100 self-start text-sm"
-					@click.prevent="clearUploadedImage(form)">
+					@click.prevent="clearImageInput(form)">
 					(Delete thumbnail)
 				</button>
 			</template>
@@ -77,29 +85,16 @@
 <script setup>
 import DataTable from "@/components/admin/DataTable.vue";
 import DataCreateForm from "@/components/admin/DataCreateForm.vue";
-import { handleRequest } from "@/utils/requestWrapper";
-import axios from "axios";
-import { onMounted, ref } from "vue";
+import DataEditForm from "@/components/admin/DataEditForm.vue";
+import { ref } from "vue";
 
-const users = ref({});
-
-onMounted(async () => {
-	await handleRequest({
-		request: () => axios.get("/api/users"),
-		successCallback: async (response) => {
-			users.value = response.data.users;
-		},
-		failCallback: async (response) => {
-			console.error("Could not load users from the database.", response);
-		},
-	});
-});
-
-// Create form
+// Variables
+const wordPacks = ref({});
 const imageUploadInput = ref(null);
 
-function clearUploadedImage(form) {
-	imageUploadInput.value.value = "";
-	form.image = "";
+// Functions
+function clearImageInput(form) {
+	imageUploadInput.value.value = null;
+	form.image = null;
 }
 </script>

@@ -114,6 +114,16 @@ const router = createRouter({
 					path: "word-packs",
 					name: "admin-word-packs",
 					component: AdminWordPacksView,
+					children: [
+						{
+							path: "create",
+							name: "admin-word-packs-create",
+						},
+						{
+							path: "edit/:id",
+							name: "admin-word-packs-edit",
+						},
+					],
 				},
 				{
 					path: "learning-paths",

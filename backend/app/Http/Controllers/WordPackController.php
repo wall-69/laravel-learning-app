@@ -10,6 +10,10 @@ use Illuminate\Validation\Rule;
 
 class WordPackController extends Controller
 {
+    public function index()
+    {
+        return response(WordPack::all());
+    }
 
     public function store(Request $request)
     {
@@ -28,14 +32,35 @@ class WordPackController extends Controller
         }
 
         // Set type based on the user's role (user - community or admin - official)
-        // TODO: replace true with real condition
-        $data["type"] = true ? WordPackType::OFFICIAL : WordPackType::COMMUNITY;
+        $data["type"] = $request->user()->admin ? WordPackType::OFFICIAL : WordPackType::COMMUNITY;
+
+        // Set the user_id
+        $data["user_id"] = $request->user()->id;
 
         // Create the WordPack
         WordPack::create($data);
 
         return response()->json([
-            "message" => "Word pack successfully created."
+            "message" => "Word pack was successfully created."
+        ]);
+    }
+
+    public function destroy(Request $request, WordPack $wordPack)
+    {
+        // If it is not the user who created the WordPack or an admin, cancel the request
+        if ($request->user()->id != $wordPack->user_id && !$request->user()->admin) {
+            abort(403, "You can't do this.");
+        }
+
+        $wordPack->delete();
+
+        return response()->json([
+            "message" => "Word pack was successfully deleted.",
+            "notifications" => [
+                "success" => [
+                    "The word pack was successfully deleted!"
+                ]
+            ]
         ]);
     }
 }

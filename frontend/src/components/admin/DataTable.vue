@@ -24,7 +24,15 @@
 						v-for="dData in d"
 						:key="i"
 						class="px-4 py-2 text-center text-gray-100 align-middle">
-						{{ dData }}
+						<template
+							v-if="
+								dData && typeof dData == 'string' && dData.startsWith('storage')
+							">
+							<img :src="asset(dData)" alt="" class="max-w-12" />
+						</template>
+						<template v-else>
+							{{ dData }}
+						</template>
 					</td>
 					<!-- Actions -->
 					<td
@@ -53,6 +61,7 @@ import router from "@/router";
 import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { onMounted } from "vue";
+import { asset } from "@/utils/asset";
 
 // Define
 const props = defineProps({

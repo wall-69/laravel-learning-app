@@ -52,3 +52,12 @@ Route::controller(AdminController::class)->name("admins.")->middleware(["auth:sa
     Route::post("/admins", "store")->name("store");
     Route::delete("/admins/{admin}", "destroy")->name("destroy");
 });
+
+
+Route::controller(WordPackController::class)->name("word-packs.")->middleware("auth:sanctum")->group(function () {
+    // General
+    Route::get("/word-packs", "index")->name("index");
+    Route::post("/word-packs", "store")->name("store");
+    // Route::patch("/word-packs/{wordpack}", "update")->name("update");
+    Route::delete("/word-packs/{wordpack}", "destroy")->name("destroy");
+});
