@@ -55,14 +55,18 @@ const props = defineProps({
 // Lifecycle hooks
 onMounted(async () => {
 	await handleRequest({
-		request: () => axios.get("/api/" + props.modelName + "/" + route.params.id),
+		request: () =>
+			axios.get("/api/" + props.modelName + "s/" + route.params.id),
 		successCallback: async (response) => {
 			Object.keys(response.data).forEach((field) => {
 				form[field] = response.data[field];
 			});
 		},
 		failCallback: async (response) => {
-			console.error("Could not load user from the database.", response);
+			console.error(
+				"Could not load " + props.modelName + " from the database.",
+				response
+			);
 		},
 	});
 });

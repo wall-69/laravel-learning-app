@@ -80,6 +80,56 @@
 				</button>
 			</template>
 		</DataCreateForm>
+		<DataEditForm
+			v-if="$route.name == 'admin-word-packs-edit'"
+			:api-route="'/api/word-packs/' + $route.params.id"
+			:redirect-route-name="'admin-word-packs'"
+			model-name="word-pack"
+			class="self-center">
+			<template #header>Edit Word pack</template>
+			<template #input-name="{ form }">
+				<input
+					type="text"
+					name="name"
+					class="input"
+					autocomplete="off"
+					v-model="form.name" />
+			</template>
+			<template #input-description="{ form }">
+				<textarea
+					name="description"
+					class="input"
+					autocomplete="off"
+					v-model="form.description"></textarea>
+			</template>
+			<template #input-visibility="{ form }">
+				<select name="visibility" class="input" v-model="form.visibility">
+					<option value="public">Public</option>
+					<option value="private">Private</option>
+				</select>
+			</template>
+			<template #input-image="{ form }">
+				<img
+					v-show="form.image && String(form.image).startsWith('storage')"
+					:src="asset(form.image)"
+					class="w-16 mb-2" />
+				<input
+					ref="imageUploadInput"
+					type="file"
+					accept="image/*"
+					name="images"
+					class="input"
+					@change="(e) => (form.image = e.target.files[0])"
+					@click="clearImageInput(form)" />
+				<!-- Delete uploaded image button -->
+				<button
+					v-show="form.image"
+					class="text-primary-100 self-start text-sm"
+					@click.prevent="clearImageInput(form)">
+					(Delete thumbnail)
+				</button>
+			</template>
+		</DataEditForm>
 	</section>
 </template>
 <script setup>
@@ -87,6 +137,7 @@ import DataTable from "@/components/admin/DataTable.vue";
 import DataCreateForm from "@/components/admin/DataCreateForm.vue";
 import DataEditForm from "@/components/admin/DataEditForm.vue";
 import { ref } from "vue";
+import { asset } from "@/utils/asset";
 
 // Variables
 const wordPacks = ref({});
