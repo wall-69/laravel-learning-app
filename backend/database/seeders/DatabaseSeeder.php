@@ -26,5 +26,8 @@ class DatabaseSeeder extends Seeder
         Admin::factory()->create([
             "user_id" => $admin->id
         ]);
+
+        // Create users
+        User::factory(100)->create();
     }
 }

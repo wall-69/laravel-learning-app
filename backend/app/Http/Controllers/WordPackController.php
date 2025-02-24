@@ -11,9 +11,11 @@ use Illuminate\Validation\Rule;
 
 class WordPackController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response(WordPack::all());
+        $wordPacks = WordPack::search($request->search ?? "")->latest()->get();
+
+        return response($wordPacks);
     }
 
     public function wordPackById(WordPack $wordPack)

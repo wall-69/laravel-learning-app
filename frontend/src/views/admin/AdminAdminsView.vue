@@ -10,12 +10,6 @@
 					class="bg-secondary-300 hover:bg-secondary-200 px-4 py-2 font-bold text-gray-100 transition-colors rounded-md">
 					New Admin
 				</RouterLink>
-
-				<input
-					type="search"
-					name="filter"
-					placeholder="Search"
-					class="input bg-secondary-300 placeholder:text-gray-100 focus:placeholder:text-opacity-0 sm:block hidden text-gray-100 border-0" />
 			</template>
 			<template
 				v-if="

@@ -11,11 +11,14 @@
 					New User
 				</RouterLink>
 
-				<input
-					type="search"
-					name="filter"
-					placeholder="Search"
-					class="input bg-secondary-300 placeholder:text-gray-100 focus:placeholder:text-opacity-0 sm:block hidden text-gray-100 border-0" />
+				<form @submit.prevent="search = searchInput.value">
+					<input
+						ref="searchInput"
+						type="search"
+						name="search"
+						placeholder="Search"
+						class="input bg-secondary-300 placeholder:text-gray-100 focus:placeholder:text-opacity-0 sm:block hidden text-gray-100 border-0" />
+				</form>
 			</template>
 			<template
 				v-if="
@@ -34,7 +37,8 @@
 			v-if="$route.name == 'admin-users'"
 			:data="users"
 			@update:data="users = $event"
-			model-name="user"></DataTable>
+			model-name="user"
+			:search="search"></DataTable>
 		<DataCreateForm
 			v-if="$route.name == 'admin-users-create'"
 			:api-route="'/api/users'"
@@ -132,4 +136,6 @@ import { ref } from "vue";
 
 // Variables
 const users = ref({});
+const search = ref("");
+const searchInput = ref(null);
 </script>

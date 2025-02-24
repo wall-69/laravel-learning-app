@@ -54,14 +54,36 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<!-- <div>
+			<button @click="previousPage" :disabled="page > 1">
+				<i>
+					<box-icon name="chevron-left" type="solid" color="#F1F1F1"></box-icon>
+				</i>
+			</button>
+
+			<span class="font-bold">
+				{{ page }}
+			</span>
+
+			<button @click="nextPage" :disabled="data.length < 30">
+				<i>
+					<box-icon name="chevron-left" type="solid" color="#F1F1F1"></box-icon>
+				</i>
+			</button>
+		</div> -->
 	</div>
 </template>
 <script setup>
 import router from "@/router";
 import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { asset } from "@/utils/asset";
+import { useRoute } from "vue-router";
+
+// Composables
+const route = useRoute();
 
 // Define
 const props = defineProps({
@@ -75,6 +97,11 @@ const props = defineProps({
 		default: true,
 		type: Boolean,
 	},
+	search: {
+		default: null,
+		type: String,
+		required: false,
+	},
 });
 
 const emit = defineEmits(["update:data"]);
@@ -84,10 +111,18 @@ onMounted(async () => {
 	await loadData();
 });
 
+// Variables
+const page = ref(1);
+
 // Functions
 async function loadData() {
+	let requestUrl = "/api/" + props.modelName + "s";
+	if (props.search) {
+		requestUrl += "?search=" + props.search;
+	}
+
 	await handleRequest({
-		request: () => axios.get("/api/" + props.modelName + "s"),
+		request: () => axios.get(requestUrl),
 		successCallback: async (response) => {
 			emit("update:data", response.data);
 		},
@@ -119,4 +154,20 @@ async function handleDelete(id) {
 		},
 	});
 }
+
+function previousPage() {
+	if (page.value > 1) {
+		page.value -= 1;
+	}
+}
+
+// Watcher
+watch(
+	() => props.search,
+	(newSearch, oldSearch) => {
+		console.log("new data");
+
+		loadData();
+	}
+);
 </script>

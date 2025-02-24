@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class WordPack extends Model
@@ -21,5 +22,10 @@ class WordPack extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeSearch(Builder $query, string $search)
+    {
+        $query->where("name", "LIKE", "%$search%");
     }
 }

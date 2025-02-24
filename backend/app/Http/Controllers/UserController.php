@@ -21,10 +21,11 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $users = User::search($request->search ?? "")->latest()->get()->makeHidden("admin");
 
-        return response()->json(User::latest()->get()->makeHidden("admin"));
+        return response()->json($users);
     }
 
     public function store(Request $request)

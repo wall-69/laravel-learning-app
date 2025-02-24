@@ -11,11 +11,14 @@
 					New Word pack
 				</RouterLink>
 
-				<input
-					type="search"
-					name="filter"
-					placeholder="Search"
-					class="input bg-secondary-300 placeholder:text-gray-100 focus:placeholder:text-opacity-0 sm:block hidden text-gray-100 border-0" />
+				<form @submit.prevent="search = searchInput.value">
+					<input
+						ref="searchInput"
+						type="search"
+						name="search"
+						placeholder="Search"
+						class="input bg-secondary-300 placeholder:text-gray-100 focus:placeholder:text-opacity-0 sm:block hidden text-gray-100 border-0" />
+				</form>
 			</template>
 			<template
 				v-if="
@@ -34,7 +37,8 @@
 			v-if="$route.name == 'admin-word-packs'"
 			:data="wordPacks"
 			@update:data="wordPacks = $event"
-			model-name="word-pack"></DataTable>
+			model-name="word-pack"
+			:search="search"></DataTable>
 		<DataCreateForm
 			v-if="$route.name == 'admin-word-packs-create'"
 			:api-route="'/api/word-packs'"
@@ -141,6 +145,8 @@ import { asset } from "@/utils/asset";
 
 // Variables
 const wordPacks = ref({});
+const search = ref("");
+const searchInput = ref(null);
 const imageUploadInput = ref(null);
 
 // Functions
