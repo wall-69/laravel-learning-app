@@ -200,6 +200,8 @@ async function nextPage() {
 watch(
 	() => props.search,
 	(newSearch, oldSearch) => {
+		page.value = 1;
+
 		loadData();
 	}
 );
