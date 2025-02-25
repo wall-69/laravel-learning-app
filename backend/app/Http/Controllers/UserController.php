@@ -23,9 +23,11 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::search($request->search ?? "")->latest()->get()->makeHidden("admin");
+        $paginator = User::search($request->search ?? "")->latest()->paginate(30);
+        $data = $paginator->makeHidden("admin");
+        $paginator->data = $data;
 
-        return response()->json($users);
+        return response()->json($paginator);
     }
 
     public function store(Request $request)

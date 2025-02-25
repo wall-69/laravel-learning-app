@@ -2,7 +2,7 @@
 	<div
 		v-if="data && Object.keys(data).length > 0"
 		class="bg-secondary-400 flex-1 max-w-full overflow-x-auto">
-		<table class="w-full border-separate">
+		<table v-show="!loading" class="w-full border-separate">
 			<thead>
 				<tr>
 					<th
@@ -55,23 +55,37 @@
 			</tbody>
 		</table>
 
-		<!-- <div>
-			<button @click="previousPage" :disabled="page > 1">
-				<i>
-					<box-icon name="chevron-left" type="solid" color="#F1F1F1"></box-icon>
+		<div class="flex items-center justify-center w-full gap-2">
+			<button @click="previousPage" :disabled="page <= 1 || loading">
+				<i
+					:class="{
+						'opacity-50': page <= 1,
+					}">
+					<box-icon
+						name="chevron-left"
+						type="solid"
+						color="#F1F1F1"
+						size="md"></box-icon>
 				</i>
 			</button>
 
-			<span class="font-bold">
+			<span class="mb-1 text-xl font-bold text-gray-100">
 				{{ page }}
 			</span>
 
-			<button @click="nextPage" :disabled="data.length < 30">
-				<i>
-					<box-icon name="chevron-left" type="solid" color="#F1F1F1"></box-icon>
+			<button @click="nextPage" :disabled="page >= maxPage || loading">
+				<i
+					:class="{
+						'opacity-50': page >= maxPage,
+					}">
+					<box-icon
+						name="chevron-right"
+						type="solid"
+						color="#F1F1F1"
+						size="md"></box-icon>
 				</i>
 			</button>
-		</div> -->
+		</div>
 	</div>
 </template>
 <script setup>
@@ -113,23 +127,34 @@ onMounted(async () => {
 
 // Variables
 const page = ref(1);
+const maxPage = ref(1);
+const loading = ref(false);
 
 // Functions
 async function loadData() {
+	loading.value = true;
+
 	let requestUrl = "/api/" + props.modelName + "s";
+	requestUrl += "?page=" + page.value;
 	if (props.search) {
-		requestUrl += "?search=" + props.search;
+		requestUrl += "&search=" + props.search;
 	}
 
 	await handleRequest({
 		request: () => axios.get(requestUrl),
 		successCallback: async (response) => {
-			emit("update:data", response.data);
+			page.value = response.data.current_page;
+			maxPage.value = response.data.last_page;
+
+			// response.data is Laravel pagination object, inside it is data field with the data
+			emit("update:data", response.data.data);
 		},
 		failCallback: async (response) => {
 			console.error("Could not load users from the database.", response);
 		},
 	});
+
+	loading.value = false;
 }
 
 function handleEdit(id) {
@@ -155,9 +180,19 @@ async function handleDelete(id) {
 	});
 }
 
-function previousPage() {
+async function previousPage() {
 	if (page.value > 1) {
 		page.value -= 1;
+
+		await loadData();
+	}
+}
+
+async function nextPage() {
+	if (page.value != maxPage) {
+		page.value += 1;
+
+		await loadData();
 	}
 }
 
@@ -165,8 +200,6 @@ function previousPage() {
 watch(
 	() => props.search,
 	(newSearch, oldSearch) => {
-		console.log("new data");
-
 		loadData();
 	}
 );

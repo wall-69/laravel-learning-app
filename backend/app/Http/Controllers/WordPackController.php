@@ -11,16 +11,16 @@ use Illuminate\Validation\Rule;
 
 class WordPackController extends Controller
 {
-    public function index(Request $request)
-    {
-        $wordPacks = WordPack::search($request->search ?? "")->latest()->get();
-
-        return response($wordPacks);
-    }
-
     public function wordPackById(WordPack $wordPack)
     {
         return response()->json($wordPack);
+    }
+
+    public function index(Request $request)
+    {
+        $paginator = WordPack::search($request->search ?? "")->latest()->paginate(30);
+
+        return response($paginator);
     }
 
     public function store(Request $request)
