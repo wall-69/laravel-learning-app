@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PathController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordPackController;
 use Illuminate\Support\Facades\Route;
@@ -60,4 +61,14 @@ Route::controller(WordPackController::class)->name("word-packs.")->middleware("a
     Route::post("/word-packs", "store")->name("store");
     Route::patch("/word-packs/{wordPack}", "update")->name("update");
     Route::delete("/word-packs/{wordPack}", "destroy")->name("destroy");
+});
+
+Route::controller(PathController::class)->name("paths.")->middleware("auth:sanctum")->group(function () {
+    // General
+    Route::get("/paths/{path}", "pathById");
+
+    Route::get("/paths", "index")->name("index");
+    Route::post("/paths", "store")->name("store");
+    Route::patch("/paths/{path}", "update")->name("update");
+    Route::delete("/paths/{path}", "destroy")->name("destroy");
 });

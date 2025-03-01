@@ -64,8 +64,8 @@ const router = createRouter({
 			component: null,
 		},
 		{
-			path: "/learning-paths",
-			name: "learning-paths",
+			path: "/paths",
+			name: "paths",
 			component: null,
 		},
 
@@ -126,9 +126,19 @@ const router = createRouter({
 					],
 				},
 				{
-					path: "learning-paths",
-					name: "admin-learning-paths",
+					path: "paths",
+					name: "admin-paths",
 					component: AdminPathsView,
+					children: [
+						{
+							path: "create",
+							name: "admin-paths-create",
+						},
+						{
+							path: "edit/:id",
+							name: "admin-paths-edit",
+						},
+					],
 				},
 			],
 		},

@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return response()->json(Admin::all());
+        $paginator = Admin::paginate(30);
+
+        return response($paginator);
     }
 
     public function store(Request $request)

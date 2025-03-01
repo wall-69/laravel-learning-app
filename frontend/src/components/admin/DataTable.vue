@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="data && Object.keys(data).length > 0"
-		class="bg-secondary-400 flex-1 max-w-full overflow-x-auto">
+		class="bg-secondary-400 flex flex-col justify-between flex-1 max-w-full overflow-x-auto">
 		<table v-show="!loading" class="w-full border-separate">
 			<thead>
 				<tr>
@@ -28,7 +28,7 @@
 							v-if="
 								dData && typeof dData == 'string' && dData.startsWith('storage')
 							">
-							<img :src="asset(dData)" alt="" class="max-w-12" />
+							<img :src="asset(dData)" alt="" class="max-w-12 mx-auto" />
 						</template>
 						<template v-else>
 							{{ dData }}
@@ -87,6 +87,7 @@
 			</button>
 		</div>
 	</div>
+	<div v-else v-show="!loading"><p>No data was added yet.</p></div>
 </template>
 <script setup>
 import router from "@/router";

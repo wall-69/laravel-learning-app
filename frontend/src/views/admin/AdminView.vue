@@ -112,10 +112,10 @@
 					<div
 						class="bg-primary-300 top-1 absolute w-1 h-8"
 						:class="{
-							hidden: $route.name != 'admin-learning-paths',
+							hidden: $route.name != 'admin-paths',
 						}"></div>
 					<RouterLink
-						:to="{ name: 'admin-learning-paths' }"
+						:to="{ name: 'admin-paths' }"
 						class="hover:underline hover:cursor-pointer flex items-center gap-1 px-4">
 						<i class="flex items-start justify-start">
 							<box-icon
