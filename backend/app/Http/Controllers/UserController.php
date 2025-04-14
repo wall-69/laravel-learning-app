@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\User;
+use Gate;
 use Hash;
 use Illuminate\Http\Request;
 
@@ -59,10 +60,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        // If it is not the user or an admin, cancel the request
-        if ($request->user()->id != $user->id && !$request->user()->admin) {
-            abort(403, "You can't do this.");
-        }
+        Gate::authorize("update", $user);
 
         $data = $request->validate([
             "name" => "sometimes|required|string",
@@ -70,7 +68,6 @@ class UserController extends Controller
             "email" => "sometimes|required|email",
             "new_password" => "sometimes|required|min:6",
         ]);
-
 
         // Encrypt the new password
         if ($request->has("new_password")) {
@@ -91,10 +88,7 @@ class UserController extends Controller
 
     public function destroy(Request $request, User $user)
     {
-        // If it is not the user or an admin, cancel the request
-        if ($request->user()->id != $user->id && !$request->user()->admin) {
-            abort(403, "You can't do this.");
-        }
+        Gate::authorize("delete", $user);
 
         // Logout the user, if it is not an admin deleting the user
         if (!$request->user()->admin) {
