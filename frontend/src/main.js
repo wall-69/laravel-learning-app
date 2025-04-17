@@ -1,5 +1,4 @@
 import "./assets/main.css";
-import "boxicons";
 import axios from "axios";
 import VCalendar from "v-calendar";
 import "v-calendar/style.css";

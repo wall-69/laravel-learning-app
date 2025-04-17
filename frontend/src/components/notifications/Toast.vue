@@ -17,11 +17,10 @@
 		<i
 			class="hover:cursor-pointer flex content-center"
 			@click="removeNotification(notification.id)">
-			<box-icon
+			<i
 				v-if="notification.type != 'warning'"
-				name="x"
-				color="#E6E6E6"></box-icon>
-			<box-icon v-else name="x" color="#333333"></box-icon>
+				class="bx bx-x text-gray-200"></i>
+			<i v-else class="bx bx-x text-gray-800"></i>
 		</i>
 	</div>
 </template>

@@ -39,13 +39,7 @@
 					<h3 class="md:text-3xl text-2xl font-bold">Grouping</h3>
 					<div class="flex items-center gap-4">
 						<i
-							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-							<box-icon
-								name="cabinet"
-								type="solid"
-								color="#ffffff"
-								size="lg"></box-icon>
-						</i>
+							class="bx bxs-cabinet bx-lg bg-secondary-300 max-w-min h-min flex content-center p-4 text-white rounded-full"></i>
 						<p class="max-w-sm">
 							Five-word groups, ranging from reviewing a word daily to reviewing
 							it twice a month.
@@ -57,13 +51,7 @@
 					<h3 class="md:text-3xl text-2xl font-bold">Daily Review</h3>
 					<div class="flex items-center gap-4">
 						<i
-							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-							<box-icon
-								name="calendar-check"
-								type="solid"
-								color="#ffffff"
-								size="lg"></box-icon>
-						</i>
+							class="bx bxs-calendar-check bx-lg bg-secondary-300 max-w-min h-min flex content-center p-4 text-white rounded-full"></i>
 						<p class="max-w-sm">
 							Create a habit of daily review with a selectable daily limit of
 							words.
@@ -75,13 +63,7 @@
 					<h3 class="md:text-3xl text-2xl font-bold">Instant Feedback</h3>
 					<div class="flex items-center gap-4">
 						<i
-							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-							<box-icon
-								name="message-error"
-								type="solid"
-								color="#ffffff"
-								size="lg"></box-icon>
-						</i>
+							class="bx bxs-message-error bx-lg bg-secondary-300 max-w-min h-min flex content-center p-4 text-white rounded-full"></i>
 						<p class="max-w-sm">
 							If you forget a word, there is a chance that you will remember
 							this word better after being corrected.
@@ -93,13 +75,7 @@
 					<h3 class="md:text-3xl text-2xl font-bold">Provided Context</h3>
 					<div class="flex items-center gap-4">
 						<i
-							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-							<box-icon
-								name="info-circle"
-								type="solid"
-								color="#ffffff"
-								size="lg"></box-icon>
-						</i>
+							class="bx bxs-info-circle bx-lg bg-secondary-300 max-w-min h-min flex content-center p-4 text-white rounded-full"></i>
 						<p class="max-w-sm">
 							Words include their context, example usage in a sentence, and may
 							also have a visual image representing the word.
@@ -113,13 +89,7 @@
 					</h3>
 					<div class="flex items-center gap-4">
 						<i
-							class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-							<box-icon
-								name="brain"
-								type="solid"
-								color="#ffffff"
-								size="lg"></box-icon>
-						</i>
+							class="bx bxs-brain bx-lg bg-secondary-300 max-w-min h-min flex content-center p-4 text-white rounded-full"></i>
 						<p class="max-w-sm">
 							Retrieval practice and spaced repetition increases the chance of
 							storing vocabulary in long-term memory instead of short-term
@@ -212,13 +182,7 @@
 				<!-- Build a Habit -->
 				<li class="flex max-w-lg gap-4">
 					<i
-						class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-						<box-icon
-							name="calendar"
-							type="solid"
-							color="#ffffff"
-							size="lg"></box-icon>
-					</i>
+						class="bx bxs-calendar bx-lg text-secondary-content-300 bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full"></i>
 					<div class="flex flex-col">
 						<h2 class="md:text-3xl text-2xl font-bold">Build a Habit</h2>
 						<p class="mb-4">
@@ -229,16 +193,11 @@
 						<p>If no words are due for review, you get a free day!</p>
 					</div>
 				</li>
+
 				<!-- Custom Word Packs -->
 				<li class="flex max-w-lg gap-4">
 					<i
-						class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-						<box-icon
-							name="customize"
-							type="solid"
-							color="#ffffff"
-							size="lg"></box-icon>
-					</i>
+						class="bx bxs-customize bx-lg text-secondary-content-300 bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full"></i>
 					<div class="flex flex-col">
 						<h2 class="md:text-3xl text-2xl font-bold">Custom Word Packs</h2>
 						<p>
@@ -249,13 +208,7 @@
 						<ul class="flex flex-col">
 							<!-- Public -->
 							<li class="flex gap-2">
-								<i>
-									<box-icon
-										name="group"
-										type="solid"
-										color="#082191"
-										size="lg"></box-icon>
-								</i>
+								<i class="bx bxs-group bx-lg text-secondary-300"></i>
 								<p>
 									<span class="font-bold">Public</span> visibility - share your
 									Word Packs in our community.
@@ -263,13 +216,7 @@
 							</li>
 							<!-- Private -->
 							<li class="flex gap-2">
-								<i>
-									<box-icon
-										name="user-circle"
-										type="solid"
-										color="#082191"
-										size="lg"></box-icon>
-								</i>
+								<i class="bx bxs-user-circle bx-lg text-secondary-300"></i>
 								<p>
 									<span class="font-bold">Private</span> visibility - for your
 									personal use. Share them with your friends, family or
@@ -279,16 +226,11 @@
 						</ul>
 					</div>
 				</li>
+
 				<!-- Choose your vocabulary -->
 				<li class="flex max-w-lg gap-4">
 					<i
-						class="bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full">
-						<box-icon
-							name="user-voice"
-							type="solid"
-							color="#ffffff"
-							size="lg"></box-icon>
-					</i>
+						class="bx bxs-user-voice bx-lg text-secondary-content-300 bg-secondary-300 max-w-min h-min flex content-center p-4 rounded-full"></i>
 					<div class="flex flex-col">
 						<h2 class="md:text-3xl text-2xl font-bold">
 							Choose your vocabulary

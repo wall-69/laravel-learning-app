@@ -62,4 +62,8 @@
 	.h-screen-wo-nav {
 		height: calc(100vh - 92px);
 	}
+
+	.overflow-wrap-anywhere {
+		overflow-wrap: anywhere;
+	}
 }

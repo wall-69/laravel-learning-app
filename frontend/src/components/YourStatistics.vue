@@ -2,13 +2,7 @@
 	<div
 		class="bg-secondary-300 text-secondary-content-300 flex flex-col flex-1 max-w-2xl gap-3 p-4 pb-5 rounded-md">
 		<div class="flex gap-1">
-			<i class="flex items-center justify-center">
-				<box-icon
-					name="trending-up"
-					type="solid"
-					color="#4DEDFF"
-					size="sm"></box-icon>
-			</i>
+			<i class="bx bx-trending-up bx-md text-primary-200"></i>
 			<div class="flex flex-col">
 				<h3 class="lg:text-2xl text-xl">Your statistics</h3>
 			</div>

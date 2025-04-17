@@ -10,20 +10,10 @@
 			<button
 				@click="sideBarExtended = !sideBarExtended"
 				class="bg-primary-300 top-8 hover:bg-primary-400 absolute right-0 transition-all translate-x-1/2 rounded-md">
-				<i class="flex items-center justify-center">
-					<box-icon
-						v-if="sideBarExtended"
-						name="chevron-left"
-						type="solid"
-						color="#1B1B1B"
-						size="sm"></box-icon>
-					<box-icon
-						v-else
-						name="chevron-right"
-						type="solid"
-						color="#1B1B1B"
-						size="sm"></box-icon>
-				</i>
+				<i
+					v-if="sideBarExtended"
+					class="bx bxs-chevron-left bx-sm flex text-gray-900"></i>
+				<i v-else class="bx bxs-chevron-right bx-sm flex text-gray-900"></i>
 			</button>
 
 			<ul class="flex flex-col items-start gap-6 mt-20">
@@ -36,15 +26,11 @@
 						}"></div>
 					<RouterLink
 						:to="{ name: 'admin' }"
-						class="hover:underline hover:cursor-pointer flex items-center gap-1 px-4">
-						<i class="flex items-start justify-start">
-							<box-icon
-								name="home"
-								type="solid"
-								color="#38DFF5"
-								size="md"></box-icon>
-						</i>
-						<span v-if="sideBarExtended" class="text-nowrap">Home</span>
+						class="hover:cursor-pointer flex items-center gap-1 px-4">
+						<i class="bx bxs-home bx-md text-primary-300 flex"></i>
+						<span v-if="sideBarExtended" class="text-nowrap hover:underline">
+							Home
+						</span>
 					</RouterLink>
 				</li>
 				<!-- Users -->
@@ -56,15 +42,11 @@
 						}"></div>
 					<RouterLink
 						:to="{ name: 'admin-users' }"
-						class="hover:underline hover:cursor-pointer flex items-center gap-1 px-4">
-						<i class="flex items-start justify-start">
-							<box-icon
-								name="group"
-								type="solid"
-								color="#38DFF5"
-								size="md"></box-icon>
-						</i>
-						<span v-if="sideBarExtended" class="text-nowrap">Users</span>
+						class="hover:cursor-pointer flex items-center gap-1 px-4">
+						<i class="bx bxs-group bx-md text-primary-300 flex"></i>
+						<span v-if="sideBarExtended" class="text-nowrap hover:underline">
+							Users
+						</span>
 					</RouterLink>
 				</li>
 				<!-- Admins -->
@@ -76,15 +58,11 @@
 						}"></div>
 					<RouterLink
 						:to="{ name: 'admin-admins' }"
-						class="hover:underline hover:cursor-pointer flex items-center gap-1 px-4">
-						<i class="flex items-start justify-start">
-							<box-icon
-								name="wrench"
-								type="solid"
-								color="#38DFF5"
-								size="md"></box-icon>
-						</i>
-						<span v-if="sideBarExtended" class="text-nowrap">Admins</span>
+						class="hover:cursor-pointer flex items-center gap-1 px-4">
+						<i class="bx bxs-wrench bx-md text-primary-300 flex"></i>
+						<span v-if="sideBarExtended" class="text-nowrap hover:underline">
+							Admins
+						</span>
 					</RouterLink>
 				</li>
 				<!-- Word packs -->
@@ -96,15 +74,11 @@
 						}"></div>
 					<RouterLink
 						:to="{ name: 'admin-word-packs' }"
-						class="hover:underline hover:cursor-pointer flex items-center gap-1 px-4">
-						<i class="flex items-start justify-start">
-							<box-icon
-								name="customize"
-								type="solid"
-								color="#38DFF5"
-								size="md"></box-icon>
-						</i>
-						<span v-if="sideBarExtended" class="text-nowrap">Word packs</span>
+						class="hover:cursor-pointer flex items-center gap-1 px-4">
+						<i class="bx bxs-customize bx-md text-primary-300 flex"></i>
+						<span v-if="sideBarExtended" class="text-nowrap hover:underline">
+							Word packs
+						</span>
 					</RouterLink>
 				</li>
 				<!-- Paths -->
@@ -116,15 +90,9 @@
 						}"></div>
 					<RouterLink
 						:to="{ name: 'admin-paths' }"
-						class="hover:underline hover:cursor-pointer flex items-center gap-1 px-4">
-						<i class="flex items-start justify-start">
-							<box-icon
-								name="flag"
-								type="solid"
-								color="#38DFF5"
-								size="md"></box-icon>
-						</i>
-						<span v-if="sideBarExtended" class="text-nowrap">
+						class="hover:cursor-pointer flex items-center gap-1 px-4">
+						<i class="bx bxs-flag bx-md text-primary-300 flex"></i>
+						<span v-if="sideBarExtended" class="text-nowrap hover:underline">
 							Learning paths
 						</span>
 					</RouterLink>
@@ -133,15 +101,11 @@
 				<li class="text-primary-300 relative w-full text-lg">
 					<button
 						@click="handleLogout"
-						class="hover:underline hover:cursor-pointer flex items-center gap-1 px-4">
-						<i class="flex items-start justify-start">
-							<box-icon
-								name="log-out"
-								type="solid"
-								color="#38DFF5"
-								size="md"></box-icon>
-						</i>
-						<span v-if="sideBarExtended" class="text-nowrap">Log out</span>
+						class="hover:cursor-pointer flex items-center gap-1 px-4">
+						<i class="bx bxs-log-out bx-md text-primary-300 flex"></i>
+						<span v-if="sideBarExtended" class="text-nowrap hover:underline">
+							Log out
+						</span>
 					</button>
 				</li>
 			</ul>

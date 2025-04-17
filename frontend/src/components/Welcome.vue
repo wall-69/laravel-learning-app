@@ -2,37 +2,30 @@
 	<div
 		class="bg-secondary-400 flex flex-col flex-1 max-w-2xl gap-3 p-4 pb-5 rounded-md">
 		<div class="flex gap-1">
-			<i>
-				<box-icon name="pin" type="solid" color="#4DEDFF" size="md"></box-icon>
-			</i>
+			<i class="bx bxs-pin bx-md text-primary-200 flex"></i>
 			<p class="text-2xl text-gray-100">Welcome back, Tomáš!</p>
 		</div>
 
 		<div class="md:flex-row flex flex-col flex-wrap gap-4">
 			<RouterLink
 				class="bg-primary-200 hover:bg-primary-300 flex items-center gap-2 px-3 py-1 text-lg transition-colors rounded-md">
-				<i class="flex content-center">
-					<box-icon name="customize" type="solid" color="#1B1B1"></box-icon>
-				</i>
+				<i class="bx bxs-customize bx-sm flex text-gray-900"></i>
 				Your word packs
 			</RouterLink>
 			<RouterLink
 				class="bg-primary-200 hover:bg-primary-300 flex items-center gap-2 px-3 py-1 text-lg transition-colors rounded-md">
-				<i class="flex content-center">
-					<box-icon name="flag" color="#1B1B1"></box-icon>
-				</i>
+				<i class="bx bxs-flag bx-sm flex text-gray-900"></i>
 				Your paths
 			</RouterLink>
 			<RouterLink
 				class="bg-primary-200 hover:bg-primary-300 flex items-center gap-2 px-3 py-1 text-lg transition-colors rounded-md">
-				<i class="flex content-center">
-					<box-icon name="spreadsheet" color="#1B1B1"></box-icon>
-				</i>
+				<i class="bx bxs-spreadsheet bx-sm flex text-gray-900"></i>
 				Read more
 			</RouterLink>
 		</div>
 	</div>
 </template>
+
 <script setup>
 import { RouterLink } from "vue-router";
 </script>

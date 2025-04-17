@@ -40,15 +40,11 @@
 						class="bg-secondary-400 border-secondary-200 sticky right-0 px-4 py-2 text-center align-middle border-l-2">
 						<!-- Edit -->
 						<button @click="handleEdit(d.id)" class="mr-2" v-if="edittable">
-							<i>
-								<box-icon name="edit" type="solid" color="#F1F1F1"></box-icon>
-							</i>
+							<i class="bx bxs-edit bx-sm text-gray-100"></i>
 						</button>
 						<!-- Delete -->
 						<button @click="handleDelete(d.id)" v-if="deletable">
-							<i>
-								<box-icon name="trash" type="solid" color="#F1F1F1"></box-icon>
-							</i>
+							<i class="bx bxs-trash bx-sm text-gray-100"></i>
 						</button>
 					</td>
 				</tr>
@@ -58,14 +54,10 @@
 		<div class="flex items-center justify-center w-full gap-2">
 			<button @click="previousPage" :disabled="page <= 1 || loading">
 				<i
+					class="bx bxs-chevron-left bx-md text-gray-100"
 					:class="{
 						'opacity-50': page <= 1,
 					}">
-					<box-icon
-						name="chevron-left"
-						type="solid"
-						color="#F1F1F1"
-						size="md"></box-icon>
 				</i>
 			</button>
 
@@ -75,14 +67,10 @@
 
 			<button @click="nextPage" :disabled="page >= maxPage || loading">
 				<i
+					class="bx bxs-chevron-right bx-md text-gray-100"
 					:class="{
 						'opacity-50': page >= maxPage,
 					}">
-					<box-icon
-						name="chevron-right"
-						type="solid"
-						color="#F1F1F1"
-						size="md"></box-icon>
 				</i>
 			</button>
 		</div>

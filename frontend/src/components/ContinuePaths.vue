@@ -2,14 +2,12 @@
 	<div
 		class="bg-secondary-300 flex flex-col flex-1 max-w-2xl gap-3 p-4 pb-5 rounded-md">
 		<div class="flex gap-1">
-			<i>
-				<box-icon name="flag" type="solid" color="#4DEDFF" size="lg"></box-icon>
-			</i>
+			<i class="bx bxs-flag bx-lg text-primary-200"></i>
 			<div class="flex flex-col">
 				<h3 class="lg:text-2xl text-lg text-gray-100">
 					Continue in your learning paths.
 				</h3>
-				<p class="lg:block hidden text-gray-100">
+				<p class="sm:block hidden text-gray-100">
 					Enlarge your vocabulary using learning paths with increasing
 					difficulty.
 				</p>

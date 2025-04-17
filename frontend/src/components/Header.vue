@@ -82,18 +82,10 @@
 										'bg-primary-300': !userDropdownVisible,
 										'bg-secondary-500': userDropdownVisible,
 									}">
-									<box-icon
+									<i
 										v-if="userDropdownVisible"
-										name="user"
-										type="solid"
-										color="#38DFF5"
-										size="md"></box-icon>
-									<box-icon
-										v-else
-										name="user"
-										type="solid"
-										color="#08144D"
-										size="md"></box-icon>
+										class="bx bxs-user bx-md text-primary-300"></i>
+									<i v-else class="bx bxs-user bx-md text-secondary-500"></i>
 								</i>
 
 								<!-- User dropdown -->
@@ -105,12 +97,7 @@
 										<ul class="w-max flex flex-col gap-4 m-2">
 											<!-- My profile -->
 											<li class="flex items-center gap-1">
-												<i class="flex items-center">
-													<box-icon
-														name="user-pin"
-														type="solid"
-														color="#38DFF5"></box-icon>
-												</i>
+												<i class="text-primary-300 bx bxs-user-pin bx-sm"></i>
 												<RouterLink
 													class="text-primary-300 hover:text-primary-500 transition-colors">
 													My profile
@@ -119,12 +106,7 @@
 
 											<!-- Log out -->
 											<li class="flex items-center gap-1">
-												<i class="flex items-center">
-													<box-icon
-														name="log-out"
-														type="solid"
-														color="#38DFF5"></box-icon>
-												</i>
+												<i class="text-primary-300 bx bxs-log-out bx-sm"> </i>
 												<button
 													@click="handleLogout"
 													class="text-primary-300 hover:text-primary-500 transition-colors">
@@ -146,16 +128,10 @@
 										'bg-primary-300': !mobileDropdownVisible,
 										'bg-secondary-500': mobileDropdownVisible,
 									}">
-									<box-icon
+									<i
 										v-if="mobileDropdownVisible"
-										name="x"
-										color="#38DFF5"
-										size="md"></box-icon>
-									<box-icon
-										v-else
-										name="menu"
-										color="#08144D"
-										size="md"></box-icon>
+										class="bx bx-x bx-md text-primary-300"></i>
+									<i v-else class="bx bx-menu bx-md text-secondary-500"></i>
 								</i>
 							</li>
 						</ul>
@@ -182,9 +158,7 @@
 			<ul class="flex flex-col items-center gap-4 py-4">
 				<!-- Dashboard -->
 				<li class="flex items-center gap-1">
-					<i class="flex items-center">
-						<box-icon name="dashboard" type="solid" color="#38DFF5"></box-icon>
-					</i>
+					<i class="bx bxs-dashboard bx-sm text-primary-300"></i>
 					<RouterLink
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Dashboard
@@ -195,9 +169,7 @@
 
 				<!-- Word packs -->
 				<li class="flex items-center gap-1">
-					<i class="flex items-center">
-						<box-icon name="customize" type="solid" color="#38DFF5"></box-icon>
-					</i>
+					<i class="bx bxs-customize bx-sm text-primary-300"></i>
 					<RouterLink
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Word packs
@@ -208,9 +180,7 @@
 
 				<!-- Learning paths -->
 				<li class="flex items-center gap-1">
-					<i class="flex items-center">
-						<box-icon name="flag" type="solid" color="#38DFF5"></box-icon>
-					</i>
+					<i class="bx bxs-flag bx-sm text-primary-300"></i>
 					<RouterLink
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Learning paths

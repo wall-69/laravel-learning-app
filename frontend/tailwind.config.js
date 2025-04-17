@@ -5,16 +5,26 @@ export default {
 		extend: {
 			colors: {
 				"primary-100": "#B2F7FF",
+				"primary-content-100": "#363636",
 				"primary-200": "#4DEDFF",
+				"primary-content-200": "#2B2B2B",
 				"primary-300": "#38DFF5",
+				"primary-content-300": "#231F1F",
 				"primary-400": "#00CEE5",
+				"primary-content-400": "#100E0E",
 				"primary-500": "#00AABD",
+				"primary-content-500": "#000000",
 				//
 				"secondary-100": "#264AF8",
+				"secondary-content-100": "#FFFFFF",
 				"secondary-200": "#0B29B8",
+				"secondary-content-200": "#FFFFFF",
 				"secondary-300": "#082191",
+				"secondary-content-300": "#FFFFFF",
 				"secondary-400": "#031772",
+				"secondary-content-400": "#FFFFFF",
 				"secondary-500": "#08144D",
+				"secondary-content-500": "#FFFFFF",
 				//
 				"red-100": "#FF7166",
 				"red-200": "#FF594D",
