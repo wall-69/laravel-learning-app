@@ -2,16 +2,20 @@
 	<CustomHeader></CustomHeader>
 
 	<main
-		class="md:p-16 md:justify-between md:flex-row flex flex-col items-start flex-1 gap-8 p-8">
+		class="md:p-16 lg:justify-center lg:gap-14 xl:gap-20 2xl:gap-28 lg:flex-row flex flex-col items-center flex-1 gap-8 p-8">
 		<!-- Main section -->
 		<section class="flex flex-col justify-center gap-8">
 			<Welcome></Welcome>
+			<div class="sm:grid-cols-2 lg:flex grid grid-cols-1 gap-4">
+				<DailyReview class="lg:hidden block"></DailyReview>
+				<YourStatistics></YourStatistics>
+			</div>
 			<RevisitWordPacks></RevisitWordPacks>
 			<ContinuePaths></ContinuePaths>
 		</section>
 
 		<!-- Sidebar -->
-		<section class="lg:table top-24 sticky hidden">
+		<section class="lg:block top-24 sticky self-start hidden">
 			<DailyReview></DailyReview>
 		</section>
 	</main>
@@ -26,4 +30,5 @@ import Welcome from "@/components/Welcome.vue";
 import RevisitWordPacks from "@/components/RevisitWordPacks.vue";
 import ContinuePaths from "@/components/ContinuePaths.vue";
 import DailyReview from "@/components/DailyReview.vue";
+import YourStatistics from "@/components/YourStatistics.vue";
 </script>

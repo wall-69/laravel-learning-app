@@ -243,7 +243,7 @@
 						<h2 class="md:text-3xl text-2xl font-bold">Custom Word Packs</h2>
 						<p>
 							Are you a teacher? Maybe an enthusiastic vocabulary learner?
-							Doesnt matter! Create your own Word Packs and choose who can use
+							Doesn't matter! Create your own Word Packs and choose who can use
 							them!
 						</p>
 						<ul class="flex flex-col">

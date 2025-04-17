@@ -180,29 +180,41 @@
 			v-show="mobileDropdownVisible"
 			class="bg-secondary-400 fixed w-screen top-[92px] left-0 h-screen-wo-nav">
 			<ul class="flex flex-col items-center gap-4 py-4">
-				<!-- My profile -->
+				<!-- Dashboard -->
 				<li class="flex items-center gap-1">
 					<i class="flex items-center">
-						<box-icon name="user-pin" type="solid" color="#38DFF5"></box-icon>
+						<box-icon name="dashboard" type="solid" color="#38DFF5"></box-icon>
 					</i>
 					<RouterLink
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
-						My profile
+						Dashboard
 					</RouterLink>
 				</li>
 
 				<hr class="bg-secondary-100 w-full h-px" />
 
-				<!-- Log out -->
+				<!-- Word packs -->
 				<li class="flex items-center gap-1">
 					<i class="flex items-center">
-						<box-icon name="log-out" type="solid" color="#38DFF5"></box-icon>
+						<box-icon name="customize" type="solid" color="#38DFF5"></box-icon>
 					</i>
-					<button
-						@click="handleLogout"
+					<RouterLink
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
-						Log out
-					</button>
+						Word packs
+					</RouterLink>
+				</li>
+
+				<hr class="bg-secondary-100 w-full h-px" />
+
+				<!-- Learning paths -->
+				<li class="flex items-center gap-1">
+					<i class="flex items-center">
+						<box-icon name="flag" type="solid" color="#38DFF5"></box-icon>
+					</i>
+					<RouterLink
+						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
+						Learning paths
+					</RouterLink>
 				</li>
 			</ul>
 		</div>

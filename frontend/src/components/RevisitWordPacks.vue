@@ -10,10 +10,10 @@
 					size="lg"></box-icon>
 			</i>
 			<div class="flex flex-col">
-				<h3 class="text-2xl text-gray-100">
+				<h3 class="lg:text-2xl text-lg text-gray-100">
 					Revisit word packs from your vocabulary.
 				</h3>
-				<p class="text-gray-100">
+				<p class="lg:block hidden text-gray-100">
 					Feel free to review your word packs any time you want.
 				</p>
 			</div>
@@ -22,8 +22,8 @@
 		<div class="md:flex-row flex flex-col gap-4">
 			<RouterLink
 				v-if="!wordPacks || wordPacks.length == 0"
-				class="text-primary-200">
-				Click to add word packs to your vocabulary.
+				class="text-primary-200 list-item list-disc list-inside">
+				Add word packs to your vocabulary.
 			</RouterLink>
 
 			<template v-else>

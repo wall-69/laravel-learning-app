@@ -6,8 +6,10 @@
 				<box-icon name="flag" type="solid" color="#4DEDFF" size="lg"></box-icon>
 			</i>
 			<div class="flex flex-col">
-				<h3 class="text-2xl text-gray-100">Continue in your learning paths.</h3>
-				<p class="text-gray-100">
+				<h3 class="lg:text-2xl text-lg text-gray-100">
+					Continue in your learning paths.
+				</h3>
+				<p class="lg:block hidden text-gray-100">
 					Enlarge your vocabulary using learning paths with increasing
 					difficulty.
 				</p>
@@ -15,8 +17,10 @@
 		</div>
 
 		<div class="md:flex-row flex flex-col gap-4">
-			<RouterLink v-if="!paths || paths.length == 0" class="text-primary-200">
-				Click to add paths.
+			<RouterLink
+				v-if="!paths || paths.length == 0"
+				class="text-primary-200 list-item list-disc list-inside">
+				Add paths.
 			</RouterLink>
 
 			<template v-else>
