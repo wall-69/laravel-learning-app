@@ -13,6 +13,7 @@ import AdminView from "@/views/admin/AdminView.vue";
 import AdminHomeView from "@/views/admin/AdminHomeView.vue";
 import AdminUsersView from "@/views/admin/AdminUsersView.vue";
 import AdminAdminsView from "@/views/admin/AdminAdminsView.vue";
+import AdminWordsView from "@/views/admin/AdminWordsView.vue";
 import AdminWordPacksView from "@/views/admin/AdminWordPacksView.vue";
 import AdminPathsView from "@/views/admin/AdminPathsView.vue";
 
@@ -68,6 +69,10 @@ const router = createRouter({
 			name: "paths",
 			component: null,
 		},
+		{
+			path: "/p",
+			component: () => import("@/views/PrototypeView.vue"),
+		},
 
 		// Admin
 		{
@@ -107,6 +112,21 @@ const router = createRouter({
 						{
 							path: "edit/:id",
 							name: "admin-admins-edit",
+						},
+					],
+				},
+				{
+					path: "words",
+					name: "admin-words",
+					component: AdminWordsView,
+					children: [
+						{
+							path: "create",
+							name: "admin-words-create",
+						},
+						{
+							path: "edit/:id",
+							name: "admin-words-edit",
 						},
 					],
 				},

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\WordPack;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +14,12 @@ return new class extends Migration
     {
         Schema::create("words", function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(WordPack::class)->constrained()->onDelete("cascade");
             $table->string("word");
-            $table->string("translation");
-            $table->string("context");
+            $table->string("word_translation");
             $table->string("example");
+            $table->string("example_translation");
+            $table->string("explanation");
             $table->string("image")->nullable();
             $table->timestamps();
         });

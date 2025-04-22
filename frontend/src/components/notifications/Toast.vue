@@ -14,17 +14,18 @@
 			{{ notification.message }}
 		</p>
 
-		<i
-			class="hover:cursor-pointer flex content-center"
+		<button
+			class="hover:cursor-pointer flex items-center justify-center"
 			@click="removeNotification(notification.id)">
 			<i
 				v-if="notification.type != 'warning'"
-				class="bx bx-x text-gray-200"></i>
-			<i v-else class="bx bx-x text-gray-800"></i>
-		</i>
+				class="bx bx-x bx-sm text-gray-200"></i>
+			<i v-else class="bx bx-x bx-sm text-gray-800"></i>
+		</button>
 	</div>
 </template>
 <script setup>
+import { onMounted } from "vue";
 import useNotifications from "@/composables/useNotifications";
 
 // Composables
@@ -33,5 +34,12 @@ const { removeNotification } = useNotifications();
 // Define
 const props = defineProps({
 	notification: Object,
+});
+
+// Lifecycle
+onMounted(() => {
+	setTimeout(() => {
+		removeNotification(props.notification.id);
+	}, 3000);
 });
 </script>

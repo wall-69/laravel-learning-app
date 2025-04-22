@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PathController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordPackController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,16 @@ Route::controller(AdminController::class)->name("admins.")->middleware(["auth:sa
 });
 
 
+Route::controller(WordController::class)->name("words.")->middleware("auth:sanctum")->group(function () {
+    // General
+    Route::get("/words/{word}", "wordById");
+
+    Route::get("/words", "index")->name("index");
+    Route::post("/words", "store")->name("store");
+    Route::patch("/words/{word}", "update")->name("update");
+    Route::delete("/words/{word}", "destroy")->name("destroy");
+});
+
 Route::controller(WordPackController::class)->name("word-packs.")->middleware("auth:sanctum")->group(function () {
     // General
     Route::get("/word-packs/{wordPack}", "wordPackById");
@@ -61,6 +72,8 @@ Route::controller(WordPackController::class)->name("word-packs.")->middleware("a
     Route::post("/word-packs", "store")->name("store");
     Route::patch("/word-packs/{wordPack}", "update")->name("update");
     Route::delete("/word-packs/{wordPack}", "destroy")->name("destroy");
+
+    Route::post("/user/words/add/{wordPack}", "addToUser");
 });
 
 Route::controller(PathController::class)->name("paths.")->middleware("auth:sanctum")->group(function () {

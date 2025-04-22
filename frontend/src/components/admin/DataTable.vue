@@ -139,7 +139,10 @@ async function loadData() {
 			emit("update:data", response.data.data);
 		},
 		failCallback: async (response) => {
-			console.error("Could not load users from the database.", response);
+			console.error(
+				"Could not load " + props.modelName + "s from the database.",
+				response
+			);
 		},
 	});
 

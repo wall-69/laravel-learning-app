@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\WordPackType;
 use App\Enums\WordPackVisibility;
+use App\Models\UserWord;
 use App\Models\WordPack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -65,7 +66,7 @@ class WordPackController extends Controller
             "name" => "required|string|min:1|max:60",
             "description" => "required|string|min:10|max:255",
             "visibility" => ["required", Rule::enum(WordPackVisibility::class)],
-            "image" => "nullable|image"
+            "image" => "nullable"
         ]);
 
         // Save image
@@ -111,5 +112,37 @@ class WordPackController extends Controller
                 ]
             ]
         ]);
+    }
+
+    public function addToUser(Request $request, WordPack $wordPack)
+    {
+        $user = $request->user();
+
+        // Fetches all word_ids the user already has from MongoDB UserWord that are part of this word pack. 
+        // Converts to array for fast lookup.
+        $existingWordIds = UserWord::where("user_id", $user->id)
+            ->whereIn("word_id", $wordPack->words->pluck("id"))
+            ->pluck("word_id")
+            ->toArray();
+        // Filters out word_ids that the user already has added
+        $wordsToAdd = $wordPack->words->filter(fn ($word) => !in_array($word->id, $existingWordIds));
+
+        // Create array data to be inserted
+        $now = now();
+        $insertData = $wordsToAdd->values()->map(function ($word) use ($user, $now) {
+            return [
+                "user_id" => $user->id,
+                "word_id" => $word->id,
+                "group" => 1,
+                "next_review_at" => $now,
+                "created_at" => $now,
+                "updated_at" => $now,
+            ];
+        })->all();
+
+        // Insert the data, if there are any
+        if (!empty($insertData)) {
+            UserWord::insert($insertData);
+        }
     }
 }

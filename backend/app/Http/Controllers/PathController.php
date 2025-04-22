@@ -57,7 +57,7 @@ class PathController extends Controller
         $data = $request->validate([
             "name" => "required|string|min:1|max:60",
             "description" => "required|string|min:10|max:255",
-            "image" => "nullable|image"
+            "image" => "nullable"
         ]);
 
         // Save image

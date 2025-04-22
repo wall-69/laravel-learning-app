@@ -37,6 +37,7 @@ export async function handleRequest({
 		// Call the fail callback
 		await failCallback(ex);
 
+		// If there is no response return with no success and no response
 		if (!ex.response) {
 			return {
 				success: false,

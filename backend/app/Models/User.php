@@ -9,11 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use MongoDB\Laravel\Eloquent\HybridRelations;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
+    use HybridRelations;
+
+    protected $connection = "mysql";
 
     protected $fillable = [
         "name",
@@ -44,6 +48,12 @@ class User extends Authenticatable
     public function admin()
     {
         return $this->hasOne(Admin::class);
+    }
+
+    public function userWords()
+    {
+        return $this->hasMany(UserWord::class, "user_id", "id");
+        // return UserWord::where("user_id", $this->id, )
     }
 
     public function scopeSearch(Builder $query, string $search)

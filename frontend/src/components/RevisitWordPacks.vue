@@ -13,6 +13,7 @@
 			</div>
 		</div>
 
+		<button @click="addWordPack">add beginner wordpack</button>
 		<div class="md:flex-row flex flex-col gap-4">
 			<RouterLink
 				v-if="!wordPacks || wordPacks.length == 0"
@@ -42,8 +43,21 @@
 </template>
 
 <script setup>
+import { handleRequest } from "@/utils/requestWrapper";
+import axios from "axios";
+
 // Define
 const props = defineProps({
 	wordPacks: Array,
 });
+
+// Functions
+async function addWordPack() {
+	await handleRequest({
+		request: () => axios.post("/api/user/words/add/1"),
+		successCallback: async (response) => {
+			console.log(response);
+		},
+	});
+}
 </script>

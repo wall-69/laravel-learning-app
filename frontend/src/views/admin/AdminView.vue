@@ -65,6 +65,22 @@
 						</span>
 					</RouterLink>
 				</li>
+				<!-- Words -->
+				<li class="text-primary-300 relative w-full text-lg">
+					<div
+						class="bg-primary-300 top-1 absolute w-1 h-8"
+						:class="{
+							hidden: $route.name != 'admin-words',
+						}"></div>
+					<RouterLink
+						:to="{ name: 'admin-words' }"
+						class="hover:cursor-pointer flex items-center gap-1 px-4">
+						<i class="bx bxs-data bx-md text-primary-300 flex"></i>
+						<span v-if="sideBarExtended" class="text-nowrap hover:underline">
+							Words
+						</span>
+					</RouterLink>
+				</li>
 				<!-- Word packs -->
 				<li class="text-primary-300 relative w-full text-lg">
 					<div
