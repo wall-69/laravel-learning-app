@@ -73,7 +73,11 @@ class WordPackController extends Controller
         if ($request->hasFile("image") || $request->image == null) {
             // Delete old image, if one is set
             if ($wordPack->image) {
-                Storage::disk("public")->delete(str_replace("storage/", "", $wordPack->image));
+                $filePath = str_replace("storage/", "", $wordPack->image);
+
+                if (Storage::disk("public")->fileExists($filePath)) {
+                    Storage::disk("public")->delete($filePath);
+                }
             }
 
             if ($request->image) {
@@ -100,6 +104,15 @@ class WordPackController extends Controller
         // If it is not the user who created the WordPack or an admin, cancel the request
         if ($request->user()->id != $wordPack->user_id && !$request->user()->admin) {
             abort(403, "You can't do this.");
+        }
+
+        // Remove the image
+        if ($wordPack->image) {
+            $filePath = str_replace("storage/", "", $wordPack->image);
+
+            if (Storage::disk("public")->fileExists($filePath)) {
+                Storage::disk("public")->delete($filePath);
+            }
         }
 
         $wordPack->delete();

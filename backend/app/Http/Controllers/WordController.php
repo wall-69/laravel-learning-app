@@ -25,6 +25,7 @@ class WordController extends Controller
     {
         // Validate data
         $data = $request->validate([
+            "word_pack_id" => "integer|exists:word_packs,id",
             "word" => "string|max:255",
             "word_translation" => "string|max:255",
             "example" => "string|max:255",
@@ -54,6 +55,7 @@ class WordController extends Controller
         }
 
         $data = $request->validate([
+            "word_pack_id" => "integer|exists:word_packs,id",
             "word" => "string|max:255",
             "word_translation" => "string|max:255",
             "example" => "string|max:255",
@@ -66,8 +68,13 @@ class WordController extends Controller
         if ($request->hasFile("image") || $request->image == null) {
             // Delete old image, if one is set
             if ($word->image) {
-                Storage::disk("public")->delete(str_replace("storage/", "", $word->image));
+                $filePath = str_replace("storage/", "", $word->image);
+
+                if (Storage::disk("public")->fileExists($filePath)) {
+                    Storage::disk("public")->delete($filePath);
+                }
             }
+
 
             if ($request->image) {
                 $data["image"] = "storage/" . $request->image->store("img/words", "public");
@@ -93,6 +100,14 @@ class WordController extends Controller
         // If it is not the user who created the Word or an admin, cancel the request
         if ($request->user()->id != $word->user_id && !$request->user()->admin) {
             abort(403, "You can't do this.");
+        }
+
+        if ($word->image) {
+            $filePath = str_replace("storage/", "", $word->image);
+
+            if (Storage::disk("public")->fileExists($filePath)) {
+                Storage::disk("public")->delete($filePath);
+            }
         }
 
         $word->delete();

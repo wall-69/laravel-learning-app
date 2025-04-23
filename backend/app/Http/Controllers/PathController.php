@@ -64,7 +64,11 @@ class PathController extends Controller
         if ($request->hasFile("image") || $request->image == null) {
             // Delete old image, if one is set
             if ($path->image) {
-                Storage::disk("public")->delete(str_replace("storage/", "", $path->image));
+                $filePath = str_replace("storage/", "", $path->image);
+
+                if (Storage::disk("public")->fileExists($filePath)) {
+                    Storage::disk("public")->delete($filePath);
+                }
             }
 
             if ($request->image) {
@@ -91,6 +95,15 @@ class PathController extends Controller
         // If it is not an admin, cancel the request
         if (!$request->user()->admin) {
             abort(403, "You can't do this.");
+        }
+
+        // Delete the image
+        if ($path->image) {
+            $filePath = str_replace("storage/", "", $path->image);
+
+            if (Storage::disk("public")->fileExists($filePath)) {
+                Storage::disk("public")->delete($filePath);
+            }
         }
 
         $path->delete();

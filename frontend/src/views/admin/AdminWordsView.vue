@@ -45,6 +45,14 @@
 			:redirect-route-name="'admin-words'"
 			class="self-center">
 			<template #header>New Word</template>
+			<template #input-word_pack_id="{ form }">
+				<input
+					type="number"
+					name="word_pack_id"
+					class="input"
+					autocomplete="off"
+					v-model="form.word_pack_id" />
+			</template>
 			<template #input-word="{ form }">
 				<input
 					type="text"
@@ -109,6 +117,14 @@
 			model-name="word"
 			class="self-center">
 			<template #header>Edit Word</template>
+			<template #input-word_pack_id="{ form }">
+				<input
+					type="number"
+					name="word_pack_id"
+					class="input"
+					autocomplete="off"
+					v-model="form.word_pack_id" />
+			</template>
 			<template #input-word="{ form }">
 				<input
 					type="text"

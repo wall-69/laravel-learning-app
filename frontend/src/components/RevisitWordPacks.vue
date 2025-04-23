@@ -13,6 +13,7 @@
 			</div>
 		</div>
 
+		<!-- todo -->
 		<button @click="addWordPack">add beginner wordpack</button>
 		<div class="md:flex-row flex flex-col gap-4">
 			<RouterLink

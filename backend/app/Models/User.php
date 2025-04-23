@@ -53,7 +53,6 @@ class User extends Authenticatable
     public function userWords()
     {
         return $this->hasMany(UserWord::class, "user_id", "id");
-        // return UserWord::where("user_id", $this->id, )
     }
 
     public function scopeSearch(Builder $query, string $search)

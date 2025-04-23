@@ -11,7 +11,7 @@ class Word extends Model
     use HasFactory;
 
     protected $fillable = [
-        "word", "word_translation", "example", "example_translation", "explanation", "image"
+        "word_pack_id", "word", "word_translation", "example", "example_translation", "explanation", "image"
     ];
 
     protected function casts()
