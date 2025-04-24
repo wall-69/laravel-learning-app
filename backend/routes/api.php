@@ -4,9 +4,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PathController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserWordController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordPackController;
 use Illuminate\Support\Facades\Route;
+
+use function Symfony\Component\String\b;
 
 /*
     Routes
@@ -84,4 +87,9 @@ Route::controller(PathController::class)->name("paths.")->middleware("auth:sanct
     Route::post("/paths", "store")->name("store");
     Route::patch("/paths/{path}", "update")->name("update");
     Route::delete("/paths/{path}", "destroy")->name("destroy");
+});
+
+Route::controller(UserWordController::class)->name("user-words.")->middleware("auth:sanctum")->group(function () {
+    // General
+    Route::get("/user/words/due", "due")->name("due");
 });

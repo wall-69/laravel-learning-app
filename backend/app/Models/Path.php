@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Path extends Model
 {
+    protected $connection = "mysql";
+
     protected $fillable = [
         "name", "description", "image"
     ];

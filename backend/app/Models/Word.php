@@ -10,6 +10,8 @@ class Word extends Model
 {
     use HasFactory;
 
+    protected $connection = "mysql";
+
     protected $fillable = [
         "word_pack_id", "word", "word_translation", "example", "example_translation", "explanation", "image"
     ];

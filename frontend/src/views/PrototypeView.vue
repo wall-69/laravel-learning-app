@@ -1,10 +1,9 @@
-W
 <template>
 	<div
 		class="grow flex flex-col items-center justify-center gap-8 px-8 py-6 bg-white">
 		<!-- Stats -->
 		<div class="flex items-center justify-center gap-8">
-			<span class="text-4xl font-bold">15</span>
+			<span class="text-4xl font-bold">{{ remainingWords }}</span>
 		</div>
 
 		<!-- Card -->
@@ -14,11 +13,12 @@ W
 			<!-- Scrollable child -->
 			<div
 				ref="scrollable"
+				v-if="word && words.length > 0"
 				class="overflow-wrap-anywhere flex flex-col items-center justify-center h-full gap-5 px-8 py-4 overflow-y-scroll break-words">
 				<!-- Front -->
 				<template v-if="!revealed">
 					<!-- Word -->
-					<span class="text-3xl font-bold">{{ word.word }}</span>
+					<span class="mt-auto text-3xl font-bold">{{ word.word }}</span>
 
 					<!-- Image -->
 					<!-- <img
@@ -28,7 +28,7 @@ W
 						class="sm:h-24 sm:w-24 object-fill w-20 h-20 rounded-sm shadow-lg" /> -->
 
 					<!-- Example -->
-					<div class="flex flex-col gap-1">
+					<div class="flex flex-col self-start gap-1 mt-auto">
 						<span
 							class="text-xs font-bold bg-primary-200 px-1.5 py-0.5 rounded-lg text-primary-content-200 self-start">
 							EXAMPLE
@@ -41,37 +41,40 @@ W
 				<!-- Back -->
 				<template v-else>
 					<!-- Word - translated -->
-					<span class="text-3xl font-bold">
-						{{ word.wordTranslation }}
+					<span class="mt-auto text-3xl font-bold">
+						{{ word.word_translation }}
 					</span>
 
 					<!-- Image -->
 					<img
 						v-if="word.image"
-						:src="word.image"
+						:src="asset(word.image)"
 						alt=""
 						class="sm:h-24 sm:w-24 object-fill w-20 h-20 rounded-sm shadow-lg" />
 
 					<!-- Example - translated -->
-					<div class="flex flex-col gap-1">
+					<div class="flex flex-col self-start gap-1 mt-auto">
 						<span
 							class="text-xs font-bold bg-primary-200 px-1.5 py-0.5 rounded-lg text-primary-content-200 self-start">
 							EXAMPLE
 						</span>
-						<p class="text-left">{{ word.exampleTranslation }}</p>
+						<p class="text-left">{{ word.example_translation }}</p>
 					</div>
 
 					<!-- Explanation -->
-					<div class="flex flex-col gap-1">
+					<div class="flex flex-col self-start gap-1">
 						<span
 							class="text-xs font-bold bg-primary-200 px-1.5 py-0.5 rounded-lg text-primary-content-200 self-start">
 							EXPLANATION
 						</span>
-						<p class="text-sm text-left">
+						<p class="text-left">
 							{{ word.explanation }}
 						</p>
 					</div>
 				</template>
+			</div>
+			<div v-else class="my-auto">
+				<p class="text-xl">Loading...</p>
 			</div>
 		</div>
 
@@ -104,23 +107,33 @@ W
 	</div>
 </template>
 <script setup>
-import { nextTick, onMounted, ref } from "vue";
+import axios from "axios";
+import { nextTick, onMounted, ref, computed } from "vue";
+import { handleRequest } from "@/utils/requestWrapper";
+import { asset } from "@/utils/asset";
+
+// Lifecycle
+onMounted(async () => {
+	await loadDueWords();
+});
 
 // Variables
 const card = ref(null);
-const word = ref({
-	word: "to contribute",
-	wordTranslation: "prispieť, prispievať",
-	example: "She contributed valuable ideas to the discussion.",
-	exampleTranslation: "Prispela hodnotnými nápadmi do diskusie.",
-	explanation:
-		"to give (something, such as time, knowledge, or resources) to a common purpose or for the benefit of others, often as part of a group effort",
-	image: "https://wiki.openmindsclub.net/contribute-to-openwiki/thumbnail.jpg",
-});
+const word = ref({});
 const revealed = ref(false);
 const answered = ref(false);
-const animState = ref("idle");
 const scrollable = ref(null);
+
+const words = ref([]);
+
+// Computed
+const remainingWords = computed(() => {
+	if (words.value.length == 0) {
+		return 0;
+	}
+
+	return words.value.length - words.value.indexOf(word.value);
+});
 
 // Functions
 function handleReveal() {
@@ -136,6 +149,35 @@ function handleAnswer(correct) {
 	answered.value = true;
 
 	// Show next card
+
+	const currentWordIdx = words.value.indexOf(word.value);
+	if (currentWordIdx == -1) {
+		// TODO: idfk
+		return;
+	}
+
+	if (remainingWords.value == 1) {
+		// TODO: end
+		return;
+	}
+
+	word.value = words.value[currentWordIdx + 1];
+
+	revealed.value = false;
+	answered.value = false;
+}
+
+async function loadDueWords() {
+	await handleRequest({
+		request: () => axios.get("/api/user/words/due"),
+		successCallback: async (response) => {
+			words.value = response.data.due_words;
+			word.value = words.value[0];
+		},
+		failCallback: async (response) => {
+			console.error("Could not load due words.");
+		},
+	});
 }
 </script>
 

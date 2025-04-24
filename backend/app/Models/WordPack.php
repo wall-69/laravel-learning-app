@@ -10,6 +10,8 @@ class WordPack extends Model
 {
     use HasFactory;
 
+    protected $connection = "mysql";
+
     protected $fillable = [
         "path_id", "user_id", "name", "description", "type", "visibility", "image"
     ];

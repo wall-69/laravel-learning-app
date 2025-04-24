@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\WordPackType;
 use App\Enums\WordPackVisibility;
 use App\Models\UserWord;
+use App\Models\UserWordPack;
 use App\Models\WordPack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -131,8 +132,18 @@ class WordPackController extends Controller
     {
         $user = $request->user();
 
-        // Fetches all word_ids the user already has from MongoDB UserWord that are part of this word pack. 
-        // Converts to array for fast lookup.
+        // Dont add this WordPack, if user has already added it
+        if (UserWordPack::where("user_id", $user->id)->where("word_pack_id", $wordPack->id)->exists()) {
+            abort(400, "You already have this WordPack added.");
+        }
+
+        // Add this WordPack to users WordPacks
+        UserWordPack::create([
+            "user_id" => $user->id,
+            "word_pack_id" => $wordPack->id
+        ]);
+
+        // Fetches all word_ids the user already has from MongoDB UserWord that are part of this word pack.
         $existingWordIds = UserWord::where("user_id", $user->id)
             ->whereIn("word_id", $wordPack->words->pluck("id"))
             ->pluck("word_id")
@@ -147,7 +158,7 @@ class WordPackController extends Controller
                 "user_id" => $user->id,
                 "word_id" => $word->id,
                 "group" => 1,
-                "next_review_at" => $now,
+                "review_at" => $now,
                 "created_at" => $now,
                 "updated_at" => $now,
             ];

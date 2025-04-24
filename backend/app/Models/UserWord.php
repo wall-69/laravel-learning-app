@@ -9,6 +9,16 @@ class UserWord extends Model
     protected $connection = "mongodb";
 
     protected $fillable = [
-        "user_id", "word_id", "next_review"
+        "user_id", "word_id", "next_review_at"
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function word()
+    {
+        return $this->belongsTo(Word::class);
+    }
 }
