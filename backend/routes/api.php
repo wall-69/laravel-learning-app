@@ -92,4 +92,6 @@ Route::controller(PathController::class)->name("paths.")->middleware("auth:sanct
 Route::controller(UserWordController::class)->name("user-words.")->middleware("auth:sanctum")->group(function () {
     // General
     Route::get("/user/words/due", "due")->name("due");
+
+    Route::post("/user/words/{userWord}/correct", "correct");
 });

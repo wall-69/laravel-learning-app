@@ -9,7 +9,7 @@ class UserWord extends Model
     protected $connection = "mongodb";
 
     protected $fillable = [
-        "user_id", "word_id", "next_review_at"
+        "user_id", "word_id", "review_at", "group"
     ];
 
     public function user()
