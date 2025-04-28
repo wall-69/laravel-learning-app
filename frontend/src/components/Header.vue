@@ -1,6 +1,6 @@
 <template>
 	<header
-		class="bg-secondary-500 border-primary-300 sticky top-0 z-10 px-10 py-5 border-b-4">
+		class="bg-secondary-500 border-primary-300 sticky top-0 z-20 px-10 py-5 border-b-4">
 		<nav class="flex justify-between">
 			<h1 class="text-primary-300 flex items-center text-3xl">DailyVocab</h1>
 
@@ -154,7 +154,7 @@
 	<Transition name="mobile-dropdown">
 		<div
 			v-show="mobileDropdownVisible"
-			class="bg-secondary-400 fixed w-screen top-[92px] left-0 h-screen-wo-nav">
+			class="bg-secondary-400 fixed w-screen top-[92px] left-0 h-screen-wo-nav z-10">
 			<ul class="flex flex-col items-center gap-4 py-4">
 				<!-- Dashboard -->
 				<li class="flex items-center gap-1">

@@ -5,8 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PathController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserWordController;
+use App\Http\Controllers\UserWordPackController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordPackController;
+use App\Models\UserWordPack;
 use Illuminate\Support\Facades\Route;
 
 use function Symfony\Component\String\b;
@@ -91,7 +93,12 @@ Route::controller(PathController::class)->name("paths.")->middleware("auth:sanct
 
 Route::controller(UserWordController::class)->name("user-words.")->middleware("auth:sanctum")->group(function () {
     // General
-    Route::get("/user/words/due", "due")->name("due");
+    Route::get("/user/words/due", "due");
 
     Route::post("/user/words/{userWord}/correct", "correct");
+});
+
+Route::controller(UserWordPackController::class)->name("user-word-packs.")->middleware("auth:sanctum")->group(function () {
+    // General
+    Route::get("/user/word-packs/", "index")->name("index");
 });

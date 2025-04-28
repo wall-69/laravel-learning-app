@@ -11,7 +11,7 @@ class AdminController extends Controller
     {
         $paginator = Admin::paginate(30);
 
-        return response($paginator);
+        return response()->json($paginator);
     }
 
     public function store(Request $request)

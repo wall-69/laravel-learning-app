@@ -18,7 +18,7 @@ class WordController extends Controller
     {
         $paginator = Word::search($request->search ?? "")->latest()->paginate(30);
 
-        return response($paginator);
+        return response()->json($paginator);
     }
 
     public function store(Request $request)

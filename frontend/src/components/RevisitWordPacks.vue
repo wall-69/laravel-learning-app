@@ -13,9 +13,7 @@
 			</div>
 		</div>
 
-		<!-- todo -->
-		<button @click="addWordPack">add beginner wordpack</button>
-		<div class="md:flex-row flex flex-col gap-4">
+		<div class="flex-nowrap flex h-64 gap-4 overflow-x-scroll">
 			<RouterLink
 				v-if="!wordPacks || wordPacks.length == 0"
 				class="text-primary-200 list-item list-disc list-inside">
@@ -24,19 +22,20 @@
 
 			<template v-else>
 				<RouterLink
-					class="bg-primary-200 hover:bg-primary-300 flex flex-col items-center gap-2 p-3 pb-4 transition-colors rounded-md">
-					<p class="underline">Word pack name</p>
-					<img src="" alt="" class="w-[72px] h-[72px] object-cover" />
-				</RouterLink>
-				<RouterLink
-					class="bg-primary-200 hover:bg-primary-300 flex flex-col items-center gap-2 p-3 pb-4 transition-colors rounded-md">
-					<p class="underline">Word pack name</p>
-					<img src="" alt="" class="w-[72px] h-[72px] object-cover" />
-				</RouterLink>
-				<RouterLink
-					class="bg-primary-200 hover:bg-primary-300 flex flex-col items-center gap-2 p-3 pb-4 transition-colors rounded-md">
-					<p class="underline">Word pack name</p>
-					<img src="" alt="" class="w-[72px] h-[72px] object-cover" />
+					v-for="wordPack in wordPacks"
+					class="hover:bg-gray-50 min-w-fit flex flex-col items-center gap-2 p-3 transition-colors bg-white rounded-md">
+					<h6
+						class="text-primary-400 px-1 mb-2 text-lg font-bold text-center rounded-md">
+						{{ wordPack.name }}
+					</h6>
+					<img
+						v-if="wordPack.image"
+						:src="asset(wordPack.image)"
+						alt=""
+						class="object-cover w-48 h-48 rounded-md" />
+					<p v-else class="max-w-48 my-auto text-sm text-center break-words">
+						{{ wordPack.description }}
+					</p>
 				</RouterLink>
 			</template>
 		</div>
@@ -46,18 +45,28 @@
 <script setup>
 import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
+import { onMounted, ref } from "vue";
+import { asset } from "@/utils/asset";
 
 // Define
 const props = defineProps({
 	wordPacks: Array,
 });
 
+// Lifecycle
+onMounted(async () => {
+	await loadWordPacks();
+});
+
+// Variables
+const wordPacks = ref([]);
+
 // Functions
-async function addWordPack() {
+async function loadWordPacks() {
 	await handleRequest({
-		request: () => axios.post("/api/user/words/add/1"),
+		request: () => axios.get("/api/user/word-packs"),
 		successCallback: async (response) => {
-			console.log(response);
+			wordPacks.value = response.data;
 		},
 	});
 }

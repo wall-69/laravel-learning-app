@@ -22,7 +22,7 @@ class WordPackController extends Controller
     {
         $paginator = WordPack::search($request->search ?? "")->latest()->paginate(30);
 
-        return response($paginator);
+        return response()->json($paginator);
     }
 
     public function store(Request $request)
@@ -168,5 +168,9 @@ class WordPackController extends Controller
         if (!empty($insertData)) {
             UserWord::insert($insertData);
         }
+
+        return response()->json([
+            "message" => "Successfully added WordPack to user."
+        ]);
     }
 }

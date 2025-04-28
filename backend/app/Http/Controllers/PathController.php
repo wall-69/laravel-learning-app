@@ -17,7 +17,7 @@ class PathController extends Controller
     {
         $paginator = Path::search($request->search ?? "")->latest()->paginate(30);
 
-        return response($paginator);
+        return response()->json($paginator);
     }
 
     public function store(Request $request)

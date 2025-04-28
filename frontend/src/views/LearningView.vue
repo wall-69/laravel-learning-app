@@ -2,7 +2,7 @@
 	<CustomHeader></CustomHeader>
 
 	<main
-		class="md:p-16 lg:justify-center lg:gap-14 xl:gap-20 2xl:gap-28 lg:flex-row flex flex-col items-center flex-1 gap-8 p-8">
+		class="md:p-16 lg:justify-center lg:gap-14 xl:gap-20 2xl:gap-28 lg:flex-row flex flex-col flex-1 gap-8 p-2">
 		<!-- Main section -->
 		<section class="flex flex-col justify-center gap-8">
 			<Welcome></Welcome>
