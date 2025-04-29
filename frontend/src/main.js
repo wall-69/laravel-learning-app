@@ -6,7 +6,6 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import useAuth from "./composables/useAuth";
-import { handleRequest } from "@/utils/requestWrapper";
 
 // Axios
 axios.defaults.baseURL = "http://localhost:8000";

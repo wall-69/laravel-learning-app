@@ -21,6 +21,7 @@
 							<!-- Dashboard -->
 							<li class="lg:block hidden">
 								<RouterLink
+									:to="{ name: 'learning' }"
 									class="hover:underline text-xl transition-all"
 									:class="{
 										'text-primary-400 font-medium': $route.name == 'learning',
@@ -29,20 +30,10 @@
 								</RouterLink>
 							</li>
 
-							<!-- Blog -->
-							<li class="lg:block hidden">
-								<RouterLink
-									class="hover:underline text-xl transition-all"
-									:class="{
-										'text-primary-400 font-medium': $route.name == 'blog',
-									}">
-									Blog
-								</RouterLink>
-							</li>
-
 							<!-- Learning paths -->
 							<li class="lg:block hidden">
 								<RouterLink
+									:to="{ name: 'paths' }"
 									class="hover:underline text-xl transition-all"
 									:class="{
 										'text-primary-400 font-medium': $route.name == 'paths',
@@ -54,11 +45,23 @@
 							<!-- Word packs -->
 							<li class="lg:block hidden">
 								<RouterLink
+									:to="{ name: 'word-packs' }"
 									class="hover:underline text-xl transition-all"
 									:class="{
 										'text-primary-400 font-medium': $route.name == 'word-packs',
 									}">
 									Word packs
+								</RouterLink>
+							</li>
+
+							<!-- Blog -->
+							<li class="lg:block hidden">
+								<RouterLink
+									class="hover:underline text-xl transition-all"
+									:class="{
+										'text-primary-400 font-medium': $route.name == 'blog',
+									}">
+									Blog
 								</RouterLink>
 							</li>
 
@@ -160,6 +163,7 @@
 				<li class="flex items-center gap-1">
 					<i class="bx bxs-dashboard bx-sm text-primary-300"></i>
 					<RouterLink
+						:to="{ name: 'learning' }"
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Dashboard
 					</RouterLink>
@@ -171,6 +175,7 @@
 				<li class="flex items-center gap-1">
 					<i class="bx bxs-customize bx-sm text-primary-300"></i>
 					<RouterLink
+						:to="{ name: 'word-packs' }"
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Word packs
 					</RouterLink>
@@ -182,6 +187,7 @@
 				<li class="flex items-center gap-1">
 					<i class="bx bxs-flag bx-sm text-primary-300"></i>
 					<RouterLink
+						:to="{ name: 'paths' }"
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Learning paths
 					</RouterLink>

@@ -1,15 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomeView from "../views/HomeView.vue";
-import LearningView from "../views/LearningView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import LoginView from "@/views/LoginView.vue";
+
+import LearningLayout from "../views/layouts/LearningLayout.vue";
+import LearningView from "@/views/learning/LearningView.vue";
+import WordPacksView from "@/views/learning/WordPacksView.vue";
 
 import authGuard from "./guards/authGuard";
 import guestGuard from "./guards/guestGuard";
 import adminGuard from "./guards/adminGuard";
 
-import AdminView from "@/views/admin/AdminView.vue";
+import AdminLayout from "@/views/layouts/AdminLayout.vue";
 import AdminHomeView from "@/views/admin/AdminHomeView.vue";
 import AdminUsersView from "@/views/admin/AdminUsersView.vue";
 import AdminAdminsView from "@/views/admin/AdminAdminsView.vue";
@@ -27,9 +30,25 @@ const router = createRouter({
 		},
 		{
 			path: "/learning",
-			name: "learning",
-			component: LearningView,
+			component: LearningLayout,
 			beforeEnter: [authGuard],
+			children: [
+				{
+					path: "",
+					name: "learning",
+					component: LearningView,
+				},
+				{
+					path: "/word-packs",
+					name: "word-packs",
+					component: WordPacksView,
+				},
+				{
+					path: "/paths",
+					name: "paths",
+					component: null,
+				},
+			],
 		},
 		{
 			path: "/register",
@@ -60,16 +79,6 @@ const router = createRouter({
 			component: null,
 		},
 		{
-			path: "/word-packs",
-			name: "word-packs",
-			component: null,
-		},
-		{
-			path: "/paths",
-			name: "paths",
-			component: null,
-		},
-		{
 			path: "/p",
 			component: () => import("@/views/PrototypeView.vue"),
 		},
@@ -77,7 +86,7 @@ const router = createRouter({
 		// Admin
 		{
 			path: "/admin",
-			component: AdminView,
+			component: AdminLayout,
 			beforeEnter: [adminGuard],
 			children: [
 				{
