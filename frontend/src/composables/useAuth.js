@@ -1,7 +1,10 @@
-import { computed, reactive, ref } from "vue";
+import { computed, reactive } from "vue";
 import axios from "axios";
 import { handleRequest } from "@/utils/requestWrapper";
 import router from "@/router";
+import useUserData from "./useUserData";
+
+const { setWordPacks } = useUserData();
 
 const state = reactive({
 	authenticated: false,
@@ -26,6 +29,7 @@ export default function useAuth() {
 			successCallback: async (response) => {
 				setAuthenticated(true);
 				setUser(response.data.user);
+				setWordPacks(response.data.user.user_word_packs);
 			},
 			failCallback: async (response) => {
 				setAuthenticated(false);

@@ -72,6 +72,7 @@ Route::controller(WordController::class)->name("words.")->middleware("auth:sanct
 Route::controller(WordPackController::class)->name("word-packs.")->middleware("auth:sanctum")->group(function () {
     // General
     Route::get("/word-packs/{wordPack}", "wordPackById");
+    Route::get("/word-packs/{wordPack}/words", "wordPackWordsById");
 
     Route::get("/word-packs", "index")->name("index");
     Route::post("/word-packs", "store")->name("store");

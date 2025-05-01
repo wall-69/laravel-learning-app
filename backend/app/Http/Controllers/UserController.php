@@ -13,7 +13,7 @@ class UserController extends Controller
     public function user(Request $request)
     {
         return response()->json([
-            "user" => $request->user()
+            "user" => $request->user()->load("userWordPacks")
         ]);
     }
 

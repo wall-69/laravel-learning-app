@@ -53,6 +53,26 @@ app.directive("click-outside", {
 	},
 });
 
+// Custom prevent document scroll when
+app.directive("hover-no-document-scroll", {
+	beforeMount(el, binding) {
+		el.preventDocumentScrollOnHover = (e) => {
+			document.body.classList.add("no-scroll");
+		};
+		el.allowDocumentScrollOnHover = (e) => {
+			document.body.classList.remove("no-scroll");
+		};
+
+		el.addEventListener("mouseover", el.preventDocumentScrollOnHover);
+		el.addEventListener("mouseout", el.allowDocumentScrollOnHover);
+	},
+
+	beforeUnmount(el, binding) {
+		el.removeEventListener("mouseover", el.preventDocumentScrollOnHover);
+		el.removeEventListener("mouseout", el.allowDocumentScrollOnHover);
+	},
+});
+
 app.use(router);
 app.use(VCalendar);
 

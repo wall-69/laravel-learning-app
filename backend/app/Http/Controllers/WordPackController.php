@@ -18,6 +18,11 @@ class WordPackController extends Controller
         return response()->json($wordPack);
     }
 
+    public function wordPackWordsById(WordPack $wordPack)
+    {
+        return response()->json($wordPack->load("words"));
+    }
+
     public function index(Request $request)
     {
         $paginator = WordPack::search($request->search ?? "")->latest()->paginate(30);

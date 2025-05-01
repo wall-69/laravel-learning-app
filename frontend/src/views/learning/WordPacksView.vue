@@ -28,9 +28,10 @@
 				</div>
 
 				<!-- Word packs -->
-				<div v-else class="flex gap-4">
+				<div v-else class="md:flex-row flex flex-col gap-4">
 					<div
 						v-for="wordPack in wordPacks"
+						v-hover-no-document-scroll
 						@click="openWordPackModal(wordPack.id)"
 						class="hover:bg-gray-50 min-w-fit hover:cursor-pointer flex flex-col items-center h-64 gap-2 p-3 overflow-y-scroll transition-colors bg-white rounded-md">
 						<h6
@@ -87,37 +88,133 @@
 			tabindex="-1">
 			<!-- Word pack modal content (3) -->
 			<div
-				class="bg-secondary-100 flex flex-col items-center justify-center gap-4 px-4 py-2 rounded-md"
+				class="bg-secondary-100 min-h-max relative flex flex-col items-center justify-center w-full max-w-lg max-h-full px-4 py-2 m-4 rounded-md"
 				role="dialog"
 				aria-modal="true"
 				aria-labelledby="word-pack-modal-title">
-				<header>
-					<h2 id="word-pack-modal-title" class="text-xl">
-						Add <span class="font-bold">{{ modalWordPack.name }}</span> to your
-						vocabulary.
+				<header
+					v-if="Object.keys(modalWordPack).length > 0"
+					class="border-primary-100 w-full py-1 border-b">
+					<h2
+						id="word-pack-modal-title"
+						class="mx-5 text-2xl font-bold text-center">
+						{{ modalWordPack ? modalWordPack.name : "Loading..." }}
 					</h2>
 
 					<!-- Word pack modal close (4) -->
 					<button
-						class="absolute"
+						class="hover:bg-gray-300 rounded-tr-md rounded-bl-md absolute top-0 right-0 flex items-center text-xl text-gray-900 transition-colors bg-gray-100"
 						aria-label="Close modal"
 						data-micromodal-close>
-						X
+						<i class="bx bx-x bx-md"></i>
 					</button>
 				</header>
 
-				<div id="word-pack-modal-content">Modal Content</div>
+				<main
+					id="word-pack-modal-content"
+					class="flex flex-col gap-4 pt-2 overflow-y-scroll">
+					<template v-if="Object.keys(modalWordPack).length > 0">
+						<!-- Image -->
+						<img
+							v-if="modalWordPack.image"
+							:src="asset(modalWordPack.image)"
+							alt=""
+							class="self-center w-48 h-48 rounded-md" />
+
+						<!-- Description -->
+						<p class="text-center">
+							{{ modalWordPack.description }}
+						</p>
+
+						<!-- Words -->
+						<table v-if="modalWordPack.words.length > 0">
+							<thead class="border-primary-300 p-2 border">
+								<tr>
+									<th class="border-primary-300 p-1 text-center border">
+										Word
+									</th>
+									<th class="border-primary-300 p-1 text-center border">
+										Word translation
+									</th>
+									<th
+										class="md:table-cell border-primary-300 hidden p-1 text-center border">
+										Image
+									</th>
+									<th class="border-primary-300 p-1 text-center border">Add</th>
+								</tr>
+							</thead>
+							<tbody class="border-primary-300 p-2 border">
+								<tr
+									v-for="word in modalWordPack.words"
+									class="border-primary-300 border">
+									<td class="border-primary-300 px-2 py-1 border">
+										{{ word.word }}
+									</td>
+									<td class="border-primary-300 px-2 py-1 border">
+										{{ word.word_translation }}
+									</td>
+									<td
+										class="md:table-cell border-primary-300 hidden px-2 py-1 text-center border">
+										<img
+											v-if="word.image"
+											:src="asset(word.image)"
+											alt=""
+											class="w-20 h-20" />
+										<p v-else>No image</p>
+									</td>
+									<td class="border-primary-300 px-2 py-1 text-center border">
+										<input
+											type="checkbox"
+											checked="true"
+											class="accent-white w-6 h-6" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p
+							v-else-if="
+								modalWordPack &&
+								modalWordPack.words &&
+								modalWordPack.words.length == 0
+							"
+							class="pb-2 text-xl font-bold text-center text-gray-700">
+							There are no words in this word pack!
+						</p>
+					</template>
+					<p v-else class="pb-2 text-xl text-center">Loading...</p>
+				</main>
+
+				<footer
+					class="border-primary-100 flex flex-wrap justify-center w-full gap-4 p-2 border-t">
+					<template
+						v-if="
+							modalAction == 'add' &&
+							modalWordPack &&
+							modalWordPack.words &&
+							modalWordPack.words.length > 0
+						">
+						<button
+							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
+							<i class="bx bxs-download"></i>
+							Add to your vocab.
+						</button>
+					</template>
+					<template v-else-if="modalAction == 'update'">
+						<button
+							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
+							<i class="bx bxs-edit"></i>
+							Update your vocab.
+						</button>
+						<button
+							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
+							<i class="bx bxs-trash"></i>
+							Delete from your vocab.
+						</button>
+					</template>
+				</footer>
 			</div>
 		</div>
 	</div>
-
-	<!-- <div id="word-pack-modal" class="bg-gray-900 bg-opacity-50">
-		<div class="bg-secondary-100 text-secondary-content-100">
-			<h2>Add Word Pack</h2>
-
-			<p></p>
-		</div>
-	</div> -->
 </template>
 <script setup>
 import { asset } from "@/utils/asset";
@@ -125,6 +222,10 @@ import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import MicroModal from "micromodal";
+import useUserData from "@/composables/useUserData";
+
+// Composables
+const { wordPacks: userWordPacks } = useUserData();
 
 // Lifecycle
 onMounted(async () => {
@@ -133,6 +234,8 @@ onMounted(async () => {
 
 // Variables
 const wordPacks = ref([]);
+
+const modalAction = ref("add");
 const modalWordPack = ref({});
 
 const page = ref(1);
@@ -186,17 +289,31 @@ async function nextPage() {
 }
 
 async function openWordPackModal(wordPackId) {
-	// Get word pack by ID
-	modalWordPack.value = wordPacks.value.find(
-		(wordPack) => wordPack.id == wordPackId
+	const alreadyHas = userWordPacks.value.find(
+		(userWordPack) => userWordPack.word_pack_id == wordPackId
 	);
 
-	// Show all wordpack info
+	if (!alreadyHas) {
+		modalAction.value = "add";
+	} else {
+		modalAction.value = "update";
+	}
+
+	// Show modal
 	MicroModal.show("word-pack-modal", {
 		disableScroll: true,
+		onClose: (modal) => {
+			modalWordPack.value = {};
+		},
 	});
-	// check if user already has this word pack
-	// If he doesnt have it show Add Word pack, otherwise show Update/delete word pack
+
+	// Get word pack by ID
+	await handleRequest({
+		request: () => axios.get("/api/word-packs/" + wordPackId + "/words"),
+		successCallback: async (response) => {
+			modalWordPack.value = response.data;
+		},
+	});
 }
 
 // Watcher
