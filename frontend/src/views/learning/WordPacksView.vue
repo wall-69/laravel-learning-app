@@ -93,12 +93,12 @@
 				aria-modal="true"
 				aria-labelledby="word-pack-modal-title">
 				<header
-					v-if="Object.keys(modalWordPack).length > 0"
+					v-if="modalWordPackExists"
 					class="border-primary-100 w-full py-1 border-b">
 					<h2
 						id="word-pack-modal-title"
 						class="mx-5 text-2xl font-bold text-center">
-						{{ modalWordPack ? modalWordPack.name : "Loading..." }}
+						{{ modalWordPack.name }}
 					</h2>
 
 					<!-- Word pack modal close (4) -->
@@ -113,7 +113,7 @@
 				<main
 					id="word-pack-modal-content"
 					class="flex flex-col gap-4 pt-2 overflow-y-scroll">
-					<template v-if="Object.keys(modalWordPack).length > 0">
+					<template v-if="modalWordPackExists">
 						<!-- Image -->
 						<img
 							v-if="modalWordPack.image"
@@ -172,11 +172,7 @@
 							</tbody>
 						</table>
 						<p
-							v-else-if="
-								modalWordPack &&
-								modalWordPack.words &&
-								modalWordPack.words.length == 0
-							"
+							v-else-if="!modalWordPackHasWords"
 							class="pb-2 text-xl font-bold text-center text-gray-700">
 							There are no words in this word pack!
 						</p>
@@ -186,14 +182,9 @@
 
 				<footer
 					class="border-primary-100 flex flex-wrap justify-center w-full gap-4 p-2 border-t">
-					<template
-						v-if="
-							modalAction == 'add' &&
-							modalWordPack &&
-							modalWordPack.words &&
-							modalWordPack.words.length > 0
-						">
+					<template v-if="modalAction == 'add' && modalWordPackHasWords">
 						<button
+							@click="addWordPack"
 							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
 							<i class="bx bxs-download"></i>
 							Add to your vocab.
@@ -220,12 +211,12 @@
 import { asset } from "@/utils/asset";
 import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import MicroModal from "micromodal";
 import useUserData from "@/composables/useUserData";
 
 // Composables
-const { wordPacks: userWordPacks } = useUserData();
+const { userWordPacks, setUserWordPacks } = useUserData();
 
 // Lifecycle
 onMounted(async () => {
@@ -244,6 +235,17 @@ const loading = ref(false);
 
 const search = ref("");
 const searchInput = ref(null);
+
+// Computed
+const modalWordPackExists = computed(
+	() => Object.keys(modalWordPack.value).length > 0
+);
+const modalWordPackHasWords = computed(
+	() =>
+		modalWordPack.value &&
+		modalWordPack.value.words &&
+		modalWordPack.value.words.length > 0
+);
 
 // Functions
 async function loadWordPacks() {
@@ -312,6 +314,20 @@ async function openWordPackModal(wordPackId) {
 		request: () => axios.get("/api/word-packs/" + wordPackId + "/words"),
 		successCallback: async (response) => {
 			modalWordPack.value = response.data;
+		},
+	});
+}
+
+async function addWordPack() {
+	await handleRequest({
+		request: () =>
+			axios.post("/api/user/word-packs/" + modalWordPack.value.id + "/add"),
+		successCallback: async (response) => {
+			console.log(userWordPacks.value);
+			setUserWordPacks(response.data.user_word_packs);
+			console.log(userWordPacks.value);
+
+			modalAction.value = "update";
 		},
 	});
 }

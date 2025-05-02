@@ -18,7 +18,7 @@ class WordPackController extends Controller
         return response()->json($wordPack);
     }
 
-    public function wordPackWordsById(WordPack $wordPack)
+    public function wordPackWithWordsById(WordPack $wordPack)
     {
         return response()->json($wordPack->load("words"));
     }
@@ -175,7 +175,8 @@ class WordPackController extends Controller
         }
 
         return response()->json([
-            "message" => "Successfully added WordPack to user."
+            "message" => "Successfully added WordPack to user.",
+            "user_word_packs" => $user->userWordPacks
         ]);
     }
 }

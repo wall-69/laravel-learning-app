@@ -48,7 +48,12 @@
 		</div>
 
 		<!-- LOGIN BUTTON -->
-		<button type="submit" class="btn-primary-cta self-center">LOGIN</button>
+		<button
+			type="submit"
+			class="btn-primary-cta self-center"
+			:disabled="loading">
+			LOGIN
+		</button>
 
 		<hr class="self-center w-2/3 h-0.5 bg-gray-200 rounded-md" />
 
@@ -73,6 +78,8 @@ import { RouterLink } from "vue-router";
 const { login } = useAuth();
 
 // Variables
+const loading = ref(false);
+
 const form = reactive({
 	email: "",
 	password: "",
@@ -84,7 +91,15 @@ const errors = reactive({
 
 // Functions
 async function handleSubmit(e) {
+	if (loading.value) {
+		return;
+	}
+
+	loading.value = true;
+
 	// Make request to the login API endpoint
 	await login(form, errors);
+
+	loading.value = false;
 }
 </script>

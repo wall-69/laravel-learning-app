@@ -131,7 +131,12 @@
 		</div>
 
 		<!-- REGISTER BUTTON -->
-		<button type="submit" class="btn-primary-cta self-center">REGISTER</button>
+		<button
+			type="submit"
+			class="btn-primary-cta self-center"
+			:disabled="loading">
+			REGISTER
+		</button>
 
 		<hr class="self-center w-2/3 h-0.5 bg-gray-200 rounded-md" />
 
@@ -158,6 +163,8 @@ import { RouterLink } from "vue-router";
 const { register } = useAuth();
 
 // Variables
+const loading = ref(false);
+
 const form = reactive({
 	name: "",
 	surname: "",
@@ -177,7 +184,15 @@ const errors = reactive({
 
 // Functions
 async function handleSubmit(e) {
+	if (loading.value) {
+		return;
+	}
+
+	loading.value = true;
+
 	// Make request to the register API endpoint
 	await register(form, errors);
+
+	loading.value = false;
 }
 </script>

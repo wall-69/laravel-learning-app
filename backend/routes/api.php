@@ -72,14 +72,14 @@ Route::controller(WordController::class)->name("words.")->middleware("auth:sanct
 Route::controller(WordPackController::class)->name("word-packs.")->middleware("auth:sanctum")->group(function () {
     // General
     Route::get("/word-packs/{wordPack}", "wordPackById");
-    Route::get("/word-packs/{wordPack}/words", "wordPackWordsById");
+    Route::get("/word-packs/{wordPack}/words", "wordPackWithWordsById");
 
     Route::get("/word-packs", "index")->name("index");
     Route::post("/word-packs", "store")->name("store");
     Route::patch("/word-packs/{wordPack}", "update")->name("update");
     Route::delete("/word-packs/{wordPack}", "destroy")->name("destroy");
 
-    Route::post("/user/words/add/{wordPack}", "addToUser");
+    Route::post("/user/word-packs/{wordPack}/add", "addToUser");
 });
 
 Route::controller(PathController::class)->name("paths.")->middleware("auth:sanctum")->group(function () {

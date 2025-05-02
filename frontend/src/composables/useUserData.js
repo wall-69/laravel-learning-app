@@ -1,19 +1,19 @@
 import { computed, reactive } from "vue";
 
 const state = reactive({
-	wordPacks: [],
+	userWordPacks: [],
 });
 
 export default function useUserData() {
-	const wordPacks = computed(() => state.wordPacks);
+	const userWordPacks = computed(() => state.userWordPacks);
 
-	function setWordPacks(wordPacks) {
-		state.wordPacks = wordPacks;
+	function setUserWordPacks(userWordPacks) {
+		state.userWordPacks = userWordPacks;
 	}
 
 	return {
-		wordPacks,
+		userWordPacks,
 
-		setWordPacks,
+		setUserWordPacks,
 	};
 }

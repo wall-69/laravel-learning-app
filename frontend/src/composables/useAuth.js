@@ -4,7 +4,7 @@ import { handleRequest } from "@/utils/requestWrapper";
 import router from "@/router";
 import useUserData from "./useUserData";
 
-const { setWordPacks } = useUserData();
+const { setUserWordPacks } = useUserData();
 
 const state = reactive({
 	authenticated: false,
@@ -29,7 +29,7 @@ export default function useAuth() {
 			successCallback: async (response) => {
 				setAuthenticated(true);
 				setUser(response.data.user);
-				setWordPacks(response.data.user.user_word_packs);
+				setUserWordPacks(response.data.user.user_word_packs);
 			},
 			failCallback: async (response) => {
 				setAuthenticated(false);
@@ -43,8 +43,7 @@ export default function useAuth() {
 			request: (data) => axios.post("/api/login", data),
 			requestData: data,
 			successCallback: async (response) => {
-				setAuthenticated(true);
-				setUser(response.data.user);
+				await attempt();
 
 				router.replace({ name: "learning" });
 			},
@@ -58,6 +57,7 @@ export default function useAuth() {
 			successCallback: async (response) => {
 				setAuthenticated(false);
 				setUser({});
+				setUserWordPacks([]);
 				router.replace({ name: "home" });
 			},
 		});

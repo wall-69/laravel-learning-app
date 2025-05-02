@@ -48,11 +48,6 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { asset } from "@/utils/asset";
 
-// Define
-const props = defineProps({
-	wordPacks: Array,
-});
-
 // Lifecycle
 onMounted(async () => {
 	await loadWordPacks();

@@ -154,6 +154,7 @@
 		</nav>
 	</header>
 
+	<!-- Mobile dropdown -->
 	<Transition name="mobile-dropdown">
 		<div
 			v-show="mobileDropdownVisible"
@@ -163,6 +164,7 @@
 				<li class="flex items-center gap-1">
 					<i class="bx bxs-dashboard bx-sm text-primary-300"></i>
 					<RouterLink
+						@click="mobileDropdownVisible = false"
 						:to="{ name: 'learning' }"
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Dashboard
@@ -175,6 +177,7 @@
 				<li class="flex items-center gap-1">
 					<i class="bx bxs-customize bx-sm text-primary-300"></i>
 					<RouterLink
+						@click="mobileDropdownVisible = false"
 						:to="{ name: 'word-packs' }"
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Word packs
@@ -187,6 +190,7 @@
 				<li class="flex items-center gap-1">
 					<i class="bx bxs-flag bx-sm text-primary-300"></i>
 					<RouterLink
+						@click="mobileDropdownVisible = false"
 						:to="{ name: 'paths' }"
 						class="text-primary-300 hover:text-primary-500 text-2xl transition-colors">
 						Learning paths
