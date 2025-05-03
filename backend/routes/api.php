@@ -80,6 +80,7 @@ Route::controller(WordPackController::class)->name("word-packs.")->middleware("a
     Route::delete("/word-packs/{wordPack}", "destroy")->name("destroy");
 
     Route::post("/user/word-packs/{wordPack}/add", "addToUser");
+    Route::post("/user/word-packs/{wordPack}/remove", "removeFromUser");
 });
 
 Route::controller(PathController::class)->name("paths.")->middleware("auth:sanctum")->group(function () {

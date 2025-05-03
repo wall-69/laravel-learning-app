@@ -186,19 +186,23 @@
 						<button
 							@click="addWordPack"
 							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
-							<i class="bx bxs-download"></i>
+							<i v-if="modalActionLoading != 'add'" class="bx bxs-download"></i>
+							<i v-else class="bx bx-loader-alt animate-spin"></i>
 							Add to your vocab.
 						</button>
 					</template>
 					<template v-else-if="modalAction == 'update'">
 						<button
 							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
-							<i class="bx bxs-edit"></i>
+							<i v-if="modalActionLoading != 'update'" class="bx bxs-edit"></i>
+							<i v-else class="bx bx-loader-alt animate-spin"></i>
 							Update your vocab.
 						</button>
 						<button
+							@click="removeWordPack"
 							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
-							<i class="bx bxs-trash"></i>
+							<i v-if="modalActionLoading != 'remove'" class="bx bxs-trash"></i>
+							<i v-else class="bx bx-loader-alt animate-spin"></i>
 							Delete from your vocab.
 						</button>
 					</template>
@@ -226,8 +230,9 @@ onMounted(async () => {
 // Variables
 const wordPacks = ref([]);
 
-const modalAction = ref("add");
 const modalWordPack = ref({});
+const modalAction = ref("add");
+const modalActionLoading = ref(false);
 
 const page = ref(1);
 const maxPage = ref(1);
@@ -319,15 +324,33 @@ async function openWordPackModal(wordPackId) {
 }
 
 async function addWordPack() {
+	modalActionLoading.value = "add";
+
 	await handleRequest({
 		request: () =>
 			axios.post("/api/user/word-packs/" + modalWordPack.value.id + "/add"),
 		successCallback: async (response) => {
-			console.log(userWordPacks.value);
 			setUserWordPacks(response.data.user_word_packs);
-			console.log(userWordPacks.value);
 
 			modalAction.value = "update";
+
+			modalActionLoading.value = "";
+		},
+	});
+}
+
+async function removeWordPack() {
+	modalActionLoading.value = "remove";
+
+	await handleRequest({
+		request: () =>
+			axios.post("/api/user/word-packs/" + modalWordPack.value.id + "/remove"),
+		successCallback: async (response) => {
+			setUserWordPacks(response.data.user_word_packs);
+
+			modalAction.value = "add";
+
+			modalActionLoading.value = "";
 		},
 	});
 }

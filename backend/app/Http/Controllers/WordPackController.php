@@ -179,4 +179,28 @@ class WordPackController extends Controller
             "user_word_packs" => $user->userWordPacks
         ]);
     }
+
+    public function removeFromUser(Request $request, WordPack $wordPack)
+    {
+        $user = $request->user();
+
+        // If the user doesnt have this wordpack, we cant remove it :D
+        if (!UserWordPack::where("user_id", $user->id)->where("word_pack_id", $wordPack->id)->exists()) {
+            abort(400, "You don't have this WordPack added.");
+        }
+
+        // Delete UserWords from this WordPack
+        $user->userWords()
+            ->whereIn("word_id", $wordPack->words->pluck("id"))
+            ->delete();
+
+        // Delete UserWordPack
+        $userWordPack = UserWordPack::where("user_id", $user->id)->where("word_pack_id", $wordPack->id);
+        $userWordPack->delete();
+
+        return response()->json([
+            "message" => "Successfully removed WordPack from user.",
+            "user_word_packs" => $user->userWordPacks
+        ]);
+    }
 }
