@@ -135,7 +135,12 @@ class WordPackController extends Controller
 
     public function addToUser(Request $request, WordPack $wordPack)
     {
+        $request->validate([
+            "except_words" => "required|array"
+        ]);
+
         $user = $request->user();
+        $exceptWords = $request->except_words;
 
         // Dont add this WordPack, if user has already added it
         if (UserWordPack::where("user_id", $user->id)->where("word_pack_id", $wordPack->id)->exists()) {
@@ -153,8 +158,9 @@ class WordPackController extends Controller
             ->whereIn("word_id", $wordPack->words->pluck("id"))
             ->pluck("word_id")
             ->toArray();
-        // Filters out word_ids that the user already has added
-        $wordsToAdd = $wordPack->words->filter(fn ($word) => !in_array($word->id, $existingWordIds));
+
+        // Filters out word_ids that the user already has added and the ones the user doesnt want to add
+        $wordsToAdd = $wordPack->words->filter(fn ($word) => !in_array($word->id, $existingWordIds) && !in_array($word->id, $exceptWords));
 
         // Create array data to be inserted
         $now = now();

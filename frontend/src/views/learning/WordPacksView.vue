@@ -166,7 +166,7 @@
 										<input
 											type="checkbox"
 											checked="true"
-											class="accent-white w-6 h-6" />
+											class="accent-white add-word-input w-6 h-6" />
 									</td>
 								</tr>
 							</tbody>
@@ -182,6 +182,9 @@
 
 				<footer
 					class="border-primary-100 flex flex-wrap justify-center w-full gap-4 p-2 border-t">
+					<p v-if="modalError" class="text-lg font-bold text-red-400">
+						{{ modalError }}
+					</p>
 					<template v-if="modalAction == 'add' && modalWordPackHasWords">
 						<button
 							@click="addWordPack"
@@ -233,6 +236,7 @@ const wordPacks = ref([]);
 const modalWordPack = ref({});
 const modalAction = ref("add");
 const modalActionLoading = ref(false);
+const modalError = ref("");
 
 const page = ref(1);
 const maxPage = ref(1);
@@ -324,11 +328,32 @@ async function openWordPackModal(wordPackId) {
 }
 
 async function addWordPack() {
+	// Get words that the user doesnt want to add
+	const inputs = document.getElementsByClassName("add-word-input");
+	const except = [];
+	for (let i = 0; i < inputs.length; i++) {
+		if (!inputs[i].checked) {
+			except.push(modalWordPack.value.words[i].id);
+		}
+	}
+
+	// The user didnt add any word, why?
+	if (except.length == inputs.length) {
+		modalError.value = "You need to add at least one word!";
+		return;
+	}
+
 	modalActionLoading.value = "add";
 
 	await handleRequest({
-		request: () =>
-			axios.post("/api/user/word-packs/" + modalWordPack.value.id + "/add"),
+		request: (data) =>
+			axios.post(
+				"/api/user/word-packs/" + modalWordPack.value.id + "/add",
+				data
+			),
+		requestData: {
+			except_words: except,
+		},
 		successCallback: async (response) => {
 			setUserWordPacks(response.data.user_word_packs);
 
