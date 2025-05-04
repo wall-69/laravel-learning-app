@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\User\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -63,5 +64,11 @@ class User extends Authenticatable
     public function scopeSearch(Builder $query, string $search)
     {
         $query->where("name", "LIKE", "%$search%")->orWhere("surname", "LIKE", "%$search%");
+    }
+
+    // Password reset
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($this, $token));
     }
 }

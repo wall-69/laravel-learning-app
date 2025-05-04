@@ -6,7 +6,12 @@ use App\Models\Admin;
 use App\Models\User;
 use Gate;
 use Hash;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -104,6 +109,70 @@ class UserController extends Controller
             "notifications" => [
                 "success" => [
                     $request->user()->admin ? "The user was successfully deleted!" : "Your account was successfully deleted!"
+                ]
+            ]
+        ]);
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            "email" => "required|email"
+        ]);
+
+        $status = Password::sendResetLink(
+            $request->only("email")
+        );
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            throw ValidationException::withMessages([
+                "email" => __($status)
+            ]);
+        }
+
+        return response()->json([
+            "message" => "Email successfully sent.",
+            "notifications" => [
+                "success" => [
+                    "Reset email was successfully sent!"
+                ]
+            ]
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $data = $request->validate([
+            "token" => "required",
+            "email" => "required|email",
+            "password" => "required|confirmed|min:6",
+        ]);
+
+        $status = Password::reset(
+            $data,
+            function (User $user, string $password) {
+                // Update the password with new one
+                $user->update([
+                    "password" => Hash::make($password)
+                ]);
+
+                // Change remember token to invalidate old session stuff
+                $user->setRememberToken(Str::random(60));
+                $user->save();
+            }
+        );
+
+        if ($status !== Password::PASSWORD_RESET) {
+            throw ValidationException::withMessages([
+                "password_confirmation" => __($status)
+            ]);
+        }
+
+        return response()->json([
+            "message" => "Password successfully reset.",
+            "notifications" => [
+                "success" => [
+                    "Your password was changed. You can now log in."
                 ]
             ]
         ]);

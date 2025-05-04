@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import LoginView from "@/views/LoginView.vue";
+import ForgotPasswordView from "@/views/ForgotPasswordView.vue";
+import ResetPasswordView from "@/views/ResetPasswordView.vue";
 
 import LearningLayout from "../views/layouts/LearningLayout.vue";
 import LearningView from "@/views/learning/LearningView.vue";
@@ -65,7 +67,13 @@ const router = createRouter({
 		{
 			path: "/forgot-password",
 			name: "forgot-password",
-			component: null,
+			component: ForgotPasswordView,
+			beforeEnter: [guestGuard],
+		},
+		{
+			path: "/reset-password/:token",
+			name: "reset-password",
+			component: ResetPasswordView,
 			beforeEnter: [guestGuard],
 		},
 		{

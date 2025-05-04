@@ -34,6 +34,8 @@ Route::controller(UserController::class)->name("users.")->group(function () {
 
     Route::middleware("guest")->group(function () {
         // General
+        Route::post("/forgot-password", "forgotPassword");
+        Route::post("/reset-password", "resetPassword");
 
         // SPA
     });
