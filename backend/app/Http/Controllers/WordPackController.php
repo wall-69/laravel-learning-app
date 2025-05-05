@@ -136,7 +136,7 @@ class WordPackController extends Controller
     public function addToUser(Request $request, WordPack $wordPack)
     {
         $request->validate([
-            "except_words" => "required|array"
+            "except_words" => "present|array"
         ]);
 
         $user = $request->user();
@@ -182,6 +182,53 @@ class WordPackController extends Controller
 
         return response()->json([
             "message" => "Successfully added WordPack to user.",
+            "user_word_packs" => $user->userWordPacks
+        ]);
+    }
+
+    public function updateForUser(Request $request, WordPack $wordPack)
+    {
+        $request->validate([
+            "except_words" => "present|array"
+        ]);
+
+        $user = $request->user();
+        $exceptWords = $request->except_words;
+
+        // Dont update this WordPack, if user hasnt added it
+        if (!UserWordPack::where("user_id", $user->id)->where("word_pack_id", $wordPack->id)->exists()) {
+            abort(400, "You dont have this WordPack added.");
+        }
+
+        // Fetches all word_ids the user already has from MongoDB UserWord that are part of this word pack.
+        $existingWordIds = $user->userWords()
+            ->whereIn("word_id", $wordPack->words->pluck("id"))
+            ->pluck("word_id")
+            ->toArray();
+
+        // Filters out word_ids that the user already has added and the ones the user doesnt want to add
+        $wordsToAdd = $wordPack->words->filter(fn ($word) => !in_array($word->id, $existingWordIds) && !in_array($word->id, $exceptWords));
+
+        // Create array data to be inserted
+        $now = now();
+        $insertData = $wordsToAdd->values()->map(function ($word) use ($user, $now) {
+            return [
+                "user_id" => $user->id,
+                "word_id" => $word->id,
+                "group" => 1,
+                "review_at" => $now,
+                "created_at" => $now,
+                "updated_at" => $now,
+            ];
+        })->all();
+
+        // Insert the data, if there are any
+        if (!empty($insertData)) {
+            UserWord::insert($insertData);
+        }
+
+        return response()->json([
+            "message" => "Successfully updated WordPack for user.",
             "user_word_packs" => $user->userWordPacks
         ]);
     }

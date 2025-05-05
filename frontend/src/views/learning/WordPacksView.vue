@@ -196,6 +196,7 @@
 					</template>
 					<template v-else-if="modalAction == 'update'">
 						<button
+							@click="updateWordPack"
 							class="bg-primary-100 text-primary-content-100 flex items-center justify-center gap-1 text-lg px-1 py-0.5 rounded-md">
 							<i v-if="modalActionLoading != 'update'" class="bx bxs-edit"></i>
 							<i v-else class="bx bx-loader-alt animate-spin"></i>
@@ -329,19 +330,7 @@ async function openWordPackModal(wordPackId) {
 
 async function addWordPack() {
 	// Get words that the user doesnt want to add
-	const inputs = document.getElementsByClassName("add-word-input");
-	const except = [];
-	for (let i = 0; i < inputs.length; i++) {
-		if (!inputs[i].checked) {
-			except.push(modalWordPack.value.words[i].id);
-		}
-	}
-
-	// The user didnt add any word, why?
-	if (except.length == inputs.length) {
-		modalError.value = "You need to add at least one word!";
-		return;
-	}
+	const except = getModalExceptWords();
 
 	modalActionLoading.value = "add";
 
@@ -349,6 +338,31 @@ async function addWordPack() {
 		request: (data) =>
 			axios.post(
 				"/api/user/word-packs/" + modalWordPack.value.id + "/add",
+				data
+			),
+		requestData: {
+			except_words: except,
+		},
+		successCallback: async (response) => {
+			setUserWordPacks(response.data.user_word_packs);
+
+			modalAction.value = "update";
+
+			modalActionLoading.value = "";
+		},
+	});
+}
+
+async function updateWordPack() {
+	// Get words that the user doesnt want to add
+	const except = getModalExceptWords();
+
+	modalActionLoading.value = "update";
+
+	await handleRequest({
+		request: (data) =>
+			axios.post(
+				"/api/user/word-packs/" + modalWordPack.value.id + "/update",
 				data
 			),
 		requestData: {
@@ -378,6 +392,24 @@ async function removeWordPack() {
 			modalActionLoading.value = "";
 		},
 	});
+}
+
+function getModalExceptWords() {
+	const inputs = document.getElementsByClassName("add-word-input");
+	const except = [];
+	for (let i = 0; i < inputs.length; i++) {
+		if (!inputs[i].checked) {
+			except.push(modalWordPack.value.words[i].id);
+		}
+	}
+
+	// The user didnt add any word, why?
+	if (except.length == inputs.length) {
+		modalError.value = "You need to add at least one word!";
+		return;
+	}
+
+	return except;
 }
 
 // Watcher
