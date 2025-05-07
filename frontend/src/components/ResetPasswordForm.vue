@@ -95,7 +95,7 @@ async function handleSubmit(e) {
 		request: (data) => axios.post("/api/reset-password", data),
 		requestData: form,
 		successCallback: async (response) => {
-			router.replace({ name: "login" });
+			await router.replace({ name: "login" });
 		},
 		errors: errors,
 	});

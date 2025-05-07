@@ -43,7 +43,6 @@ class UserWordController extends Controller
             $toUpdate["group"] = $userWord->group + 1;
         }
 
-
         // Update model
         UserWord::where("id", $userWord->id)->first()->update($toUpdate);
 

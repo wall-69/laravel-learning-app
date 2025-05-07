@@ -7,6 +7,7 @@ import ForgotPasswordView from "@/views/ForgotPasswordView.vue";
 import ResetPasswordView from "@/views/ResetPasswordView.vue";
 
 import LearningLayout from "../views/layouts/LearningLayout.vue";
+import ReviewView from "@/views/learning/ReviewView.vue";
 import LearningView from "@/views/learning/LearningView.vue";
 import WordPacksView from "@/views/learning/WordPacksView.vue";
 
@@ -39,6 +40,11 @@ const router = createRouter({
 					path: "",
 					name: "learning",
 					component: LearningView,
+				},
+				{
+					path: "review",
+					name: "review",
+					component: ReviewView,
 				},
 				{
 					path: "/word-packs",

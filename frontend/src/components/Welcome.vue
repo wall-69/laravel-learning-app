@@ -1,6 +1,5 @@
 <template>
-	<div
-		class="bg-secondary-400 flex flex-col flex-1 max-w-2xl gap-3 p-4 pb-5 rounded-md">
+	<div class="bg-secondary-400 flex flex-col flex-1 gap-3 p-4 pb-5 rounded-md">
 		<div class="flex gap-1">
 			<i class="bx bxs-pin bx-md text-primary-200 flex"></i>
 			<p class="text-2xl text-gray-100">Welcome back, Tomáš!</p>

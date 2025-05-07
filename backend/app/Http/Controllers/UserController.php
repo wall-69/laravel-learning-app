@@ -17,8 +17,12 @@ class UserController extends Controller
 {
     public function user(Request $request)
     {
+        $user = $request->user();
+        $data = $user->load(["userReviews", "userWordPacks"]);
+        $data->setAttribute("hasDueWords", $user->hasDueWords());
+
         return response()->json([
-            "user" => $request->user()->load("userWordPacks")
+            "user" => $data
         ]);
     }
 

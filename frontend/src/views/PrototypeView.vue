@@ -156,7 +156,7 @@ function handleReveal() {
 	});
 }
 
-function handleAnswer(correct) {
+async function handleAnswer(correct) {
 	// Current word index in words list
 	const currentWordIdx = words.value.indexOf(currentWord.value);
 	if (currentWordIdx == -1) {
@@ -198,6 +198,18 @@ function handleAnswer(correct) {
 	} else {
 		// If there are no more words mark as finished
 		finished.value = true;
+
+		// Mark today as reviewed, yay
+		await handleRequest({
+			request: () => axios.post("/api/user/review/today"),
+			successCallback: async (response) => {
+				// TODO: probably nothing
+				console.log("yipee");
+			},
+			failCallback: async (response) => {
+				console.error("Could not mark today as reviewed.");
+			},
+		});
 	}
 
 	// Make the card not revealed

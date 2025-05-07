@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasOne(Admin::class);
     }
 
+    public function userReviews()
+    {
+        return $this->hasMany(UserReview::class, "user_id", "id");
+    }
+
     public function userWords()
     {
         return $this->hasMany(UserWord::class, "user_id", "id");
@@ -64,6 +69,12 @@ class User extends Authenticatable
     public function scopeSearch(Builder $query, string $search)
     {
         $query->where("name", "LIKE", "%$search%")->orWhere("surname", "LIKE", "%$search%");
+    }
+
+    // Functions
+    public function hasDueWords()
+    {
+        return $this->userWords()->where("review_at", "<", now())->exists();
     }
 
     // Password reset

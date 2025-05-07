@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PathController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserReviewController;
 use App\Http\Controllers\UserWordController;
 use App\Http\Controllers\UserWordPackController;
 use App\Http\Controllers\WordController;
@@ -94,6 +95,11 @@ Route::controller(PathController::class)->name("paths.")->middleware("auth:sanct
     Route::post("/paths", "store")->name("store");
     Route::patch("/paths/{path}", "update")->name("update");
     Route::delete("/paths/{path}", "destroy")->name("destroy");
+});
+
+Route::controller(UserReviewController::class)->name("user-reviews.")->middleware("auth:sanctum")->group(function () {
+    // General
+    Route::post("/user/review/today", "reviewToday");
 });
 
 Route::controller(UserWordController::class)->name("user-words.")->middleware("auth:sanctum")->group(function () {

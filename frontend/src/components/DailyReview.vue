@@ -9,6 +9,7 @@
 			<template #footer>
 				<div class="flex items-center justify-center w-full pb-3">
 					<button
+						@click="review"
 						class="bg-secondary-100 hover:bg-primary-400 px-4 py-2 text-white rounded-md">
 						Review
 					</button>
@@ -18,71 +19,99 @@
 	</div>
 </template>
 <script setup>
+// NOTICE:
+// The most important thing is to know if fucking timezones are taken care of.
+// If not, you will be stuck on a bug for an hour because of a fucking timezone mismatch.
+// I <3 timezones.
+
 import { ref } from "vue";
 import { eachDayOfInterval } from "date-fns";
+import useAuth from "@/composables/useAuth";
+import router from "@/router";
 
-// Highlight solid (reviewable), light (pass day) => today
-// Highlight solid => reviewed day
-// Highlight light => pass day
-// Dot red/blue => missed day
-
-// TODO: custom popover which will handle all messages and if it is todays date, then handle clicking on it
-//       maybe get rid of Review button?
+// Composables
+const { user } = useAuth();
 
 // Variables
-const userRegistrationDate = new Date();
-userRegistrationDate.setDate(userRegistrationDate.getDate() - 10);
+const userRegistrationDate = getUserRegistrationUTCDate();
+
 const yesterdayDate = new Date();
 yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+
+const reviewedDays = user.value.user_reviews.map(({ date }) =>
+	toUTCDateOnly(date)
+);
+const reviewedTimestamps = new Set(reviewedDays.map((date) => date.getTime()));
+
+const missedDays = eachDayOfInterval({
+	start: userRegistrationDate,
+	end: yesterdayDate,
+})
+	.map(toUTCDateOnly)
+	.filter((date) => !reviewedTimestamps.has(date.getTime()))
+	.slice(1); // TODO?: Fucking dumb shit, for some fucking timezone or date reason the first date is actually day PRIOR to the registration and I dont that much to find a fix for it right now
+
 const calendarAttributes = ref([
 	// Today
 	{
 		key: "today",
-		highlight: true, // TODO: check, if today was already reviewed or not
-		dates: new Date(),
+		highlight: true,
+		dates: user.value.hasDueWords ? new Date() : false,
 		popover: {
-			label: "Click to review.",
-			hideIndicator: true,
+			label: "Your daily review awaits!",
 		},
 	},
 	// Reviewed days
 	{
 		key: "reviewedDays",
 		highlight: true,
-		dates: eachDayOfInterval({
-			start: new Date("2025-1-11"),
-			end: new Date("2025-1-13"),
-		}),
+		dates: reviewedDays,
 		popover: {
 			label: "Reviewed!",
-			hideIndicator: true,
-		},
-	},
-	// Free days
-	{
-		key: "freeDay",
-		highlight: {
-			color: "blue",
-			fillMode: "light",
-		},
-		dates: [new Date("2025-1-23"), new Date("2025-1-14")], // TODO: filter free days & missed days
-		popover: {
-			label: "Free day.",
-			hideIndicator: true,
 		},
 	},
 	// Missed days
 	{
 		key: "missedDays",
 		dot: true,
-		dates: eachDayOfInterval({
-			start: userRegistrationDate, // All days since users registration
-			end: yesterdayDate, // All days until yesterday
-		}),
+		dates: missedDays,
 		popover: {
 			label: "Missed day.",
-			hideIndicator: true,
+		},
+	},
+	// Registration date
+	{
+		key: "registration",
+		dot: {
+			color: "red",
+			fillMode: "light",
+		},
+		dates: userRegistrationDate,
+		popover: {
+			label: "The day you registered.",
 		},
 	},
 ]);
+
+// Functions
+async function review() {
+	await router.replace({ name: "review" });
+}
+
+function toUTCDateOnly(date) {
+	const d = new Date(date);
+	return new Date(
+		Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
+	);
+}
+
+function getUserRegistrationUTCDate() {
+	// d.m.Y H:i
+	const [date, time] = user.value.created_at.split(" ");
+
+	const [day, month, year] = date.split(".");
+	const [hours, minutes] = time.split(":");
+
+	return new Date(Date.UTC(year, month - 1, day, hours, minutes));
+}
 </script>
