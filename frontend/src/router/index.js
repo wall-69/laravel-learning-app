@@ -92,10 +92,6 @@ const router = createRouter({
 			name: "privacy-policy",
 			component: null,
 		},
-		{
-			path: "/p",
-			component: () => import("@/views/PrototypeView.vue"),
-		},
 
 		// Admin
 		{
