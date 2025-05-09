@@ -10,15 +10,50 @@
 
 		<ul>
 			<li class="font-bold">
-				Streak: <span class="font-normal">12 days</span>
+				Streak:
+				<span class="font-normal"
+					>{{ streak }} {{ pluralize("day", streak) }}</span
+				>
 			</li>
-			<li class="font-bold">Words: <span class="font-normal">540</span></li>
 			<li class="font-bold">
-				Words packs: <span class="font-normal">14</span>
+				Words: <span class="font-normal">{{ words }}</span>
 			</li>
-			<li class="font-bold">Paths: <span class="font-normal">3</span></li>
+			<li class="font-bold">
+				Words packs: <span class="font-normal">{{ wordPacks }}</span>
+			</li>
+			<li class="font-bold">
+				Paths: <span class="font-normal">{{ paths }}</span>
+			</li>
 		</ul>
 	</div>
 </template>
+<script setup>
+import { handleRequest } from "@/utils/requestWrapper";
+import axios from "axios";
+import { onMounted, ref } from "vue";
+import pluralize from "pluralize";
 
-<script setup></script>
+// Lifecycle
+onMounted(async () => {
+	await loadStatistics();
+});
+
+// Variables
+const streak = ref(0);
+const words = ref(0);
+const wordPacks = ref(0);
+const paths = ref(0);
+
+// Functions
+async function loadStatistics() {
+	await handleRequest({
+		request: () => axios.get("/api/statistics/user"),
+		successCallback: async (response) => {
+			streak.value = response.data.streak;
+			words.value = response.data.words;
+			wordPacks.value = response.data.word_packs;
+			paths.value = response.data.paths;
+		},
+	});
+}
+</script>

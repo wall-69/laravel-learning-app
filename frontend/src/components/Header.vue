@@ -54,17 +54,6 @@
 								</RouterLink>
 							</li>
 
-							<!-- Blog -->
-							<li class="lg:block hidden">
-								<RouterLink
-									class="hover:underline text-xl transition-all"
-									:class="{
-										'text-primary-400 font-medium': $route.name == 'blog',
-									}">
-									Blog
-								</RouterLink>
-							</li>
-
 							<!-- Admin -->
 							<li v-if="user.admin" class="lg:block hidden">
 								<RouterLink

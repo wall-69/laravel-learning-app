@@ -55,7 +55,10 @@ const calendarAttributes = ref([
 	// Today
 	{
 		key: "today",
-		highlight: true,
+		highlight: {
+			color: "blue",
+			fillMode: "light",
+		},
 		dates: user.value.hasDueWords ? new Date() : false,
 		popover: {
 			label: "Your daily review awaits!",
