@@ -105,6 +105,7 @@ Route::controller(UserReviewController::class)->name("user-reviews.")->middlewar
 
 Route::controller(UserWordController::class)->name("user-words.")->middleware("auth:sanctum")->group(function () {
     // General
+    Route::get("/user/words/", "user");
     Route::get("/user/words/due", "due");
 
     Route::post("/user/words/{userWord}/correct", "correct");

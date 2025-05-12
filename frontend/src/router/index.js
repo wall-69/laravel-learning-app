@@ -10,6 +10,7 @@ import LearningLayout from "../views/layouts/LearningLayout.vue";
 import ReviewView from "@/views/learning/ReviewView.vue";
 import LearningView from "@/views/learning/LearningView.vue";
 import WordPacksView from "@/views/learning/WordPacksView.vue";
+import WordsView from "@/views/learning/WordsView.vue";
 
 import authGuard from "./guards/authGuard";
 import guestGuard from "./guards/guestGuard";
@@ -55,6 +56,11 @@ const router = createRouter({
 					path: "/paths",
 					name: "paths",
 					component: null,
+				},
+				{
+					path: "/words",
+					name: "words",
+					component: WordsView,
 				},
 			],
 		},

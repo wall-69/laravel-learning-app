@@ -8,6 +8,23 @@ use Illuminate\Http\Request;
 class UserWordController extends Controller
 {
     /**
+     * GET function returning users words paginator object.
+     */
+    public function user(Request $request)
+    {
+        $user = $request->user();
+        $search = $request->search ?? "";
+
+        $paginator = $user->userWords()
+            ->whereHas("word", function ($q) use ($search) {
+                $q->search($search);
+            })
+            ->latest()->with("word")->paginate(30);
+
+        return response()->json($paginator);
+    }
+
+    /**
      * GET function returning response with due words for today (as *due_words*) in an array
      */
     public function due(Request $request)
@@ -21,6 +38,9 @@ class UserWordController extends Controller
         ]);
     }
 
+    /**
+     * POST function setting the word as being correctly guessed.
+     */
     public function correct(Request $request, UserWord $userWord)
     {
         if ($userWord->user_id != $request->user()->id) {
