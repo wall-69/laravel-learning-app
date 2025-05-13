@@ -92,6 +92,7 @@
 												<i class="text-primary-300 bx bxs-user-pin bx-sm"></i>
 												<RouterLink
 													@click="userDropdownVisible = false"
+													:to="{ name: 'profile' }"
 													class="text-primary-300 hover:text-primary-500 transition-colors">
 													My profile
 												</RouterLink>

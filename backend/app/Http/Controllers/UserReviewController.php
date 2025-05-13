@@ -14,12 +14,12 @@ class UserReviewController extends Controller
         $now = now();
         $today = $now->startOfDay();
 
-        // Check, if this date hasnt been reviewed already
+        // Check if this date hasnt been reviewed already
         if ($user->userReviews()->where("date", $now)->exists()) {
             abort(400, "You already reviewed today.");
         }
 
-        // Check, if user has words to review
+        // Check if user has words to review
         if ($user->hasDueWords()) {
             abort(400, "You have words to review! Cheating is not cool.");
         }

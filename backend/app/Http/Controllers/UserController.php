@@ -101,6 +101,17 @@ class UserController extends Controller
 
         // Logout the user, if it is not an admin deleting the user
         if (!$request->user()->admin) {
+            $request->validate([
+                "password" => "required"
+            ]);
+
+            // Check if current password is correct
+            if (!Hash::check($request->password, $user->password)) {
+                throw ValidationException::withMessages([
+                    "password" => ["Invalid credentials."]
+                ]);
+            }
+
             auth("web")->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
@@ -177,6 +188,37 @@ class UserController extends Controller
             "notifications" => [
                 "success" => [
                     "Your password was changed. You can now log in."
+                ]
+            ]
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            "password" => "required",
+            "new_password" => "required|confirmed|min:6"
+        ]);
+
+        $user = $request->user();
+
+        // Check if current password is correct
+        if (!Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                "password" => ["Invalid credentials."]
+            ]);
+        }
+
+        // Hash new password
+        $user->update([
+            "password" => Hash::make($request->new_password)
+        ]);
+
+        return response()->json([
+            "message" => "Password successfully changed.",
+            "notifications" => [
+                "success" => [
+                    "Your password was changed."
                 ]
             ]
         ]);

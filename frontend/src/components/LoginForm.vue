@@ -29,17 +29,14 @@
 
 		<!-- PASSWORD -->
 		<div class="flex flex-col">
-			<!-- PASSWORD -->
-			<div class="flex flex-col">
-				<label for="password" class="text-primary-100 text-sm font-bold">
-					PASSWORD
-				</label>
-				<input
-					type="password"
-					name="password"
-					class="input"
-					v-model="form.password" />
-			</div>
+			<label for="password" class="text-primary-100 text-sm font-bold">
+				PASSWORD
+			</label>
+			<input
+				type="password"
+				name="password"
+				class="input"
+				v-model="form.password" />
 
 			<!-- Error -->
 			<p v-show="errors.password" class="error-form">
@@ -71,7 +68,7 @@
 import router from "@/router";
 import useAuth from "@/composables/useAuth";
 import { handleRequest } from "@/utils/requestWrapper";
-import { reactive, ref, toRaw, watch, computed } from "vue";
+import { reactive, ref, watch, computed } from "vue";
 import { RouterLink } from "vue-router";
 
 // Composables

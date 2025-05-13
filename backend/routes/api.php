@@ -47,6 +47,8 @@ Route::controller(UserController::class)->name("users.")->group(function () {
         Route::get("/user", "user")->name("user");
         Route::get("/users/{user}", "userById");
 
+        Route::post("/user/change-password", "changePassword");
+
         Route::get("/users", "index")->name("index");
         Route::patch("/users/{user}", "update")->name("update");
         Route::delete("/users/{user}", "destroy")->name("destroy");
