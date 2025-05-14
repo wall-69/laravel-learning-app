@@ -32,14 +32,10 @@ Route::controller(UserController::class)->name("users.")->group(function () {
     // General
     Route::post("/users", "store")->name("store"); // Because you want guests and also admins to create users
 
-    // SPA
-
     Route::middleware("guest")->group(function () {
         // General
         Route::post("/forgot-password", "forgotPassword");
         Route::post("/reset-password", "resetPassword");
-
-        // SPA
     });
 
     Route::middleware("auth:sanctum")->group(function () {
@@ -52,8 +48,6 @@ Route::controller(UserController::class)->name("users.")->group(function () {
         Route::get("/users", "index")->name("index");
         Route::patch("/users/{user}", "update")->name("update");
         Route::delete("/users/{user}", "destroy")->name("destroy");
-
-        // SPA
     });
 });
 
@@ -111,6 +105,7 @@ Route::controller(UserWordController::class)->name("user-words.")->middleware("a
     Route::get("/user/words/due", "due");
 
     Route::post("/user/words/{userWord}/correct", "correct");
+    Route::delete("/user/words/{userWord}", "destroy");
 });
 
 Route::controller(UserWordPackController::class)->name("user-word-packs.")->middleware("auth:sanctum")->group(function () {

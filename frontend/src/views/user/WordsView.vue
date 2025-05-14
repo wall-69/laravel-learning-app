@@ -44,7 +44,9 @@
 							<p v-else>No image</p>
 						</td>
 						<td class="border-primary-300 px-2 py-1 text-center border">
-							<button class="text-red-500">
+							<button
+								@click="handleDelete(userWord.id, userWord.word.word)"
+								class="text-red-500">
 								<i class="bx bxs-trash bx-sm"></i>
 							</button>
 						</td>
@@ -106,6 +108,7 @@ const words = ref({});
 const page = ref(1);
 const maxPage = ref(1);
 const loading = ref(false);
+const deleting = ref(false);
 
 const search = ref("");
 const searchInput = ref(null);
@@ -117,6 +120,10 @@ const hasWords = computed(
 
 // Functions
 async function loadWords() {
+	if (loading.value) {
+		return;
+	}
+
 	loading.value = true;
 
 	let requestUrl = "/api/user/words";
@@ -143,17 +150,23 @@ async function loadWords() {
 }
 
 async function handleDelete(id, word) {
+	if (deleting.value) {
+		return;
+	}
+
 	confirm("Are you sure you want to delete the word " + word + "?");
 
+	deleting.value = true;
+
 	// TODO: delete request
-	// await handleRequest({
-	// 	request: (data) => {
-	// 		return axios.delete("/api/" + props.modelName + "s" + "/" + id);
-	// 	},
-	// 	successCallback: async (response) => {
-	// 		loadWords();
-	// 	},
-	// });
+	await handleRequest({
+		request: () => axios.delete("/api/user/words/" + id),
+		successCallback: async (response) => {
+			await loadWords();
+		},
+	});
+
+	deleting.value = false;
 }
 
 async function previousPage() {

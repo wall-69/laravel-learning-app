@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserWord;
+use Gate;
 use Illuminate\Http\Request;
 
 class UserWordController extends Controller
@@ -43,9 +44,7 @@ class UserWordController extends Controller
      */
     public function correct(Request $request, UserWord $userWord)
     {
-        if ($userWord->user_id != $request->user()->id) {
-            abort(403, "You can't do this.");
-        }
+        Gate::authorize("update", $userWord);
 
         $toUpdate = [];
 
@@ -68,6 +67,20 @@ class UserWordController extends Controller
 
         return response()->json([
             "message" => "UserWord next review_at and group updated successfully."
+        ]);
+    }
+
+    public function destroy(Request $request, UserWord $userWord)
+    {
+        Gate::authorize("destroy", $userWord);
+
+        $userWord->delete();
+
+        return response()->json([
+            "message" => "UserWord deleted.",
+            "notifications" => [
+                "success" => ["The word was successfully deleted."]
+            ]
         ]);
     }
 }
