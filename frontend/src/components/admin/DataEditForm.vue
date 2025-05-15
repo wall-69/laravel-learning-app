@@ -27,6 +27,7 @@
 
 		<!-- EDIT BUTTON -->
 		<button
+			@disabled="loading"
 			type="submit"
 			class="bg-primary-200 hover:bg-primary-300 flex items-center self-center gap-2 px-4 py-2 text-xl font-bold transition-colors rounded-md">
 			Edit
@@ -75,6 +76,7 @@ onMounted(async () => {
 // Variables
 const form = reactive({});
 const errors = reactive({});
+const loading = ref(false);
 
 // Computed
 const inputSlots = computed(() => {
@@ -86,7 +88,13 @@ function slotNameToInputName(slotName) {
 	return slotName.replace("input-", "");
 }
 
-async function handleSubmit(e) {
+async function handleSubmit() {
+	if (loading.value) {
+		return;
+	}
+
+	loading.value = true;
+
 	let formData = new FormData();
 	inputSlots.value.forEach((slotName) => {
 		const inputName = slotNameToInputName(slotName);
@@ -108,6 +116,7 @@ async function handleSubmit(e) {
 		requestData: formData,
 		successCallback: async (response) => {
 			await router.replace({ name: props.redirectRouteName });
+			loading.value = false;
 		},
 		errors: errors,
 	});

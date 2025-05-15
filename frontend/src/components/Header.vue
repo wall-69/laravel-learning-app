@@ -114,6 +114,7 @@
 												<i class="text-primary-300 bx bxs-log-out bx-sm"> </i>
 												<button
 													@click="handleLogout"
+													:disabled="loggingOut"
 													class="text-primary-300 hover:text-primary-500 transition-colors">
 													Log out
 												</button>
@@ -213,11 +214,20 @@ const { user, authenticated, logout } = useAuth();
 // Variables
 const userDropdownVisible = ref(false);
 const mobileDropdownVisible = ref(false);
+const loggingOut = ref(false);
 
 // Functions
 async function handleLogout() {
+	if (loggingOut.value) {
+		return;
+	}
+
+	loggingOut.value = true;
+
 	// Make request to logout API endpoint
 	await logout();
+
+	loggingOut.value = false;
 }
 function handleUserDropdownClickOutside() {
 	if (userDropdownVisible.value) {
