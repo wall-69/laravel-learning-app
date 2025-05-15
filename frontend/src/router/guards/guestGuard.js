@@ -1,8 +1,10 @@
 import useAuth from "@/composables/useAuth";
 
-export default function authGuard(to, from, next) {
-	const { authenticated } = useAuth();
+export default async function authGuard(to, from, next) {
+	const { attempt, authenticated } = useAuth();
 
+	// TODO: replace with something better?
+	await attempt();
 	if (!authenticated.value) {
 		return next();
 	}
