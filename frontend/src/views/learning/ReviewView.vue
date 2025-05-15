@@ -116,6 +116,7 @@
 				<p>You finished your daily words. Good job!</p>
 
 				<RouterLink
+					@click="addTodayToReviewed"
 					:to="{ name: 'learning' }"
 					class="bg-primary-200 text-primary-content-200 px-2 py-1 mt-4 text-lg rounded-md shadow-md">
 					Dashboard
@@ -130,6 +131,10 @@ import { nextTick, onMounted, ref } from "vue";
 import { handleRequest } from "@/utils/requestWrapper";
 import { asset } from "@/utils/asset";
 import { RouterLink } from "vue-router";
+import useAuth from "@/composables/useAuth";
+
+// Composables
+const { user, setUser } = useAuth();
 
 // Lifecycle
 onMounted(async () => {
@@ -230,6 +235,29 @@ async function loadDueWords() {
 			console.error("Could not load due words.");
 		},
 	});
+}
+
+function addTodayToReviewed() {
+	const now = new Date();
+	const yyyy = now.getUTCFullYear();
+	const mm = String(now.getUTCMonth() + 1).padStart(2, "0");
+	const dd = String(now.getUTCDate()).padStart(2, "0");
+	const formatted = yyyy + "-" + mm + "-" + dd + "T00:00:00.000000Z";
+
+	const lastReview =
+		user.value.user_reviews[Object.keys(user.value.user_reviews).length - 1];
+	if (lastReview.date == formatted) {
+		return;
+	}
+
+	user.value.user_reviews.push({
+		created_at: formatted,
+		updated_at: formatted,
+		date: formatted,
+		user_id: user.value.id,
+	});
+
+	setUser(user);
 }
 </script>
 
