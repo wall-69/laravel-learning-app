@@ -15,7 +15,6 @@
 }
 
 @layer components {
-	/* TODO: rework this */
 	/* Buttons */
 	.btn-primary-cta {
 		@apply md:text-xl font-bold;
@@ -28,14 +27,35 @@
 		@apply hover:bg-secondary-500 hover:text-primary-300 hover:border-primary-300;
 	}
 	.btn-secondary-cta {
-		@apply text-xl font-bold;
-		@apply px-8 py-2;
+		@apply md:text-xl font-bold;
+		@apply md:px-8 px-4 py-2;
 		@apply rounded-md;
 		@apply bg-secondary-500 text-primary-300;
 		@apply border-2 border-transparent;
 
 		@apply transition-colors;
 		@apply hover:bg-primary-300 hover:text-secondary-500 hover:border-primary-300;
+	}
+
+	.btn-primary {
+		@apply flex items-center gap-2;
+		@apply text-lg;
+		@apply px-3 py-1.5;
+		@apply rounded-md;
+		@apply text-gray-900;
+
+		@apply transition-colors;
+		@apply bg-primary-200 hover:bg-primary-300;
+	}
+
+	.btn-secondary {
+		@apply text-lg;
+		@apply px-3 py-1.5;
+		@apply rounded-md;
+		@apply text-white;
+
+		@apply transition-colors;
+		@apply bg-secondary-100 hover:bg-secondary-200;
 	}
 
 	/* Inputs */

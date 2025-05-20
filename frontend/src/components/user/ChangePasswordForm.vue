@@ -3,7 +3,7 @@
 		class="bg-secondary-300 sm:rounded-md sm:w-auto flex flex-col w-full gap-6 p-6"
 		@submit.prevent="handleSubmit">
 		<div class="flex flex-col">
-			<h3 class="text-primary-300 text-xl text-left">Change password</h3>
+			<h3 class="text-primary-300 text-xl text-center">Change password</h3>
 		</div>
 
 		<!-- NEW PASSWORD -->
@@ -60,11 +60,8 @@
 		</div>
 
 		<!-- CHANGE PASSWORD BUTTON -->
-		<button
-			type="submit"
-			class="btn-primary-cta self-center"
-			:disabled="loading">
-			CHANGE PASSWORD
+		<button type="submit" class="btn-primary self-center" :disabled="loading">
+			Change password
 		</button>
 	</form>
 </template>

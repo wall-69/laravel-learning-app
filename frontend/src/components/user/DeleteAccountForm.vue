@@ -3,7 +3,7 @@
 		class="bg-secondary-300 sm:rounded-md sm:w-auto flex flex-col w-full gap-6 p-6"
 		@submit.prevent="handleSubmit">
 		<div class="flex flex-col">
-			<h3 class="text-primary-300 text-xl text-left">Delete account</h3>
+			<h3 class="text-primary-300 text-xl text-center">Delete account</h3>
 		</div>
 
 		<!-- PASSWORD -->
@@ -23,11 +23,8 @@
 		</div>
 
 		<!-- DELETE ACCOUNT BUTTON -->
-		<button
-			type="submit"
-			class="btn-primary-cta self-center"
-			:disabled="loading">
-			DELETE ACCOUNT
+		<button type="submit" class="btn-primary self-center" :disabled="loading">
+			Delete account
 		</button>
 	</form>
 </template>

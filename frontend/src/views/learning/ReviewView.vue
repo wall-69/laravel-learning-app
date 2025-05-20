@@ -2,7 +2,9 @@
 	<div class="grow flex flex-col items-center justify-center gap-2 bg-white">
 		<template v-if="!finished">
 			<!-- Stats -->
-			<div class="flex items-center justify-center gap-8">
+			<div
+				v-if="currentWord && words.length > 0"
+				class="flex items-center justify-center gap-8">
 				<span class="text-4xl font-bold">{{ words.length }}</span>
 			</div>
 
@@ -83,7 +85,7 @@
 			</div>
 
 			<!-- Controls -->
-			<div class="flex gap-8">
+			<div v-if="currentWord && words.length > 0" class="flex gap-8">
 				<!-- Show card -->
 				<template v-if="!revealed">
 					<button
@@ -111,14 +113,26 @@
 		</template>
 		<template v-else>
 			<div
-				class="bg-secondary-200 text-secondary-content-200 flex flex-col items-center px-8 py-4 text-center rounded-lg shadow-md">
-				<h2 class="text-2xl font-bold">Congratulations!</h2>
-				<p>You finished your daily words. Good job!</p>
+				class="bg-secondary-200 text-secondary-content-200 flex flex-col justify-between items-center gap-4 px-8 h-96 sm:h-[30rem] sm:w-96 w-80 py-4 text-center rounded-lg shadow-md">
+				<div class="flex flex-col items-center gap-2">
+					<h2 class="flex items-center gap-1 text-2xl font-bold">
+						<i class="bx bxs-party"></i> Congratulations!
+						<i class="bx bxs-party"></i>
+					</h2>
+					<p>You finished reviewing your daily words. Good job!</p>
+				</div>
+
+				<div class="flex flex-col items-center gap-3">
+					<h3 class="text-xl font-bold">Did you know?</h3>
+					<p>
+						{{ getRandomFunFact }}
+					</p>
+				</div>
 
 				<RouterLink
 					@click="addTodayToReviewed"
 					:to="{ name: 'learning' }"
-					class="bg-primary-200 text-primary-content-200 px-2 py-1 mt-4 text-lg rounded-md shadow-md">
+					class="btn-primary">
 					Dashboard
 				</RouterLink>
 			</div>
@@ -127,7 +141,7 @@
 </template>
 <script setup>
 import axios from "axios";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, ref, computed } from "vue";
 import { handleRequest } from "@/utils/requestWrapper";
 import { asset } from "@/utils/asset";
 import { RouterLink } from "vue-router";
@@ -149,6 +163,38 @@ const finished = ref(false);
 
 const words = ref([]);
 const currentWord = ref({});
+
+const funFacts = [
+	"Spaced repetition strengthens memory more than cramming.",
+	"Reviewing just before forgetting helps lock in knowledge.",
+	"Retrieving a memory makes it stronger, it's called the testing effect.",
+	"Active recall beats passive review every time.",
+	"Teaching what you know reinforces your own understanding.",
+	"Consistent daily review beats long study sessions.",
+	"Challenging learning sticks better, it's called desirable difficulty.",
+	"Believing you can improve memory actually helps you do it.",
+	"Memory is stored in patterns and connections, not single spots.",
+	"Sleep helps your brain organize and store what you've learned.",
+	"Writing by hand activates more areas of the brain than typing.",
+	"Regular review signals your brain that info is important.",
+	"Mistakes plus feedback help build stronger memories.",
+	"Switching between related topics while studying improves flexible thinking and long-term retention.",
+	"Using multiple senses strengthens memory retention.",
+	"Struggling to remember helps reinforce the memory.",
+	"New information sticks better when connected to what you already know.",
+	"Your brain builds mental maps to organize knowledge.",
+	"Learning new vocabulary exercises and grows your brain.",
+	"Your brain rewires itself every time you learn something new, it's called neuroplasticity.",
+	"Even brief mental breaks improve focus and memory consolidation.",
+	"Explaining concepts to yourself out loud sharpens understanding and recall.",
+	"Changing your study environment can enhance memory by adding contextual cues.",
+	"The more meaningful or emotional the material, the more likely your brain is to store it.",
+];
+
+// Computed
+const getRandomFunFact = computed(
+	() => funFacts[Math.floor(Math.random() * funFacts.length)]
+);
 
 // Functions
 function handleReveal() {
@@ -262,5 +308,5 @@ function addTodayToReviewed() {
 </script>
 
 <!-- 
-insp: https://dribbble.com/shots/10827971-Vocabulary-App
+	Inspiration: https://dribbble.com/shots/10827971-Vocabulary-App
 -->

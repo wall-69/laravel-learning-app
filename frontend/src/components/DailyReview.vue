@@ -8,11 +8,7 @@
 		<VCalendar :attributes="calendarAttributes" trim-weeks>
 			<template #footer>
 				<div class="flex items-center justify-center w-full pb-3">
-					<button
-						@click="review"
-						class="bg-secondary-100 hover:bg-primary-400 px-4 py-2 text-white rounded-md">
-						Review
-					</button>
+					<button @click="review" class="btn-secondary">Review</button>
 				</div>
 			</template>
 		</VCalendar>

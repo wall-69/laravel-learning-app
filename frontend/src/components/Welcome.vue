@@ -6,18 +6,15 @@
 		</div>
 
 		<div class="md:flex-row flex flex-col flex-wrap gap-4">
-			<RouterLink
-				class="bg-primary-200 hover:bg-primary-300 flex items-center gap-2 px-3 py-1 text-lg transition-colors rounded-md">
+			<RouterLink class="btn-primary">
 				<i class="bx bxs-customize bx-sm flex text-gray-900"></i>
 				Your word packs
 			</RouterLink>
-			<RouterLink
-				class="bg-primary-200 hover:bg-primary-300 flex items-center gap-2 px-3 py-1 text-lg transition-colors rounded-md">
+			<RouterLink class="btn-primary">
 				<i class="bx bxs-flag bx-sm flex text-gray-900"></i>
 				Your paths
 			</RouterLink>
-			<RouterLink
-				class="bg-primary-200 hover:bg-primary-300 flex items-center gap-2 px-3 py-1 text-lg transition-colors rounded-md">
+			<RouterLink class="btn-primary">
 				<i class="bx bxs-spreadsheet bx-sm flex text-gray-900"></i>
 				Read more
 			</RouterLink>
