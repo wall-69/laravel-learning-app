@@ -45,6 +45,14 @@
 			:redirect-route-name="'admin-word-packs'"
 			class="self-center">
 			<template #header>New Word pack</template>
+			<template #input-path_id="{ form }">
+				<input
+					type="number"
+					name="path_id"
+					class="input"
+					autocomplete="off"
+					v-model="form.path_id" />
+			</template>
 			<template #input-name="{ form }">
 				<input
 					type="text"
@@ -91,6 +99,14 @@
 			model-name="word-pack"
 			class="self-center">
 			<template #header>Edit Word pack</template>
+			<template #input-path_id="{ form }">
+				<input
+					type="number"
+					name="path_id"
+					class="input"
+					autocomplete="off"
+					v-model="form.path_id" />
+			</template>
 			<template #input-name="{ form }">
 				<input
 					type="text"

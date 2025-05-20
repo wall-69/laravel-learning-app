@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create("word_packs", function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Path::class)->nullable();
+            $table->foreignIdFor(Path::class)->nullable()->onDelete("set null");
             $table->foreignIdFor(User::class);
             $table->string("name");
             $table->string("description");

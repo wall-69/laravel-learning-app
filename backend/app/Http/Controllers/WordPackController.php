@@ -75,6 +75,9 @@ class WordPackController extends Controller
             "image" => "nullable"
         ]);
 
+        // Null path_id
+        $data["path_id"] = $data["path_id"] ?? null;
+
         // Save image
         if ($request->hasFile("image") || $request->image == null) {
             // Delete old image, if one is set
