@@ -14,6 +14,8 @@
 		"axios": "^1.7.9",
 		"date-fns": "^2.30.0",
 		"micromodal": "^0.6.1",
+		"pinia": "^3.0.2",
+		"pinia-plugin-persistedstate": "^4.3.0",
 		"pluralize": "^8.0.0",
 		"postcss": "^8.4.49",
 		"v-calendar": "^3.1.2",

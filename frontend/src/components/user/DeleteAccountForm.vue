@@ -33,10 +33,11 @@ import { handleRequest } from "@/utils/requestWrapper";
 import { reactive, ref } from "vue";
 import axios from "axios";
 import router from "@/router";
-import useAuth from "@/composables/useAuth";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 
-// Composables
-const { user, setUser, setAuthenticated } = useAuth();
+// Stores
+const { user, authenticated } = storeToRefs(useAuthStore());
 
 // Variables
 const loading = ref(false);
@@ -59,8 +60,8 @@ async function handleSubmit() {
 		request: (data) => axios.post("/api/users/" + user.value.id, data),
 		requestData: form,
 		successCallback: async (response) => {
-			setUser({});
-			setAuthenticated(false);
+			authenticated.value = false;
+			user.value = {};
 
 			await router.replace({ name: "home" });
 		},

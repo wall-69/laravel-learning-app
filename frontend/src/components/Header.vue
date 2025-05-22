@@ -207,9 +207,14 @@
 import { RouterLink } from "vue-router";
 import useAuth from "@/composables/useAuth";
 import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
+// Stores
+const { authenticated, user } = storeToRefs(useAuthStore());
 
 // Composables
-const { user, authenticated, logout } = useAuth();
+const { logout } = useAuth();
 
 // Variables
 const userDropdownVisible = ref(false);

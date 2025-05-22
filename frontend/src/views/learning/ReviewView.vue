@@ -145,10 +145,11 @@ import { nextTick, onMounted, ref, computed } from "vue";
 import { handleRequest } from "@/utils/requestWrapper";
 import { asset } from "@/utils/asset";
 import { RouterLink } from "vue-router";
-import useAuth from "@/composables/useAuth";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 
-// Composables
-const { user, setUser } = useAuth();
+// Stores
+const { user } = storeToRefs(useAuthStore());
 
 // Lifecycle
 onMounted(async () => {
@@ -302,8 +303,6 @@ function addTodayToReviewed() {
 		date: formatted,
 		user_id: user.value.id,
 	});
-
-	setUser(user);
 }
 </script>
 

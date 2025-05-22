@@ -67,7 +67,7 @@ async function loadUsers() {
 	handleRequest({
 		request: () => axios.get("/api/users"),
 		successCallback: (response) => {
-			users.value = response.data;
+			users.value = response.data.data;
 		},
 	});
 }

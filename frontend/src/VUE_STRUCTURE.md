@@ -7,6 +7,8 @@
 <script setup>
 // Imports
 
+// Stores
+
 // Composables
 
 // Define (props, emits, etc)

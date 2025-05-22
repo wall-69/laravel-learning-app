@@ -22,11 +22,12 @@
 
 import { ref } from "vue";
 import { eachDayOfInterval } from "date-fns";
-import useAuth from "@/composables/useAuth";
 import router from "@/router";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 
-// Composables
-const { user } = useAuth();
+// Stores
+const { user } = storeToRefs(useAuthStore());
 
 // Variables
 const userRegistrationDate = getUserRegistrationUTCDate();

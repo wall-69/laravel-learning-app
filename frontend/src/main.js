@@ -6,6 +6,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import useAuth from "./composables/useAuth";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 // Axios
 axios.defaults.baseURL = "http://localhost:8000";
@@ -29,9 +31,9 @@ axios.interceptors.request.use(
 	(error) => Promise.reject(error)
 );
 
-// First try to fetch the user
-const { attempt } = useAuth();
-await attempt();
+// Pinia
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 // Create the Vue app
 const app = createApp(App);
@@ -75,5 +77,10 @@ app.directive("hover-no-document-scroll", {
 
 app.use(router);
 app.use(VCalendar);
+app.use(pinia);
+
+// First try to fetch the user
+const { attempt } = useAuth();
+await attempt();
 
 app.mount("#app");

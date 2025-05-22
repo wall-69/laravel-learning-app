@@ -2,38 +2,29 @@ import { computed, reactive } from "vue";
 import axios from "axios";
 import { handleRequest } from "@/utils/requestWrapper";
 import router from "@/router";
-import useUserData from "./useUserData";
-
-const { setUserWordPacks } = useUserData();
-
-const state = reactive({
-	authenticated: false,
-	user: {},
-});
+import { useUserStore } from "@/stores/user";
+import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
 
 export default function useAuth() {
-	const authenticated = computed(() => state.authenticated);
-	const user = computed(() => state.user);
+	const authStore = useAuthStore();
+	const { authenticated, user } = storeToRefs(authStore);
 
-	const setAuthenticated = (authenticated) => {
-		state.authenticated = authenticated;
-	};
-
-	const setUser = (user) => {
-		state.user = user;
-	};
+	const userStore = useUserStore();
+	const { userWordPacks } = storeToRefs(userStore);
 
 	async function attempt() {
 		await handleRequest({
 			request: () => axios.get("/api/user"),
 			successCallback: async (response) => {
-				setAuthenticated(true);
-				setUser(response.data.user);
-				setUserWordPacks(response.data.user.user_word_packs);
+				authenticated.value = true;
+				user.value = response.data.user;
+
+				userWordPacks.value = response.data.user.user_word_packs;
 			},
 			failCallback: async (response) => {
-				setAuthenticated(false);
-				setUser({});
+				authenticated.value = false;
+				user.value = {};
 			},
 		});
 	}
@@ -55,9 +46,11 @@ export default function useAuth() {
 		await handleRequest({
 			request: () => axios.post("/api/logout"),
 			successCallback: async (response) => {
-				setAuthenticated(false);
-				setUser({});
-				setUserWordPacks([]);
+				authenticated.value = false;
+				user.value = {};
+
+				userWordPacks.value = [];
+
 				router.replace({ name: "home" });
 			},
 		});
@@ -75,12 +68,6 @@ export default function useAuth() {
 	}
 
 	return {
-		authenticated,
-		user,
-
-		setAuthenticated,
-		setUser,
-
 		attempt,
 		login,
 		logout,

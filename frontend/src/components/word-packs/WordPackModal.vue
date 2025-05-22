@@ -143,15 +143,17 @@ import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { computed, onMounted, ref, watch } from "vue";
 import MicroModal from "micromodal";
-import useUserData from "@/composables/useUserData";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // Define
 defineExpose({
 	openWordPackModal,
 });
 
-// Composables
-const { userWordPacks, setUserWordPacks } = useUserData();
+// Stores
+const userStore = useUserStore();
+const { userWordPacks } = storeToRefs(userStore);
 
 // Variables
 const modalWordPack = ref({});
@@ -215,7 +217,7 @@ async function addWordPack() {
 			except_words: except,
 		},
 		successCallback: async (response) => {
-			setUserWordPacks(response.data.user_word_packs);
+			userWordPacks.value = response.data.user_word_packs;
 
 			modalAction.value = "update";
 
@@ -240,7 +242,7 @@ async function updateWordPack() {
 			except_words: except,
 		},
 		successCallback: async (response) => {
-			setUserWordPacks(response.data.user_word_packs);
+			userWordPacks.value = response.data.user_word_packs;
 
 			modalAction.value = "update";
 
@@ -256,7 +258,7 @@ async function removeWordPack() {
 		request: () =>
 			axios.post("/api/user/word-packs/" + modalWordPack.value.id + "/remove"),
 		successCallback: async (response) => {
-			setUserWordPacks(response.data.user_word_packs);
+			userWordPacks.value = response.data.user_word_packs;
 
 			modalAction.value = "add";
 
