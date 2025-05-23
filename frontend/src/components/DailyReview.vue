@@ -19,15 +19,32 @@
 // The most important thing is to know if fucking timezones are taken care of.
 // If not, you will be stuck on a bug for an hour because of a fucking timezone mismatch.
 // I <3 timezones.
-
-import { ref } from "vue";
+import axios from "axios";
+import { ref, onMounted } from "vue";
 import { eachDayOfInterval } from "date-fns";
 import router from "@/router";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
+import { handleRequest } from "@/utils/requestWrapper";
 
 // Stores
 const { user } = storeToRefs(useAuthStore());
+
+// Lifecycle
+onMounted(async () => {
+	if (
+		!user.value.hasDueWords &&
+		!reviewedTimestamps.has(toUTCDateOnly(new Date()).getTime())
+	) {
+		// Mark today as reviewed
+		await handleRequest({
+			request: () => axios.post("/api/user/review/today"),
+			failCallback: async (response) => {
+				console.error("Could not mark today as reviewed.", response);
+			},
+		});
+	}
+});
 
 // Variables
 const userRegistrationDate = getUserRegistrationUTCDate();
@@ -56,7 +73,7 @@ const calendarAttributes = ref([
 			color: "blue",
 			fillMode: "light",
 		},
-		dates: user.value.hasDueWords ? new Date() : false,
+		dates: new Date(),
 		popover: {
 			label: "Your daily review awaits!",
 		},
@@ -100,9 +117,7 @@ async function review() {
 
 function toUTCDateOnly(date) {
 	const d = new Date(date);
-	return new Date(
-		Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
-	);
+	return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
 }
 
 function getUserRegistrationUTCDate() {
