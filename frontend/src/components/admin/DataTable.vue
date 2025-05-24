@@ -160,7 +160,11 @@ async function handleDelete(id) {
 	const modelNameFormatted =
 		props.modelName.charAt(0).toUpperCase() +
 		props.modelName.slice(1).replace("-", " ");
-	confirm("Are you sure you want to delete this " + modelNameFormatted + "?");
+
+	const agreed = confirm(
+		"Are you sure you want to delete this " + modelNameFormatted + "?"
+	);
+	if (!agreed) return;
 
 	await handleRequest({
 		request: (data) => {

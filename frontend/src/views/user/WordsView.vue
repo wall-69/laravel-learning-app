@@ -154,7 +154,10 @@ async function handleDelete(id, word) {
 		return;
 	}
 
-	confirm("Are you sure you want to delete the word " + word + "?");
+	const agreed = confirm(
+		"Are you sure you want to delete the word " + word + "?"
+	);
+	if (!agreed) return;
 
 	deleting.value = true;
 

@@ -66,6 +66,11 @@ class User extends Authenticatable
         return $this->hasMany(UserWordPack::class);
     }
 
+    public function userSettings()
+    {
+        return $this->hasOne(UserSetting::class);
+    }
+
     public function scopeSearch(Builder $query, string $search)
     {
         $query->where("name", "LIKE", "%$search%")->orWhere("surname", "LIKE", "%$search%");

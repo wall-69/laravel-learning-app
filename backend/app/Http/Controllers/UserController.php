@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\UserSetting;
 use Gate;
 use Hash;
 use Illuminate\Auth\Events\PasswordReset;
@@ -18,7 +19,13 @@ class UserController extends Controller
     public function user(Request $request)
     {
         $user = $request->user();
-        $data = $user->load(["userReviews", "userWordPacks"]);
+        $data = $user->load(["userReviews", "userWordPacks", "userSettings"]);
+
+        // If no UserSettings are set we provide empty model
+        $data->setRelation('userSettings', $data->userSettings ?? new UserSetting());
+
+        // Attributes for frontend :D
+        $data->setAttribute("hasWords", boolval($user->words));
         $data->setAttribute("hasDueWords", $user->hasDueWords());
 
         return response()->json([

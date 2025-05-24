@@ -6,6 +6,7 @@ use App\Http\Controllers\PathController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserReviewController;
+use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\UserWordController;
 use App\Http\Controllers\UserWordPackController;
 use App\Http\Controllers\WordController;
@@ -111,6 +112,11 @@ Route::controller(UserWordController::class)->name("user-words.")->middleware("a
 Route::controller(UserWordPackController::class)->name("user-word-packs.")->middleware("auth:sanctum")->group(function () {
     // General
     Route::get("/user/word-packs/", "index")->name("index");
+});
+
+Route::controller(UserSettingController::class)->name("user-settings.")->middleware("auth:sanctum")->group(function () {
+    // General
+    Route::post("/user/settings/set", "set");
 });
 
 Route::controller(StatisticsController::class)->name("statistics.")->middleware("auth:sanctum")->group(function () {
