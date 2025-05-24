@@ -33,6 +33,7 @@ const { user } = storeToRefs(useAuthStore());
 // Lifecycle
 onMounted(async () => {
 	if (
+		user.value.hasWords &&
 		!user.value.hasDueWords &&
 		!reviewedTimestamps.has(toUTCDateOnly(new Date()).getTime())
 	) {
@@ -59,7 +60,8 @@ const reviewedTimestamps = new Set(reviewedDays.map((date) => date.getTime()));
 
 const missedDays = eachDayOfInterval({
 	start: userRegistrationDate,
-	end: yesterdayDate,
+	end:
+		userRegistrationDate > yesterdayDate ? userRegistrationDate : yesterdayDate,
 })
 	.map(toUTCDateOnly)
 	.filter((date) => !reviewedTimestamps.has(date.getTime()))

@@ -12,7 +12,11 @@
 			</div>
 		</div>
 
-		<div class="flex-nowrap flex h-64 gap-4 overflow-x-scroll">
+		<div
+			class="flex-nowrap flex gap-4 overflow-x-scroll"
+			:class="{
+				'h-64': wordPacks.length > 0,
+			}">
 			<RouterLink
 				v-if="!wordPacks || wordPacks.length == 0"
 				class="text-primary-200 list-item list-disc list-inside">
