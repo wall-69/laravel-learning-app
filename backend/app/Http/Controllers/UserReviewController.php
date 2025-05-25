@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserSettingType;
 use App\Models\UserReview;
 use App\Models\UserWord;
 use Illuminate\Http\Request;
@@ -19,8 +20,9 @@ class UserReviewController extends Controller
             abort(400, "You already reviewed today.");
         }
 
-        // Check if user has words to review
-        if ($user->hasDueWords()) {
+        // Check if user has words to review and he hasnt reach his daily limit yet
+        $dailyLimit = $user->userSettings ? $user->userSettings->settings[UserSettingType::DAILY_REVIEWS] : 25;
+        if ($user->hasDueWords() && $user->todayReviews() < $dailyLimit) {
             abort(400, "You have words to review! Cheating is not cool.");
         }
 

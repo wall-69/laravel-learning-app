@@ -119,7 +119,16 @@
 						<i class="bx bxs-party"></i> Congratulations!
 						<i class="bx bxs-party"></i>
 					</h2>
-					<p>You finished reviewing your daily words. Good job!</p>
+					<p v-if="!hitDailyLimit">
+						You finished reviewing your daily words. Good job!
+					</p>
+					<p v-else>
+						You hit your daily review limit. Good job! <br />
+						You can change it in
+						<RouterLink :to="{ name: 'profile' }" class="font-bold underline"
+							>your settings</RouterLink
+						>.
+					</p>
 				</div>
 
 				<div class="flex flex-col items-center gap-3">
@@ -153,6 +162,12 @@ const { user } = storeToRefs(useAuthStore());
 
 // Lifecycle
 onMounted(async () => {
+	if (user.value.todayReviews >= dailyLimit.value) {
+		hitDailyLimit.value = true;
+		finished.value = true;
+		return;
+	}
+
 	await loadDueWords();
 });
 
@@ -161,6 +176,7 @@ const card = ref(null);
 const revealed = ref(false);
 const scrollable = ref(null);
 const finished = ref(false);
+const hitDailyLimit = ref(false);
 
 const words = ref([]);
 const currentWord = ref({});
@@ -196,6 +212,9 @@ const funFacts = [
 const getRandomFunFact = computed(
 	() => funFacts[Math.floor(Math.random() * funFacts.length)]
 );
+const dailyLimit = computed(
+	() => user.value.user_settings?.settings?.daily_reviews ?? 25
+);
 
 // Functions
 function handleReveal() {
@@ -224,6 +243,14 @@ async function handleAnswer(correct) {
 			request: () =>
 				axios.post("/api/user/words/" + correctWord.id + "/correct"),
 		});
+
+		// Increment today reviews in client
+		user.value.todayReviews++;
+
+		// Max daily reviews
+		if (user.value.todayReviews >= dailyLimit.value) {
+			hitDailyLimit.value = true;
+		}
 	} else {
 		// Remove the failed word from the words list, but keep it
 		const failedWord = words.value.shift();
@@ -243,8 +270,8 @@ async function handleAnswer(correct) {
 		words.value.splice(randomIdx, 0, failedWord);
 	}
 
-	// If there are remaining words we set the first one in the list as the current one
-	if (words.value.length > 0) {
+	// If the user hasnt hit their daily review limit and there are remaining words we set the first one in the list as the current one
+	if (!hitDailyLimit.value && words.value.length > 0) {
 		currentWord.value = words.value[0];
 	} else {
 		// If there are no more words mark as finished
@@ -291,10 +318,13 @@ function addTodayToReviewed() {
 	const dd = String(now.getUTCDate()).padStart(2, "0");
 	const formatted = yyyy + "-" + mm + "-" + dd + "T00:00:00.000000Z";
 
-	const lastReview =
-		user.value.user_reviews[Object.keys(user.value.user_reviews).length - 1];
-	if (lastReview.date == formatted) {
-		return;
+	const reviews = user.value.user_reviews;
+	const reviewKeys = Object.keys(reviews);
+	if (reviewKeys.length > 0) {
+		const lastReview = reviews[reviewKeys[reviewKeys.length - 1]];
+		if (lastReview.date === formatted) {
+			return;
+		}
 	}
 
 	user.value.user_reviews.push({
@@ -303,6 +333,8 @@ function addTodayToReviewed() {
 		date: formatted,
 		user_id: user.value.id,
 	});
+
+	user.value.hasDueWords = false;
 }
 </script>
 

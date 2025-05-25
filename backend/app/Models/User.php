@@ -82,6 +82,11 @@ class User extends Authenticatable
         return $this->userWords()->where("review_at", "<", now())->exists();
     }
 
+    public function todayReviews()
+    {
+        return $this->userWords()->where("last_reviewed_at", ">", now()->startOfDay())->count();
+    }
+
     // Password reset
     public function sendPasswordResetNotification($token)
     {

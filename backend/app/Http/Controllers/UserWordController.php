@@ -54,8 +54,9 @@ class UserWordController extends Controller
             $days = 2 ** ($userWord->group - 1);
         }
 
-        // Update review_at
+        // Update review_at and last_reviewed_at
         $toUpdate["review_at"] = now()->addDays($days)->startOfDay();
+        $toUpdate["last_reviewed_at"] = now();
 
         // Update group
         if ($userWord->group < 10) {
@@ -63,7 +64,7 @@ class UserWordController extends Controller
         }
 
         // Update model
-        UserWord::where("id", $userWord->id)->first()->update($toUpdate);
+        $userWord->update($toUpdate);
 
         return response()->json([
             "message" => "UserWord next review_at and group updated successfully."

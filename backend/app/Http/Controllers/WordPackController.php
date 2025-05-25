@@ -173,6 +173,7 @@ class WordPackController extends Controller
                 "word_id" => $word->id,
                 "group" => 1,
                 "review_at" => $now,
+                "last_reviewed_at" => null,
                 "created_at" => $now,
                 "updated_at" => $now,
             ];
@@ -220,6 +221,7 @@ class WordPackController extends Controller
                 "word_id" => $word->id,
                 "group" => 1,
                 "review_at" => $now,
+                "last_reviewed_at" => null,
                 "created_at" => $now,
                 "updated_at" => $now,
             ];

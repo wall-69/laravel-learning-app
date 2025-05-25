@@ -25,8 +25,9 @@ class UserController extends Controller
         $data->setRelation('userSettings', $data->userSettings ?? new UserSetting());
 
         // Attributes for frontend :D
-        $data->setAttribute("hasWords", boolval($user->words));
+        $data->setAttribute("hasWords", boolval($user->userWords));
         $data->setAttribute("hasDueWords", $user->hasDueWords());
+        $data->setAttribute("todayReviews", $user->todayReviews());
 
         return response()->json([
             "user" => $data
