@@ -18,7 +18,7 @@ class AuthController extends Controller
         ]);
 
         if (auth("web")->attempt($data)) {
-            $request->session()->regenerate();
+            session()->regenerate();
 
             return response()->json([
                 "message" => "Successfully logged in.",
@@ -36,8 +36,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         auth("web")->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        session()->invalidate();
+        session()->regenerateToken();
 
         return response()->json([
             "message" => "Successfully logged out."
