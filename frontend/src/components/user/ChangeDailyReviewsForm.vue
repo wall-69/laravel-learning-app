@@ -52,7 +52,7 @@ const loading = ref(false);
 
 const form = reactive({
 	setting: "daily_reviews",
-	value: user.value.user_settings.settings.daily_reviews ?? 25,
+	value: user.value.user_settings?.settings?.daily_reviews ?? 25,
 });
 const errors = reactive({
 	setting: "",
