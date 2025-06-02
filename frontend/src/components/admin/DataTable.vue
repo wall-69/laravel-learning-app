@@ -107,7 +107,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["update:data"]);
+const emit = defineEmits(["update:data", "delete:data"]);
 
 // Lifecycle hooks
 onMounted(async () => {
@@ -171,6 +171,7 @@ async function handleDelete(id) {
 			return axios.delete("/api/" + props.modelName + "s" + "/" + id);
 		},
 		successCallback: async (response) => {
+			emit("delete:data", id);
 			loadData();
 		},
 	});

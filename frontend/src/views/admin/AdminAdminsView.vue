@@ -28,6 +28,8 @@
 			v-if="$route.name == 'admin-admins'"
 			:data="admins"
 			@update:data="admins = $event"
+			@delete:data="deleteAdmin($event)"
+			update-data-request="true"
 			model-name="admin"
 			:edittable="false"></DataTable>
 		<DataCreateForm
@@ -52,6 +54,12 @@ import DataCreateForm from "@/components/admin/DataCreateForm.vue";
 import { onMounted, ref } from "vue";
 import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
+import router from "@/router";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
+// Composables
+const { user } = storeToRefs(useAuthStore());
 
 // Lifecycle hooks
 onMounted(async () => {
@@ -70,5 +78,14 @@ async function loadUsers() {
 			users.value = response.data.data;
 		},
 	});
+}
+
+async function deleteAdmin(id) {
+	if (id == user.value.admin.id) {
+		user.value.admin = null;
+
+		await router.replace({ name: "learning" });
+		return;
+	}
 }
 </script>

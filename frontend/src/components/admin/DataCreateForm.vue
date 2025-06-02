@@ -90,8 +90,6 @@ async function handleSubmit() {
 		},
 		requestData: formData,
 		successCallback: async (response) => {
-			console.log(props.redirectRouteName);
-
 			await router.replace({ name: props.redirectRouteName });
 			loading.value = false;
 		},
