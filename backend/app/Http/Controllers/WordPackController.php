@@ -25,7 +25,11 @@ class WordPackController extends Controller
 
     public function index(Request $request)
     {
-        $paginator = WordPack::search($request->search ?? "")->latest()->paginate(30);
+        $paginator = WordPack::where(function ($query) use ($request) {
+            if ($request->has("visibility")) {
+                $query->whereVisibility($request->visibility);
+            }
+        })->search($request->search ?? "")->latest()->paginate(30);
 
         return response()->json($paginator);
     }
@@ -163,7 +167,7 @@ class WordPackController extends Controller
             ->toArray();
 
         // Filters out word_ids that the user already has added and the ones the user doesnt want to add
-        $wordsToAdd = $wordPack->words->filter(fn ($word) => !in_array($word->id, $existingWordIds) && !in_array($word->id, $exceptWords));
+        $wordsToAdd = $wordPack->words->filter(fn($word) => !in_array($word->id, $existingWordIds) && !in_array($word->id, $exceptWords));
 
         // Create array data to be inserted
         $now = now();
@@ -211,7 +215,7 @@ class WordPackController extends Controller
             ->toArray();
 
         // Filters out word_ids that the user already has added and the ones the user doesnt want to add
-        $wordsToAdd = $wordPack->words->filter(fn ($word) => !in_array($word->id, $existingWordIds) && !in_array($word->id, $exceptWords));
+        $wordsToAdd = $wordPack->words->filter(fn($word) => !in_array($word->id, $existingWordIds) && !in_array($word->id, $exceptWords));
 
         // Create array data to be inserted
         $now = now();

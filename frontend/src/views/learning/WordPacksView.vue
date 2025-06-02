@@ -107,8 +107,8 @@ const searchInput = ref(null);
 async function loadWordPacks() {
 	loading.value = true;
 
-	let requestUrl = "/api/word-packs";
-	requestUrl += "?page=" + page.value;
+	let requestUrl = "/api/word-packs?visibility=public";
+	requestUrl += "&page=" + page.value;
 	if (search.value) {
 		requestUrl += "&search=" + search.value;
 	}
