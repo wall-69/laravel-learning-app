@@ -58,7 +58,7 @@ import router from "@/router";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
-// Composables
+// Stores
 const { user } = storeToRefs(useAuthStore());
 
 // Lifecycle hooks
