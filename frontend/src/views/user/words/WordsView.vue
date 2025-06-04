@@ -1,15 +1,21 @@
 <template>
 	<section class="flex flex-col items-stretch justify-center w-full gap-8">
 		<h2 class="text-4xl font-bold text-center text-gray-900">My words</h2>
-		<!-- Words -->
-		<form @submit.prevent="search = searchInput.value">
-			<input
-				ref="searchInput"
-				type="search"
-				name="search"
-				placeholder="Search"
-				class="input bg-secondary-300 placeholder:text-secondary-content-300 focus:placeholder:text-opacity-0 sm:block text-secondary-content-300 hidden border-0" />
-		</form>
+
+		<div class="sm:justify-between flex items-center justify-start">
+			<form @submit.prevent="search = searchInput.value">
+				<input
+					ref="searchInput"
+					type="search"
+					name="search"
+					placeholder="Search"
+					class="input bg-secondary-300 placeholder:text-secondary-content-300 focus:placeholder:text-opacity-0 sm:block text-secondary-content-300 hidden border-0" />
+			</form>
+
+			<RouterLink :to="{ name: 'words-create' }" class="btn-secondary">
+				Add word
+			</RouterLink>
+		</div>
 
 		<template v-if="words.length > 0">
 			<table class="w-full">

@@ -11,7 +11,8 @@ import ReviewView from "@/views/learning/ReviewView.vue";
 import LearningView from "@/views/learning/LearningView.vue";
 import WordPacksView from "@/views/learning/WordPacksView.vue";
 
-import WordsView from "@/views/user/WordsView.vue";
+import WordsView from "@/views/user/words/WordsView.vue";
+import WordCreateView from "@/views/user/words/WordCreateView.vue";
 import ProfileView from "@/views/user/ProfileView.vue";
 
 import authGuard from "./guards/authGuard";
@@ -61,8 +62,18 @@ const router = createRouter({
 				},
 				{
 					path: "/words",
-					name: "words",
-					component: WordsView,
+					children: [
+						{
+							path: "",
+							name: "words",
+							component: WordsView,
+						},
+						{
+							name: "words-create",
+							path: "create",
+							component: WordCreateView,
+						},
+					],
 				},
 				{
 					path: "/profile",

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserWord;
 use App\Models\Word;
+use App\Models\WordPack;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -12,7 +14,6 @@ class WordController extends Controller
     {
         return response()->json($word);
     }
-
 
     public function index(Request $request)
     {
@@ -25,6 +26,7 @@ class WordController extends Controller
     {
         // Validate data
         $data = $request->validate([
+            "user_id" => "sometimes|integer|exists:users,id",
             "word_pack_id" => "integer|exists:word_packs,id",
             "word" => "string|max:255",
             "word_translation" => "string|max:255",
@@ -34,13 +36,37 @@ class WordController extends Controller
             "image" => "nullable|image"
         ]);
 
+        $user = $request->user();
+
+        // Check if the user adding a word to a word pack is the owner of the word pack (if he is not an admin)
+        if (!$user->admin && !WordPack::whereId($request->word_pack_id)->whereUserId($user->id)->exists()) {
+            abort(403, "You can't do this.");
+        }
+
         // Save image
         if ($request->hasFile("image")) {
             $data["image"] = "storage/" . $request->image->store("img/words", "public");
         }
 
         // Create the Word
-        Word::create($data);
+        $word = Word::create($data);
+
+        // Create a UserWord for the user if its his word
+        if ($request->has("user_id")) {
+            $now = now();
+
+            UserWord::insert([
+                "user_id" => $request->user_id,
+                "word_id" => $word->id,
+                "group" => 1,
+                "review_at" => $now,
+                "last_reviewed_at" => null,
+                "created_at" => $now,
+                "updated_at" => $now,
+            ]);
+        }
+
+
 
         return response()->json([
             "message" => "Word was successfully created."

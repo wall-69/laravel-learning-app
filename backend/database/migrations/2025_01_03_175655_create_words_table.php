@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\WordPack;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,6 +15,7 @@ return new class extends Migration
     {
         Schema::create("words", function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class)->nullable();
             $table->foreignIdFor(WordPack::class)->constrained()->onDelete("cascade");
             $table->string("word");
             $table->string("word_translation");

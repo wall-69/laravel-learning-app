@@ -13,6 +13,13 @@ use Illuminate\Validation\Rule;
 
 class WordPackController extends Controller
 {
+    public function user(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json($user->wordPacks);
+    }
+
     public function wordPackById(WordPack $wordPack)
     {
         return response()->json($wordPack);

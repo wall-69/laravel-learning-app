@@ -92,6 +92,11 @@ class User extends Authenticatable
         return $this->hasOne(Admin::class);
     }
 
+    public function wordPacks()
+    {
+        return $this->hasMany(WordPack::class);
+    }
+
     public function userReviews()
     {
         return $this->hasMany(UserReview::class, "user_id", "id");

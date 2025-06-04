@@ -19,33 +19,13 @@
 // The most important thing is to know if fucking timezones are taken care of.
 // If not, you will be stuck on a bug for an hour because of a fucking timezone mismatch.
 // I <3 timezones.
-import axios from "axios";
-import { ref, onMounted } from "vue";
-import { eachDayOfInterval } from "date-fns";
+import { ref } from "vue";
 import router from "@/router";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import { handleRequest } from "@/utils/requestWrapper";
 
 // Stores
 const { user } = storeToRefs(useAuthStore());
-
-// Lifecycle
-onMounted(async () => {
-	if (
-		user.value.hasWords &&
-		!user.value.hasDueWords &&
-		!reviewedTimestamps.has(toUTCDateOnly(new Date()).getTime())
-	) {
-		// Mark today as reviewed
-		await handleRequest({
-			request: () => axios.post("/api/user/review/today"),
-			failCallback: async (response) => {
-				console.error("Could not mark today as reviewed.", response);
-			},
-		});
-	}
-});
 
 // Variables
 const userRegistrationDate = getUserRegistrationUTCDate();
@@ -56,16 +36,6 @@ yesterdayDate.setDate(yesterdayDate.getDate() - 1);
 const reviewedDays = user.value.user_reviews.map(({ date }) =>
 	toUTCDateOnly(date)
 );
-const reviewedTimestamps = new Set(reviewedDays.map((date) => date.getTime()));
-
-const missedDays = eachDayOfInterval({
-	start: userRegistrationDate,
-	end:
-		userRegistrationDate > yesterdayDate ? userRegistrationDate : yesterdayDate,
-})
-	.map(toUTCDateOnly)
-	.filter((date) => !reviewedTimestamps.has(date.getTime()))
-	.slice(1); // TODO?: Fucking dumb shit, for some fucking timezone or date reason the first date is actually day PRIOR to the registration and I dont that much to find a fix for it right now
 
 const calendarAttributes = ref([
 	// Today
@@ -75,7 +45,7 @@ const calendarAttributes = ref([
 			color: "blue",
 			fillMode: "light",
 		},
-		dates: new Date(),
+		dates: user.value.hasDueWords ? new Date() : null,
 		popover: {
 			label: "Your daily review awaits!",
 		},
@@ -87,15 +57,6 @@ const calendarAttributes = ref([
 		dates: reviewedDays,
 		popover: {
 			label: "Reviewed!",
-		},
-	},
-	// Missed days
-	{
-		key: "missedDays",
-		dot: true,
-		dates: missedDays,
-		popover: {
-			label: "Missed day.",
 		},
 	},
 	// Registration date

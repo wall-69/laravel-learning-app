@@ -72,6 +72,7 @@ Route::controller(WordController::class)->name("words.")->middleware("auth:sanct
 
 Route::controller(WordPackController::class)->name("word-packs.")->middleware("auth:sanctum")->group(function () {
     // General
+    Route::get("/word-packs/user", "user");
     Route::get("/word-packs/{wordPack}", "wordPackById");
     Route::get("/word-packs/{wordPack}/words", "wordPackWithWordsById");
 
@@ -97,7 +98,7 @@ Route::controller(PathController::class)->name("paths.")->middleware("auth:sanct
 
 Route::controller(UserReviewController::class)->name("user-reviews.")->middleware("auth:sanctum")->group(function () {
     // General
-    Route::post("/user/review/today", "reviewToday");
+    Route::post("/user/review/today", "reviewToday")->name("review-today");
 });
 
 Route::controller(UserWordController::class)->name("user-words.")->middleware("auth:sanctum")->group(function () {
