@@ -27,12 +27,12 @@ class WordController extends Controller
         // Validate data
         $data = $request->validate([
             "user_id" => "sometimes|integer|exists:users,id",
-            "word_pack_id" => "integer|exists:word_packs,id",
-            "word" => "string|max:255",
-            "word_translation" => "string|max:255",
-            "example" => "string|max:255",
-            "example_translation" => "string|max:255",
-            "explanation" => "string|max:255",
+            "word_pack_id" => "required|integer|exists:word_packs,id",
+            "word" => "required|string|max:255",
+            "word_translation" => "required|string|max:255",
+            "example" => "required|string|max:255",
+            "example_translation" => "required|string|max:255",
+            "explanation" => "required|string|max:255",
             "image" => "nullable|image"
         ]);
 
@@ -52,11 +52,11 @@ class WordController extends Controller
         $word = Word::create($data);
 
         // Create a UserWord for the user if its his word
-        if ($request->has("user_id")) {
+        if ($request->has("user_id") && $request->user_id == $user->id) {
             $now = now();
 
             UserWord::insert([
-                "user_id" => $request->user_id,
+                "user_id" => $user->id,
                 "word_id" => $word->id,
                 "group" => 1,
                 "review_at" => $now,
@@ -81,12 +81,12 @@ class WordController extends Controller
         }
 
         $data = $request->validate([
-            "word_pack_id" => "integer|exists:word_packs,id",
-            "word" => "string|max:255",
-            "word_translation" => "string|max:255",
-            "example" => "string|max:255",
-            "example_translation" => "string|max:255",
-            "explanation" => "string|max:255",
+            "word_pack_id" => "required|integer|exists:word_packs,id",
+            "word" => "required|string|max:255",
+            "word_translation" => "required|string|max:255",
+            "example" => "required|string|max:255",
+            "example_translation" => "required|string|max:255",
+            "explanation" => "required|string|max:255",
             "image" => "nullable"
         ]);
 

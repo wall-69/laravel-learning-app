@@ -3,16 +3,11 @@
 		<DataCreateForm
 			:api-route="'/api/words'"
 			:redirect-route-name="'words'"
+			:hidden-data="{
+				user_id: user.id,
+			}"
 			class="self-center">
 			<template #header>Add word</template>
-			<template #input-user_id="{ form }">
-				<input
-					type="hidden"
-					name="user_id"
-					class="input"
-					autocomplete="off"
-					v-model="form.user_id" />
-			</template>
 			<template #input-word_pack_id="{ form }">
 				<select name="word_pack_id" class="input" v-model="form.word_pack_id">
 					<option v-for="wordPack in wordPacks" :value="wordPack.id">

@@ -49,6 +49,11 @@ const slots = useSlots();
 const props = defineProps({
 	apiRoute: String,
 	redirectRouteName: String,
+	hiddenData: {
+		type: Object,
+		default: {},
+		required: false,
+	},
 });
 
 // Variables
@@ -84,6 +89,10 @@ async function handleSubmit() {
 		formData.append(inputName, form[inputName]);
 	});
 
+	for (let hidden in props.hiddenData) {
+		formData.append(hidden, props.hiddenData[hidden]);
+	}
+
 	await handleRequest({
 		request: (data) => {
 			return axios.post(props.apiRoute, data);
@@ -91,10 +100,11 @@ async function handleSubmit() {
 		requestData: formData,
 		successCallback: async (response) => {
 			await router.replace({ name: props.redirectRouteName });
-			loading.value = false;
 		},
 		errors: errors,
 	});
+
+	loading.value = false;
 }
 
 // Watchers
