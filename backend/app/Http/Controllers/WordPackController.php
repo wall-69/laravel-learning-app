@@ -48,6 +48,7 @@ class WordPackController extends Controller
             "path_id" => "nullable|integer|exists:paths,id",
             "name" => "required|string|min:1|max:60",
             "description" => "required|string|min:10|max:255",
+            "type" => ["required", Rule::enum(WordPackType::class)],
             "visibility" => ["required", Rule::enum(WordPackVisibility::class)],
             "image" => "nullable|image"
         ]);
@@ -57,8 +58,10 @@ class WordPackController extends Controller
             $data["image"] = "storage/" . $request->image->store("img/word-packs/thumbnails", "public");
         }
 
-        // Set type based on the user's role (user - community or admin - official)
-        $data["type"] = $request->user()->admin ? WordPackType::OFFICIAL : WordPackType::COMMUNITY;
+        // Only admins can create official word packs
+        if ($request->type == WordPackType::OFFICIAL->value && !$request->user()->admin) {
+            abort(403, "You can't do this.");
+        }
 
         // Set the user_id
         $data["user_id"] = $request->user()->id;

@@ -42,8 +42,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $paginator = User::search($request->search ?? "")->latest()->paginate(30);
-        // $paginator->getCollection()->makeHidden("admin");
-        $paginator->data = "test";
+        $paginator->getCollection()->makeHidden("admin");
 
         return response()->json($paginator);
     }

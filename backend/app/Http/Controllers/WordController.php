@@ -66,8 +66,6 @@ class WordController extends Controller
             ]);
         }
 
-
-
         return response()->json([
             "message" => "Word was successfully created."
         ]);

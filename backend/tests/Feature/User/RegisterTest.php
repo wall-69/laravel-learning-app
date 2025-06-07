@@ -4,11 +4,13 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helpers\UserHelper;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
     use RefreshDatabase;
+    use UserHelper;
 
     public function test_guest_can_register_with_valid_data()
     {
@@ -32,7 +34,7 @@ class RegisterTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_guest_cant_register_with_invalid_data()
+    public function test_guest_cannot_register_with_invalid_data()
     {
         // Invalid data for registration
         $data = [
@@ -56,10 +58,10 @@ class RegisterTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_user_cant_register()
+    public function test_user_cannot_register()
     {
         // Act as a logged in user
-        $user = User::factory()->create();
+        $user = $this->createUser();;
         $this->actingAs($user);
 
         $data = [

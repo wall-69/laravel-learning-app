@@ -43,6 +43,9 @@
 			v-if="$route.name == 'admin-word-packs-create'"
 			:api-route="'/api/word-packs'"
 			:redirect-route-name="'admin-word-packs'"
+			:hidden-data="{
+				type: 'official',
+			}"
 			class="self-center">
 			<template #header>New Word pack</template>
 			<template #input-path_id="{ form }">

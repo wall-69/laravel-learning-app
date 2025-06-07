@@ -4,13 +4,15 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helpers\UserHelper;
 use Tests\TestCase;
 
 class LogOutTest extends TestCase
 {
     use RefreshDatabase;
+    use UserHelper;
 
-    public function test_guest_cant_log_out()
+    public function test_guest_cannot_log_out()
     {
         // Post request expecting JSON response
         $response = $this->postJson(route("auth.logout"));
@@ -25,7 +27,7 @@ class LogOutTest extends TestCase
     public function test_user_can_logout()
     {
         // Act as a logged in user
-        $user = User::factory()->create();
+        $user = $this->createUser();
         $this->actingAs($user);
 
         // Post request expecting JSON response

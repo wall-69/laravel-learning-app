@@ -4,11 +4,13 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helpers\UserHelper;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
     use RefreshDatabase;
+    use UserHelper;
 
     public function test_guest_can_login_with_valid_data()
     {
@@ -30,9 +32,9 @@ class LoginTest extends TestCase
         $this->assertAuthenticated();
     }
 
-    public function test_guest_cant_login_with_invalid_data()
+    public function test_guest_cannot_login_with_invalid_data()
     {
-        $user = User::factory()->create();
+        $user = $this->createUser();
 
         // Valid data for login
         $data = [
@@ -51,10 +53,10 @@ class LoginTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_user_cant_login()
+    public function test_user_cannot_login()
     {
         // Act as a logged in user
-        $user = User::factory()->create();
+        $user = $this->createUser();
         $this->actingAs($user);
 
         $data = [
