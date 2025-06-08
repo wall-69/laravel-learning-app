@@ -8,8 +8,22 @@ class UserWordPackController extends Controller
 {
     public function index(Request $request)
     {
-        $wordPacks = $request->user()->userWordPacks()->with("wordPack")->get()->pluck("wordPack");
+        // $wordPacks = $request->user()->userWordPacks()->with("wordPack")->get()->pluck("wordPack");
+        // $paginator = $request->user()->userWordPacks()->search($request->search ?? "")->latest()->paginate(30);
+        $user = $request->user();
+        $search = $request->search ?? "";
 
-        return response()->json($wordPacks);
+        $paginator = $user->userWordPacks()
+            ->whereHas("wordPack", function ($q) use ($search) {
+                $q->search($search);
+            })
+            ->latest()->with("wordPack")->paginate(30);
+
+        // "Pluck" word pack
+        $paginator->getCollection()->transform(function ($item) {
+            return $item->wordPack;
+        });
+
+        return response()->json($paginator);
     }
 }

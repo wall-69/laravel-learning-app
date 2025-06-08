@@ -11,8 +11,10 @@ import ReviewView from "@/views/learning/ReviewView.vue";
 import LearningView from "@/views/learning/LearningView.vue";
 import WordPacksView from "@/views/learning/WordPacksView.vue";
 
-import WordsView from "@/views/user/words/WordsView.vue";
-import WordCreateView from "@/views/user/words/WordCreateView.vue";
+import UserWordsView from "@/views/user/words/WordsView.vue";
+import UserWordCreateView from "@/views/user/words/WordCreateView.vue";
+import UserWordPacksView from "@/views/user/word-packs/WordPacksView.vue";
+import UserWordPackCreateView from "@/views/user/word-packs/WordPackCreateView.vue";
 import ProfileView from "@/views/user/ProfileView.vue";
 
 import authGuard from "./guards/authGuard";
@@ -61,17 +63,32 @@ const router = createRouter({
 					component: null,
 				},
 				{
-					path: "/words",
+					path: "/user/words",
 					children: [
 						{
 							path: "",
-							name: "words",
-							component: WordsView,
+							name: "user-words",
+							component: UserWordsView,
 						},
 						{
-							name: "words-create",
+							name: "user-words-create",
 							path: "create",
-							component: WordCreateView,
+							component: UserWordCreateView,
+						},
+					],
+				},
+				{
+					path: "/user/word-packs",
+					children: [
+						{
+							path: "",
+							name: "user-word-packs",
+							component: UserWordPacksView,
+						},
+						{
+							name: "user-word-packs-create",
+							path: "create",
+							component: UserWordPackCreateView,
 						},
 					],
 				},

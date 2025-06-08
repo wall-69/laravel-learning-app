@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -29,7 +30,8 @@ class UserWordPack extends Model
     protected $connection = "mysql";
 
     protected $fillable = [
-        "user_id", "word_pack_id"
+        "user_id",
+        "word_pack_id"
     ];
 
     public function user()

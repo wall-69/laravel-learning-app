@@ -2,7 +2,7 @@
 	<!-- Word pack modal (1) -->
 	<div
 		id="word-pack-modal"
-		class="aria-hidden:hidden absolute top-0 left-0 z-50 w-screen h-screen overflow-scroll"
+		class="aria-hidden:hidden fixed top-0 left-0 z-50 w-screen h-screen overflow-scroll"
 		aria-hidden="true">
 		<!-- Word pack modal overlay (2) -->
 		<div

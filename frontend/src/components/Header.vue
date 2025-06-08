@@ -100,12 +100,23 @@
 
 											<!-- My words -->
 											<li class="flex items-center gap-1">
+												<i class="text-primary-300 bx bxs-notepad bx-sm"></i>
+												<RouterLink
+													@click="userDropdownVisible = false"
+													:to="{ name: 'user-words' }"
+													class="text-primary-300 hover:text-primary-500 transition-colors">
+													My words
+												</RouterLink>
+											</li>
+
+											<!-- My word packs -->
+											<li class="flex items-center gap-1">
 												<i class="text-primary-300 bx bxs-customize bx-sm"></i>
 												<RouterLink
 													@click="userDropdownVisible = false"
-													:to="{ name: 'words' }"
+													:to="{ name: 'user-word-packs' }"
 													class="text-primary-300 hover:text-primary-500 transition-colors">
-													My words
+													My word packs
 												</RouterLink>
 											</li>
 

@@ -1,6 +1,6 @@
 <template>
 	<section class="flex flex-col items-stretch justify-center w-full gap-8">
-		<h2 class="text-4xl font-bold text-center text-gray-900">My words</h2>
+		<h2 class="text-4xl font-bold text-center text-gray-900">My word packs</h2>
 
 		<div class="sm:justify-between flex items-center justify-start">
 			<form @submit.prevent="search = searchInput.value">
@@ -12,53 +12,37 @@
 					class="input bg-secondary-300 placeholder:text-secondary-content-300 focus:placeholder:text-opacity-0 sm:block text-secondary-content-300 hidden border-0" />
 			</form>
 
-			<RouterLink :to="{ name: 'user-words-create' }" class="btn-secondary">
-				Create word
+			<RouterLink
+				:to="{ name: 'user-word-packs-create' }"
+				class="btn-secondary">
+				Create word pack
 			</RouterLink>
 		</div>
 
-		<template v-if="words.length > 0">
-			<table class="w-full">
-				<thead class="border-primary-300 p-2 border">
-					<tr>
-						<th class="border-primary-300 p-1 text-center border">Word</th>
-						<th class="border-primary-300 p-1 text-center border">
-							Word translation
-						</th>
-						<th
-							class="md:table-cell border-primary-300 hidden p-1 text-center border">
-							Image
-						</th>
-						<th class="border-primary-300 p-1 text-center border">Actions</th>
-					</tr>
-				</thead>
-				<tbody class="border-primary-300 p-2 border">
-					<tr v-for="userWord in words" class="border-primary-300 border">
-						<td class="border-primary-300 px-2 py-1 border">
-							{{ userWord.word.word }}
-						</td>
-						<td class="border-primary-300 px-2 py-1 border">
-							{{ userWord.word.word_translation }}
-						</td>
-						<td
-							class="md:table-cell border-primary-300 hidden px-2 py-1 text-center border">
-							<img
-								v-if="userWord.word.image"
-								:src="asset(userWord.word.image)"
-								alt=""
-								class="w-20 h-20 mx-auto" />
-							<p v-else>No image</p>
-						</td>
-						<td class="border-primary-300 px-2 py-1 text-center border">
-							<button
-								@click="handleDelete(userWord.id, userWord.word.word)"
-								class="text-red-500">
-								<i class="bx bxs-trash bx-sm"></i>
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		<template v-if="hasWordPacks">
+			<!-- Word packs -->
+			<div
+				class="md:flex-row bg-secondary-300 flex flex-col gap-4 p-4 rounded-md">
+				<div
+					v-for="wordPack in possibleWordPacks"
+					v-hover-no-document-scroll
+					@click="wordPackModal.openWordPackModal(wordPack.id)"
+					class="hover:bg-gray-50 min-w-fit hover:cursor-pointer flex flex-col items-center h-64 gap-2 p-3 overflow-y-scroll transition-colors bg-white rounded-md">
+					<h6
+						class="text-primary-400 px-1 mb-2 text-lg font-bold text-center rounded-md">
+						{{ wordPack.name }}
+					</h6>
+					<img
+						v-if="wordPack.image"
+						:src="asset(wordPack.image)"
+						alt=""
+						class="object-cover w-48 h-48 rounded-md" />
+					<p
+						class="max-w-48 my-auto text-sm text-center text-gray-900 break-words">
+						{{ wordPack.description }}
+					</p>
+				</div>
+			</div>
 			<div class="flex items-center justify-center w-full gap-2">
 				<button @click="previousPage" :disabled="page <= 1 || loading">
 					<i
@@ -84,55 +68,70 @@
 			</div>
 		</template>
 		<p
-			v-else-if="!hasWords && !search"
+			v-else-if="!hasWordPacks && !search"
 			class="pb-2 text-xl font-bold text-center text-gray-700">
-			You don't have any words added!
+			You don't have any word packs added!
 		</p>
 		<p v-else class="pb-2 text-xl font-bold text-center text-gray-700">
-			No words were found.
+			No word packs were found.
 		</p>
 	</section>
+
+	<WordPackModal ref="wordPackModal"></WordPackModal>
 </template>
 <script setup>
+import WordPackModal from "@/components/word-packs/WordPackModal.vue";
 import router from "@/router";
 import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { onMounted, ref, watch, computed } from "vue";
 import { asset } from "@/utils/asset";
 import { useRoute } from "vue-router";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+
+// Stores
+const userStore = useUserStore();
+const { userWordPacks } = storeToRefs(userStore);
 
 // Composables
 const route = useRoute();
 
 // Lifecycle hooks
 onMounted(async () => {
-	await loadWords();
+	await loadWordPacks();
 });
 
 // Variables
-const words = ref({});
+const wordPacks = ref([]);
 const page = ref(1);
 const maxPage = ref(1);
 const loading = ref(false);
-const deleting = ref(false);
 
 const search = ref("");
 const searchInput = ref(null);
 
+const wordPackModal = ref(null);
+
 // Computed
-const hasWords = computed(
-	() => words.value && Object.keys(words.value).length > 0
+const hasWordPacks = computed(
+	() => possibleWordPacks.value && possibleWordPacks.value.length > 0
 );
+const possibleWordPacks = computed(() => {
+	const ids = userWordPacks.value.map((u) => u.word_pack_id);
+
+	return wordPacks.value.filter((wp) => ids.includes(wp.id));
+});
 
 // Functions
-async function loadWords() {
+async function loadWordPacks() {
 	if (loading.value) {
 		return;
 	}
 
 	loading.value = true;
 
-	let requestUrl = "/api/user/words";
+	let requestUrl = "/api/user/word-packs";
 	requestUrl += "?page=" + page.value;
 	if (search.value) {
 		requestUrl += "&search=" + search.value;
@@ -145,44 +144,24 @@ async function loadWords() {
 			maxPage.value = response.data.last_page;
 
 			// response.data is Laravel pagination object, inside it is data field with the data
-			words.value = response.data.data;
+			wordPacks.value = response.data.data;
 		},
 		failCallback: async (response) => {
-			console.error("Could not load user words from the database.", response);
+			console.error(
+				"Could not load user word packs from the database.",
+				response
+			);
 		},
 	});
 
 	loading.value = false;
 }
 
-async function handleDelete(id, word) {
-	if (deleting.value) {
-		return;
-	}
-
-	const agreed = confirm(
-		"Are you sure you want to delete the word " + word + "?"
-	);
-	if (!agreed) return;
-
-	deleting.value = true;
-
-	// TODO: delete request
-	await handleRequest({
-		request: () => axios.delete("/api/user/words/" + id),
-		successCallback: async (response) => {
-			await loadWords();
-		},
-	});
-
-	deleting.value = false;
-}
-
 async function previousPage() {
 	if (page.value > 1) {
 		page.value -= 1;
 
-		await loadWords();
+		await loadWordPacks();
 	}
 }
 
@@ -190,7 +169,7 @@ async function nextPage() {
 	if (page.value != maxPage) {
 		page.value += 1;
 
-		await loadWords();
+		await loadWordPacks();
 	}
 }
 
@@ -200,7 +179,7 @@ watch(
 	(newSearch, oldSearch) => {
 		page.value = 1;
 
-		loadWords();
+		loadWordPacks();
 	}
 );
 </script>

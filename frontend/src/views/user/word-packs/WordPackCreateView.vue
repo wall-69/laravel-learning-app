@@ -7,7 +7,7 @@
 				user_id: user.id,
 			}"
 			class="self-center">
-			<template #header>Create word</template>
+			<template #header>Craete word pack</template>
 			<template #input-word_pack_id="{ form }">
 				<select name="word_pack_id" class="input" v-model="form.word_pack_id">
 					<option v-for="wordPack in wordPacks" :value="wordPack.id">
