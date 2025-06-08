@@ -27,7 +27,7 @@
 					v-for="wordPack in possibleWordPacks"
 					v-hover-no-document-scroll
 					@click="wordPackModal.openWordPackModal(wordPack.id)"
-					class="hover:bg-gray-50 min-w-fit hover:cursor-pointer flex flex-col items-center h-64 gap-2 p-3 overflow-y-scroll transition-colors bg-white rounded-md">
+					class="hover:bg-gray-50 md:w-52 hover:cursor-pointer flex flex-col items-center w-full h-64 gap-2 p-3 overflow-y-scroll transition-colors bg-white rounded-md">
 					<h6
 						class="text-primary-400 px-1 mb-2 text-lg font-bold text-center rounded-md">
 						{{ wordPack.name }}

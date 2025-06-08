@@ -53,13 +53,15 @@ class WordPackController extends Controller
             "image" => "nullable|image"
         ]);
 
+        $user = $request->user();
+
         // Save image
         if ($request->hasFile("image")) {
             $data["image"] = "storage/" . $request->image->store("img/word-packs/thumbnails", "public");
         }
 
         // Only admins can create official word packs
-        if ($request->type == WordPackType::OFFICIAL->value && !$request->user()->admin) {
+        if ($request->type == WordPackType::OFFICIAL->value && !$user->admin) {
             abort(403, "You can't do this.");
         }
 
@@ -67,10 +69,23 @@ class WordPackController extends Controller
         $data["user_id"] = $request->user()->id;
 
         // Create the WordPack
-        WordPack::create($data);
+        $wordPack = WordPack::create($data);
+
+        // If it is a user creating the word pack, then we add it to his user word packs
+        if ($request->type == WordPackType::COMMUNITY->value) {
+            UserWordPack::create([
+                "user_id" => $user->id,
+                "word_pack_id" => $wordPack->id
+            ]);
+        }
 
         return response()->json([
-            "message" => "Word pack was successfully created."
+            "message" => "Word pack was successfully created.",
+            "notifications" => [
+                "success" => [
+                    "The word pack was successfully created!"
+                ]
+            ]
         ]);
     }
 

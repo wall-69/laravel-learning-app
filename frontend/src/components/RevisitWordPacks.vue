@@ -64,7 +64,7 @@ async function loadWordPacks() {
 	await handleRequest({
 		request: () => axios.get("/api/user/word-packs"),
 		successCallback: async (response) => {
-			wordPacks.value = response.data;
+			wordPacks.value = response.data.data;
 		},
 	});
 }

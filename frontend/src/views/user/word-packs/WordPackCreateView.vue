@@ -1,58 +1,33 @@
 <template>
 	<section class="flex flex-col items-stretch justify-center w-full gap-8">
 		<DataCreateForm
-			:api-route="'/api/words'"
-			:redirect-route-name="'words'"
+			:api-route="'/api/word-packs'"
+			:redirect-route-name="'user-word-packs'"
 			:hidden-data="{
-				user_id: user.id,
+				type: 'community',
 			}"
 			class="self-center">
-			<template #header>Craete word pack</template>
-			<template #input-word_pack_id="{ form }">
-				<select name="word_pack_id" class="input" v-model="form.word_pack_id">
-					<option v-for="wordPack in wordPacks" :value="wordPack.id">
-						{{ wordPack.name }}
-					</option>
-				</select>
-			</template>
-			<template #input-word="{ form }">
+			<template #header>Create word pack</template>
+			<template #input-name="{ form }">
 				<input
 					type="text"
-					name="word"
+					name="name"
 					class="input"
 					autocomplete="off"
-					v-model="form.word" />
+					v-model="form.name" />
 			</template>
-			<template #input-word_translation="{ form }">
-				<input
-					type="text"
-					name="word_translation"
-					class="input"
-					autocomplete="off"
-					v-model="form.word_translation" />
-			</template>
-			<template #input-example="{ form }">
-				<input
-					type="text"
-					name="example"
-					class="input"
-					autocomplete="off"
-					v-model="form.example" />
-			</template>
-			<template #input-example_translation="{ form }">
-				<input
-					type="text"
-					name="example_translation"
-					class="input"
-					autocomplete="off"
-					v-model="form.example_translation" />
-			</template>
-			<template #input-explanation="{ form }">
+			<template #input-description="{ form }">
 				<textarea
-					name="explanation"
+					name="description"
 					class="input"
 					autocomplete="off"
-					v-model="form.explanation"></textarea>
+					v-model="form.description"></textarea>
+			</template>
+			<template #input-visibility="{ form }">
+				<select name="visibility" class="input" v-model="form.visibility">
+					<option value="public">Public</option>
+					<option value="private">Private</option>
+				</select>
 			</template>
 			<template #input-image="{ form }">
 				<input
@@ -82,31 +57,11 @@ import axios from "axios";
 import { onMounted, ref, watch, computed, reactive } from "vue";
 import { asset } from "@/utils/asset";
 import { useRoute } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "@/stores/auth";
-
-// Stores
-const { user } = storeToRefs(useAuthStore());
-
-// Lifecycle
-onMounted(async () => {
-	loadWordPacks();
-});
 
 // Variables
-const wordPacks = ref([]);
 const imageUploadInput = ref(null);
 
 // Functions
-async function loadWordPacks() {
-	await handleRequest({
-		request: () => axios.get("/api/word-packs/user"),
-		successCallback: async (response) => {
-			wordPacks.value = response.data;
-		},
-	});
-}
-
 function clearImageInput(form) {
 	imageUploadInput.value.value = null;
 	form.image = null;
