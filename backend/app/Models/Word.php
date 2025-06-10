@@ -44,7 +44,14 @@ class Word extends Model
     protected $connection = "mysql";
 
     protected $fillable = [
-        "word_pack_id", "word", "word_translation", "example", "example_translation", "explanation", "image"
+        "user_id",
+        "word_pack_id",
+        "word",
+        "word_translation",
+        "example",
+        "example_translation",
+        "explanation",
+        "image"
     ];
 
     protected function casts()

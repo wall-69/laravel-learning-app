@@ -2,7 +2,7 @@
 	<section class="flex flex-col items-stretch justify-center w-full gap-8">
 		<DataCreateForm
 			:api-route="'/api/words'"
-			:redirect-route-name="'words'"
+			:redirect-route-name="'user-words'"
 			:hidden-data="{
 				user_id: user.id,
 			}"

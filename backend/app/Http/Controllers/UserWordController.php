@@ -75,7 +75,18 @@ class UserWordController extends Controller
     {
         Gate::authorize("destroy", $userWord);
 
+        // Temp data
+        $word = $userWord->word;
+        $userId = $word->user_id;
+
+        // Delete the UserWord
         $userWord->delete();
+
+        // If this UserWord is created by a user and not an admin we
+        // check if this Word is used by any other user, if not then we delete it 
+        if ($userId && !UserWord::whereWordId($word->id)->exists()) {
+            $word->delete();
+        }
 
         return response()->json([
             "message" => "UserWord deleted.",

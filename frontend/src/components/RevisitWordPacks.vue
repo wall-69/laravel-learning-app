@@ -26,7 +26,7 @@
 			<template v-else>
 				<RouterLink
 					v-for="wordPack in wordPacks"
-					class="hover:bg-gray-50 min-w-fit flex flex-col items-center gap-2 p-3 transition-colors bg-white rounded-md">
+					class="hover:bg-gray-50 md:w-52 flex flex-col items-center w-full gap-2 p-3 transition-colors bg-white rounded-md">
 					<h6
 						class="text-primary-400 px-1 mb-2 text-lg font-bold text-center rounded-md">
 						{{ wordPack.name }}
