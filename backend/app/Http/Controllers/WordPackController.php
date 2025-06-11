@@ -34,7 +34,13 @@ class WordPackController extends Controller
     {
         $paginator = WordPack::where(function ($query) use ($request) {
             if ($request->has("visibility")) {
-                $query->whereVisibility($request->visibility);
+                if ($request->visibility == WordPackVisibility::PRIVATE->value) {
+                    $query->where("visibility", WordPackVisibility::PRIVATE->value)
+                        ->where("user_id", $request->user()->id())
+                        ->orWhere("visibility", WordPackVisibility::PUBLIC->value);
+                } else if ($request->visibility == WordPackVisibility::PUBLIC->value) {
+                    $query->where("visibility", WordPackVisibility::PUBLIC->value);
+                }
             }
         })->search($request->search ?? "")->latest()->paginate(30);
 
@@ -284,6 +290,13 @@ class WordPackController extends Controller
         // Delete UserWordPack
         $userWordPack = UserWordPack::where("user_id", $user->id)->where("word_pack_id", $wordPack->id);
         $userWordPack->delete();
+
+        // Check if there is any other user using this wordpack, if not and this was a community WordPack then we delete it
+        if (!UserWordPack::where("word_pack_id", $wordPack->id)->exists()) {
+            if ($wordPack->type == WordPackType::COMMUNITY->value) {
+                $wordPack->delete();
+            }
+        }
 
         return response()->json([
             "message" => "Successfully removed WordPack from user.",
