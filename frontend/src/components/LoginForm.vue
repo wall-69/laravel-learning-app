@@ -61,6 +61,14 @@
 				Forgot your password?
 			</RouterLink>
 		</p>
+		<p class="text-white">
+			Don't have an account yet?
+			<RouterLink
+				:to="{ name: 'register' }"
+				class="hover:text-primary-300 font-bold underline">
+				Register here.
+			</RouterLink>
+		</p>
 	</form>
 </template>
 
