@@ -125,8 +125,8 @@
 					<p v-else>
 						You hit your daily review limit. Good job! <br />
 						You can change it in
-						<RouterLink :to="{ name: 'profile' }" class="font-bold underline"
-							>your settings</RouterLink
+						<RouterLink :to="{ name: 'profile' }" class="font-bold underline">
+							your settings </RouterLink
 						>.
 					</p>
 				</div>
@@ -139,7 +139,7 @@
 				</div>
 
 				<RouterLink
-					@click="addTodayToReviewed"
+					@click="addTodayToReviewed()"
 					:to="{ name: 'learning' }"
 					class="btn-primary">
 					Dashboard
@@ -281,8 +281,7 @@ async function handleAnswer(correct) {
 		await handleRequest({
 			request: () => axios.post("/api/user/review/today"),
 			successCallback: async (response) => {
-				// TODO: probably nothing
-				console.log("yipee");
+				addTodayToReviewed();
 			},
 			failCallback: async (response) => {
 				console.error("Could not mark today as reviewed.");
@@ -312,6 +311,10 @@ async function loadDueWords() {
 }
 
 function addTodayToReviewed() {
+	if (user.value.hasWords) {
+		return;
+	}
+
 	const now = new Date();
 	const yyyy = now.getUTCFullYear();
 	const mm = String(now.getUTCMonth() + 1).padStart(2, "0");
