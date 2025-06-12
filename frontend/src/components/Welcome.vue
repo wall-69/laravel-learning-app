@@ -6,15 +6,15 @@
 		</div>
 
 		<div class="md:flex-row flex flex-col flex-wrap gap-4">
-			<RouterLink class="btn-primary">
+			<RouterLink :to="{ name: 'user-word-packs' }" class="btn-primary">
 				<i class="bx bxs-customize bx-sm flex text-gray-900"></i>
 				Your word packs
 			</RouterLink>
-			<RouterLink class="btn-primary">
+			<RouterLink to="" class="btn-primary">
 				<i class="bx bxs-flag bx-sm flex text-gray-900"></i>
 				Your paths
 			</RouterLink>
-			<RouterLink class="btn-primary">
+			<RouterLink to="" class="btn-primary">
 				<i class="bx bxs-spreadsheet bx-sm flex text-gray-900"></i>
 				Read more
 			</RouterLink>

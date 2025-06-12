@@ -16,22 +16,26 @@
 		<div class="md:flex-row flex flex-col gap-4">
 			<RouterLink
 				v-if="!paths || paths.length == 0"
+				to=""
 				class="text-primary-200 list-item list-disc list-inside">
 				Add paths.
 			</RouterLink>
 
 			<template v-else>
 				<RouterLink
+					to=""
 					class="bg-primary-200 hover:bg-primary-300 flex flex-col items-center gap-2 p-3 pb-4 transition-colors rounded-md">
 					<p class="underline">Path name</p>
 					<img src="" alt="" class="w-[72px] h-[72px] object-cover" />
 				</RouterLink>
 				<RouterLink
+					to=""
 					class="bg-primary-200 hover:bg-primary-300 flex flex-col items-center gap-2 p-3 pb-4 transition-colors rounded-md">
 					<p class="underline">Path name</p>
 					<img src="" alt="" class="w-[72px] h-[72px] object-cover" />
 				</RouterLink>
 				<RouterLink
+					to=""
 					class="bg-primary-200 hover:bg-primary-300 flex flex-col items-center gap-2 p-3 pb-4 transition-colors rounded-md">
 					<p class="underline">Path name</p>
 					<img src="" alt="" class="w-[72px] h-[72px] object-cover" />

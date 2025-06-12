@@ -19,6 +19,7 @@
 			}">
 			<RouterLink
 				v-if="!wordPacks || wordPacks.length == 0"
+				:to="{ name: 'word-packs' }"
 				class="text-primary-200 list-item list-disc list-inside">
 				Add word packs to your vocabulary.
 			</RouterLink>
