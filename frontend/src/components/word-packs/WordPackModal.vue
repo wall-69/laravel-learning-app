@@ -97,6 +97,15 @@
 							v-else-if="!modalWordPackHasWords"
 							class="pb-2 text-xl font-bold text-center text-gray-700">
 							There are no words in this word pack!
+
+							<br />
+
+							<RouterLink
+								v-if="modalWordPack.user_id == user.id"
+								:to="{ name: 'user-words-create' }"
+								class="text-white underline">
+								Add words
+							</RouterLink>
 						</p>
 					</template>
 					<p v-else class="pb-2 text-xl text-center">Loading...</p>
@@ -145,6 +154,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import MicroModal from "micromodal";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 
 // Define
 defineExpose({
@@ -152,8 +162,8 @@ defineExpose({
 });
 
 // Stores
-const userStore = useUserStore();
-const { userWordPacks } = storeToRefs(userStore);
+const { userWordPacks } = storeToRefs(useUserStore());
+const { user } = storeToRefs(useAuthStore());
 
 // Variables
 const modalWordPack = ref({});
