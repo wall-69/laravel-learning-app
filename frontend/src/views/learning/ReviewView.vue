@@ -156,9 +156,13 @@ import { asset } from "@/utils/asset";
 import { RouterLink } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
+import { useRoute } from "vue-router";
 
 // Stores
 const { user } = storeToRefs(useAuthStore());
+
+// Composables
+const route = useRoute();
 
 // Lifecycle
 onMounted(async () => {
@@ -168,10 +172,16 @@ onMounted(async () => {
 		return;
 	}
 
-	await loadDueWords();
+	if (route.query.wordPack) {
+		mode.value = "revisit";
+		await loadWordPack(route.query.wordPack);
+	} else {
+		await loadDueWords();
+	}
 });
 
 // Variables
+const mode = ref("due");
 const card = ref(null);
 const revealed = ref(false);
 const scrollable = ref(null);
@@ -238,18 +248,20 @@ async function handleAnswer(correct) {
 		// Remove current word from the pack, if answered correctly
 		const correctWord = words.value.shift();
 
-		// Make request to mark the word as correctly answered
-		handleRequest({
-			request: () =>
-				axios.post("/api/user/words/" + correctWord.id + "/correct"),
-		});
+		if (mode.value == "due") {
+			// Make request to mark the word as correctly answered
+			handleRequest({
+				request: () =>
+					axios.post("/api/user/words/" + correctWord.id + "/correct"),
+			});
 
-		// Increment today reviews in client
-		user.value.todayReviews++;
+			// Increment today reviews in client
+			user.value.todayReviews++;
 
-		// Max daily reviews
-		if (user.value.todayReviews >= dailyLimit.value) {
-			hitDailyLimit.value = true;
+			// Max daily reviews
+			if (user.value.todayReviews >= dailyLimit.value) {
+				hitDailyLimit.value = true;
+			}
 		}
 	} else {
 		// Remove the failed word from the words list, but keep it
@@ -277,16 +289,18 @@ async function handleAnswer(correct) {
 		// If there are no more words mark as finished
 		finished.value = true;
 
-		// Mark today as reviewed, yay
-		await handleRequest({
-			request: () => axios.post("/api/user/review/today"),
-			successCallback: async (response) => {
-				addTodayToReviewed();
-			},
-			failCallback: async (response) => {
-				console.error("Could not mark today as reviewed.");
-			},
-		});
+		if (mode.value == "due") {
+			// Mark today as reviewed, yay
+			await handleRequest({
+				request: () => axios.post("/api/user/review/today"),
+				successCallback: async (response) => {
+					addTodayToReviewed();
+				},
+				failCallback: async (response) => {
+					console.error("Could not mark today as reviewed.");
+				},
+			});
+		}
 	}
 
 	// Make the card not revealed
@@ -306,6 +320,23 @@ async function loadDueWords() {
 		},
 		failCallback: async (response) => {
 			console.error("Could not load due words.");
+		},
+	});
+}
+
+async function loadWordPack(id) {
+	await handleRequest({
+		request: () => axios.get("/api/user/words/revisit/" + id),
+		successCallback: async (response) => {
+			words.value = response.data.revisit_words;
+			currentWord.value = words.value[0];
+
+			if (words.value.length == 0) {
+				finished.value = true;
+			}
+		},
+		failCallback: async (response) => {
+			console.error("Could not load revisit words.");
 		},
 	});
 }

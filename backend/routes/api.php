@@ -11,10 +11,7 @@ use App\Http\Controllers\UserWordController;
 use App\Http\Controllers\UserWordPackController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\WordPackController;
-use App\Models\UserWordPack;
 use Illuminate\Support\Facades\Route;
-
-use function Symfony\Component\String\b;
 
 /*
     Routes
@@ -105,6 +102,7 @@ Route::controller(UserWordController::class)->name("user-words.")->middleware("a
     // General
     Route::get("/user/words/", "user");
     Route::get("/user/words/due", "due");
+    Route::get("/user/words/revisit/{wordPack}", "revisitWordPack");
 
     Route::post("/user/words/{userWord}/correct", "correct");
     Route::delete("/user/words/{userWord}", "destroy");

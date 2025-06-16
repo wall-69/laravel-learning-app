@@ -27,8 +27,10 @@
 			<template v-else>
 				<RouterLink
 					v-for="wordPack in wordPacks"
+					:to="{ name: 'review', query: { wordPack: wordPack.id } }"
 					class="hover:bg-gray-50 md:w-52 flex flex-col items-center w-full gap-2 p-3 transition-colors bg-white rounded-md">
 					<h6
+						@click="revisitWordPack(wordPack.id)"
 						class="text-primary-400 px-1 mb-2 text-lg font-bold text-center rounded-md">
 						{{ wordPack.name }}
 					</h6>
@@ -51,6 +53,7 @@ import { handleRequest } from "@/utils/requestWrapper";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import { asset } from "@/utils/asset";
+import router from "@/router";
 
 // Lifecycle
 onMounted(async () => {

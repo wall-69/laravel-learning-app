@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserWord;
+use App\Models\WordPack;
 use Gate;
 use Illuminate\Http\Request;
 
@@ -93,6 +94,21 @@ class UserWordController extends Controller
             "notifications" => [
                 "success" => ["The word was successfully deleted."]
             ]
+        ]);
+    }
+
+    public function revisitWordPack(Request $request, WordPack $wordPack)
+    {
+        $user = $request->user();
+
+        $wordIds = $wordPack->words->pluck("id");
+        $revisitWords = $user->userWords()->whereIn("word_id", $wordIds)->with("word")->get();
+        $revisitWords->each(function ($userWord) {
+            $userWord->group = 1;
+        });
+
+        return response()->json([
+            "revisit_words" => $revisitWords
         ]);
     }
 }
